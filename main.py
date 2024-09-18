@@ -3,6 +3,11 @@ from flask import Flask
 from init import db, ma, bcrypt, jwt
 
 from controllers.cli_controllers import db_commands  # Import the Blueprint
+from controllers.auth_controller import auth_bp
+from controllers.cars_controller import cars_bp
+from controllers.listings_controller import listings_bp
+from controllers.transactions_controller import transactions_bp
+from controllers.makemodelyear_controller import makemodelyear_bp
 
 def create_app():
     app = Flask(__name__)
@@ -15,7 +20,11 @@ def create_app():
     jwt.init_app(app)
 
     # Register the CLI commands blueprint
-    print("Registering CLI commands...")
     app.register_blueprint(db_commands)
+    app.register_blueprint(auth_bp, url_prefix='/api')
+    app.register_blueprint(cars_bp, url_prefix='/api')
+    app.register_blueprint(listings_bp, url_prefix='/api')
+    app.register_blueprint(transactions_bp, url_prefix='/api')
+    app.register_blueprint(makemodelyear_bp, url_prefix='/api')
 
     return app
