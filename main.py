@@ -4,9 +4,9 @@ from init import db, ma, bcrypt, jwt
 
 from controllers.cli_controllers import db_commands  # Import the Blueprint
 from controllers.auth_controller import auth_bp
-from controllers.cars_controller import cars_bp
-from controllers.listings_controller import listings_bp
-from controllers.transactions_controller import transactions_bp
+from controllers.car_controller import cars_bp
+from controllers.listing_controller import listings_bp
+from controllers.transaction_controller import transactions_bp
 from controllers.makemodelyear_controller import makemodelyear_bp
 
 def create_app():
