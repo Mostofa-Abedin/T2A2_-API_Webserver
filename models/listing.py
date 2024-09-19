@@ -27,11 +27,14 @@ class Listing(db.Model):
         return f"<Listing {self.listing_id}, Status: {self.listing_status}>"
 
 # Define the ListingSchema using Marshmallow for serialization and deserialization
-class ListingSchema(ma.Schema):
+class ListingSchema(ma.SQLAlchemyAutoSchema):
     # Nested schemas for serializing relationships with the 'User' and 'Car' models
-    user = fields.Nested('UserSchema', exclude=["listings"])  # Use 'UserSchema' to represent the user, exclude the 'listings' field to prevent circular reference
-    car = fields.Nested('CarSchema', exclude=["listings"])  # Use 'CarSchema' to represent the car, exclude the 'listings' field to prevent circular reference
+    user = fields.Nested('UserSchema', exclude=["listings"], many=False)  # Use 'UserSchema' to represent the user, exclude the 'listings' field to prevent circular reference
+    car = fields.Nested('CarSchema', exclude=["listings"], many=False)  # Use 'CarSchema' to represent the car, exclude the 'listings' field to prevent circular reference
 
     class Meta:
-        # Fields to include in the serialized output; defines how the data will be structured when the listing is converted to JSON
-        fields = ("listing_id", "car_id", "seller_id", "listing_status", "date_posted")
+        model = Listing  # Link this schema to the Listing model
+        load_instance = True  # Allow deserialization to model instances
+        # Fields to include in the serialized output
+        fields = ("listing_id", "car_id", "seller_id", "listing_status", "date_posted", "user", "car")
+

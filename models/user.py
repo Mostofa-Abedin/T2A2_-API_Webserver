@@ -10,7 +10,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)  # Primary key, unique identifier for each user
     name = db.Column(db.String(100), nullable=False)  # Name of the user, must not be null, max length 100 characters
     email = db.Column(db.String(50), nullable=False, unique=True)  # Email, must not be null and must be unique
-    password_hash = db.Column(db.String(200), nullable=False)  # Password, stored as a hashed string, must not be null
+    password = db.Column(db.String(200), nullable=False)  # Password, stored as a hashed string, must not be null
     phone_number = db.Column(db.String(15))  # Phone number, can include symbols like '+' and has a max length of 15 characters
     address = db.Column(db.String(255))  # Address of the user, max length 255 characters
     is_admin = db.Column(db.Boolean, default=False)  # Boolean to indicate if the user is an admin, defaults to False

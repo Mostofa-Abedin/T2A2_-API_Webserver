@@ -4,7 +4,7 @@ from init import bcrypt, db
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import timedelta
 
 # Create a Blueprint for authentication and user management
@@ -29,7 +29,8 @@ def register_user():
         # Hash the password and store it in the 'password_hash' field
         password = body_data.get("password")
         if password:
-            user.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
+            user.password = bcrypt.generate_password_hash(password).decode("utf-8")
+
         
         # Add and commit to the DB
         db.session.add(user)
@@ -47,7 +48,7 @@ def register_user():
     except Exception as e:
         return {"error": str(e)}, 500
 
-# # Route to login a user
+# Route to login a user
 @auth_bp.route("/login", methods=["POST"])
 def login_user():
     try:
@@ -59,7 +60,7 @@ def login_user():
         user = db.session.scalar(stmt)
         
         # Check if the user exists and the provided password is correct
-        if user and bcrypt.check_password_hash(user.password_hash, body_data.get("password")):
+        if user and bcrypt.check_password_hash(user.password, body_data.get("password")):
             # Create a JWT token with an expiration of 1 day
             token = create_access_token(identity=str(user.user_id), expires_delta=timedelta(days=1))
             
@@ -77,22 +78,50 @@ def login_user():
     except Exception as e:
         return {"error": str(e)}, 500
     
-# # Route to get all users (Admin-only)
-# @auth_bp.route('/auth/users', methods=['GET'])
-# def get_users():
-#     pass  # Placeholder for getting all users
 
-# # Route to get a specific user by ID (Admin or self)
-# @auth_bp.route('/auth/users/<int:id>', methods=['GET'])
-# def get_user(id):
-#     pass  # Placeholder for getting a user by ID
 
-# # Route to update user information (Admin or self)
-# @auth_bp.route('/auth/users/<int:id>', methods=['PUT'])
-# def update_user(id):
-#     pass  # Placeholder for updating user information
+# Route to update user information (Admin or self)
+@auth_bp.route("/users/<int:id>", methods=["PUT", "PATCH"])
+@jwt_required()
+def update_user(id):
+    # Get the current user ID from the JWT
+    current_user_id = get_jwt_identity()
 
-# # Route to delete a user (Admin-only)
-# @auth_bp.route('/auth/users/<int:id>', methods=['DELETE'])
-# def delete_user(id):
-#     pass  # Placeholder for deleting a user
+    # Fetch the current user (the one making the request)
+    stmt_current_user = db.select(User).filter_by(user_id=current_user_id)
+    current_user = db.session.scalar(stmt_current_user)
+    
+    # Fetch the user from the database to be updated
+    stmt = db.select(User).filter_by(user_id=id)
+    user = db.session.scalar(stmt)
+    
+    # Check if the user exists
+    if not user:
+        return {"error": "User does not exist."}, 404
+    
+    # Check if the current user is an admin or the user themselves
+    if current_user_id != id and not current_user.is_admin:
+        return {"error": "You do not have permission to update this user's information."}, 403
+    
+    # Get the fields from the body of the request
+    body_data = UserSchema().load(request.get_json(), partial=True)
+    
+    # Update the fields as required
+    user.name = body_data.get("name") or user.name
+    user.email = body_data.get("email") or user.email
+    user.phone_number = body_data.get("phone_number") or user.phone_number
+    user.address = body_data.get("address") or user.address
+    password = body_data.get("password")
+    if password:
+        user.password = bcrypt.generate_password_hash(password).decode("utf-8")
+
+    # Commit the changes to the database
+    db.session.commit()
+    
+    # Return the updated user data
+    return user_schema.dump(user), 200
+
+# Route to delete a user (Admin-only)
+@auth_bp.route('/auth/users/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    pass  # Placeholder for deleting a user

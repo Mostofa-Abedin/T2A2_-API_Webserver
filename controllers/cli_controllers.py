@@ -2,7 +2,7 @@ import json
 import click
 from flask import Blueprint
 from flask.cli import with_appcontext
-from init import db  # Import the SQLAlchemy database instance
+from init import db, bcrypt  # Import bcrypt for password hashing
 from models.user import User  # Import models for database operations
 from models.car import Car
 from models.listing import Listing
@@ -49,6 +49,8 @@ def seed_tables(file_path):
 
         # Seed the Users table with data from the 'users' key in the JSON
         for user_data in data['users']:
+            # Hash the password before adding the user to the database
+            user_data['password'] = bcrypt.generate_password_hash(user_data['password']).decode('utf-8')
             user = User(**user_data)  # Create a User object using unpacked JSON data
             db.session.add(user)  # Add the User object to the session
 
