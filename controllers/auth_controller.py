@@ -9,10 +9,6 @@ auth_bp = Blueprint('auth', __name__)
 
 # Route to register a new user
 
-@auth_bp.route("/test", methods=["GET"])
-def test_route():
-    return {"message": "Test route is working!"}
-
 @auth_bp.route("/register", methods=["POST"])
 def register_user():
     try:
@@ -49,10 +45,35 @@ def register_user():
         return {"error": str(e)}, 500
 
 # # Route to login a user
-# @auth_bp.route('/auth/login', methods=['POST'])
-# def login():
-#     pass  # Placeholder for login logic
-
+@auth_bp.route("/login", methods=["POST"])
+def login_user():
+    try:
+        # Get the data from the request
+        body_data = request.get_json()
+        
+        # Find the user in the database using the provided email
+        stmt = db.select(User).filter_by(email=body_data.get("email"))
+        user = db.session.scalar(stmt)
+        
+        # Check if the user exists and the provided password is correct
+        if user and bcrypt.check_password_hash(user.password_hash, body_data.get("password")):
+            # Create a JWT token with an expiration of 1 day
+            token = create_access_token(identity=str(user.user_id), expires_delta=timedelta(days=1))
+            
+            # Return user info and the token
+            return {
+                "email": user.email,
+                "is_admin": user.is_admin,
+                "token": token
+            }, 200
+        
+        # If credentials are invalid, return an error message
+        else:
+            return {"error": "Invalid email or password"}, 400
+    
+    except Exception as e:
+        return {"error": str(e)}, 500
+    
 # # Route to get all users (Admin-only)
 # @auth_bp.route('/auth/users', methods=['GET'])
 # def get_users():
