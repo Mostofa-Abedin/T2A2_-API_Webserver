@@ -117,7 +117,7 @@ def update_user(id):
     return user_schema.dump(user), 200
 
 # Route to delete a user (Admin-only)
-@auth_bp.route('/auth/users/<int:id>', methods=['DELETE'])
+@auth_bp.route("/users/<int:id>", methods=['DELETE'])
 @jwt_required()
 def delete_user(id):
     # Get the current user ID from the JWT
