@@ -4,6 +4,9 @@ from init import bcrypt, db
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 
+from flask_jwt_extended import create_access_token
+from datetime import timedelta
+
 # Create a Blueprint for authentication and user management
 auth_bp = Blueprint('auth', __name__)
 
