@@ -6,7 +6,7 @@ from controllers.cli_controllers import db_commands  # Import the Blueprint
 from controllers.auth_controller import auth_bp
 from controllers.car_controller import cars_bp
 from controllers.listing_controller import listings_bp
-from controllers.transaction_controller import transactions_bp
+from controllers.car_transaction_controller import car_transactions_bp
 from controllers.makemodelyear_controller import makemodelyear_bp
 
 def create_app():
@@ -24,7 +24,7 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(cars_bp, url_prefix='/api')
     app.register_blueprint(listings_bp, url_prefix='/api')
-    app.register_blueprint(transactions_bp, url_prefix='/api')
+    app.register_blueprint(car_transactions_bp, url_prefix='/api')
     app.register_blueprint(makemodelyear_bp, url_prefix='/api')
 
     return app

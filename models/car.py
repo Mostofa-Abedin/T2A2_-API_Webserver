@@ -1,6 +1,6 @@
 from init import db, ma  # Import the SQLAlchemy database instance (db) and Marshmallow (ma) for serialization
 from marshmallow import fields  # Import fields from Marshmallow for schema definitions
-
+from models.makemodelyear import MakeModelYear  # Import MakeModelYear before referencing it
 # Define the Car model, representing the 'cars' table in the database
 class Car(db.Model):
     __tablename__ = "cars"  # Explicitly specify the table name as 'cars'
@@ -19,8 +19,8 @@ class Car(db.Model):
     # Relationships with other tables
     # Establish a one-to-many relationship with the 'Listing' model; a car can be listed multiple times
     listings = db.relationship("Listing", back_populates="car")  
-    # Establish a one-to-many relationship with the 'Transaction' model; a car can have multiple transactions
-    transactions = db.relationship("Transaction", back_populates="car")
+    # Establish a one-to-many relationship with the 'CarTransaction' model; a car can have multiple transactions
+    car_transactions = db.relationship("CarTransaction", back_populates="car")
     # Establish a many-to-one relationship with the 'MakeModelYear' model; a car references a specific make, model, and year
     make_model_year = db.relationship("MakeModelYear", back_populates="cars")  
 

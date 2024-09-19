@@ -61,7 +61,7 @@
       "date_posted": "2024-09-16"
     }
   ],
-  "transactions": [
+  "car_transactions": [
     {
       "car_id": 1,
       "buyer_id": 2,

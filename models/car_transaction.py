@@ -1,9 +1,9 @@
 from init import db, ma  # Import the SQLAlchemy database instance (db) and Marshmallow (ma) for serialization
 from marshmallow import fields  # Import fields from Marshmallow for schema definitions
 
-# Define the Transaction model, representing the 'transactions' table in the database
-class Transaction(db.Model):
-    __tablename__ = "transactions"  # Explicitly specify the table name as 'transactions'
+# Define the CarTransaction model, representing the 'car_transactions' table in the database
+class CarTransaction(db.Model):
+    __tablename__ = "car_transactions"  # Explicitly specify the table name as 'car_transactions'
     
     # Attributes (columns) of the table
     transaction_id = db.Column(db.Integer, primary_key=True)  # Primary key, unique identifier for each transaction
@@ -16,20 +16,20 @@ class Transaction(db.Model):
 
     # Relationships with other tables
     # Establish a many-to-one relationship with the 'User' model; a user can be involved in multiple transactions
-    user = db.relationship("User", back_populates="transactions")  
+    user = db.relationship("User", back_populates="car_transactions")  
     # Establish a many-to-one relationship with the 'Car' model; a car can be involved in multiple transactions
-    car = db.relationship("Car", back_populates="transactions")  
+    car = db.relationship("Car", back_populates="car_transactions")  
 
-    # String representation of the Transaction object for debugging purposes
+    # String representation of the CarTransaction object for debugging purposes
     def __repr__(self):
-        return f"<Transaction {self.transaction_id}, Amount: {self.amount}>"
+        return f"<CarTransaction {self.transaction_id}, Amount: {self.amount}>"
 
-# Define the TransactionSchema using Marshmallow for serialization and deserialization
-class TransactionSchema(ma.Schema):
+# Define the CarTransactionSchema using Marshmallow for serialization and deserialization
+class CarTransactionSchema(ma.Schema):
     # Nested schemas for serializing relationships with the 'User' and 'Car' models
-    user = fields.Nested('UserSchema', exclude=["transactions"])  # Use 'UserSchema' to represent the buyer, exclude the 'transactions' field to prevent circular reference
-    car = fields.Nested('CarSchema', exclude=["transactions"])  # Use 'CarSchema' to represent the car, exclude the 'transactions' field to prevent circular reference
+    user = fields.Nested('UserSchema', exclude=["car_transactions"])  # Use 'UserSchema' to represent the buyer, exclude 'car_transactions' to prevent circular reference
+    car = fields.Nested('CarSchema', exclude=["car_transactions"])  # Use 'CarSchema' to represent the car, exclude 'car_transactions' to prevent circular reference
 
     class Meta:
-        # Fields to include in the serialized output; defines how the data will be structured when the transaction is converted to JSON
+        # Fields to include in the serialized output
         fields = ("transaction_id", "car_id", "buyer_id", "transaction_date", "amount")

@@ -1,3 +1,5 @@
+from models.car_transaction import CarTransaction
+
 from init import db, ma  # Importing the SQLAlchemy database instance (db) and Marshmallow (ma) for serialization
 from marshmallow import fields, validate  # Import fields and validation utilities from Marshmallow
 from marshmallow.validate import Regexp  # Import Regexp for regular expression validation
@@ -17,7 +19,7 @@ class User(db.Model):
 
     # Relationships with other tables
     listings = db.relationship("Listing", back_populates="user")  # One-to-many relationship with 'Listing', referenced by 'user' in the Listing model
-    transactions = db.relationship("Transaction", back_populates="user")  # One-to-many relationship with 'Transaction', referenced by 'user' in the Transaction model
+    car_transactions = db.relationship("CarTransaction", back_populates="user")  # One-to-many relationship with 'CarTransaction', referenced by 'user' in the CarTransaction model
 
     # String representation of the User object, useful for debugging
     def __repr__(self):
@@ -25,16 +27,16 @@ class User(db.Model):
 
 # Define the UserSchema using Marshmallow for serialization and deserialization
 class UserSchema(ma.Schema):
-    # Nested schemas for serializing relationships (listings and transactions)
+    # Nested schemas for serializing relationships (listings and car_transactions)
     listings = fields.List(fields.Nested('ListingSchema', exclude=["user"]))  # List of related 'ListingSchema' objects, excluding the 'user' field to prevent circular reference
-    transactions = fields.List(fields.Nested('TransactionSchema', exclude=["user"]))  # List of related 'TransactionSchema' objects, excluding the 'user' field to prevent circular reference
+    car_transactions = fields.List(fields.Nested('CarTransactionSchema', exclude=["user"]))  # List of related 'CarTransactionSchema' objects, excluding the 'user' field to prevent circular reference
     
     # Email field with validation for a correct email format using a regular expression
     email = fields.String(required=True, validate=Regexp(r"^\S+@\S+\.\S+$", error="Invalid Email Format."))  # Ensures the email is in a valid format
     
     class Meta:
         # Fields to include in the serialized output
-        fields = ("user_id", "name", "email", "password", "phone_number", "address", "is_admin", "listings", "transactions")
+        fields = ("user_id", "name", "email", "password", "phone_number", "address", "is_admin", "listings", "car_transactions")
 
 # Schema instance for serializing a single user object, excluding the password field for security
 user_schema = UserSchema(exclude=["password"])

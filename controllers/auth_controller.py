@@ -3,7 +3,6 @@ from models.user import User, user_schema, UserSchema
 from init import bcrypt, db
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
-
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from datetime import timedelta
 
@@ -11,7 +10,6 @@ from datetime import timedelta
 auth_bp = Blueprint('auth', __name__)
 
 # Route to register a new user
-
 @auth_bp.route("/register", methods=["POST"])
 def register_user():
     try:
@@ -26,12 +24,11 @@ def register_user():
             address=body_data.get("address")
         )
         
-        # Hash the password and store it in the 'password_hash' field
+        # Hash the password and store it in the 'password' field
         password = body_data.get("password")
         if password:
             user.password = bcrypt.generate_password_hash(password).decode("utf-8")
 
-        
         # Add and commit to the DB
         db.session.add(user)
         db.session.commit()
@@ -77,8 +74,6 @@ def login_user():
     
     except Exception as e:
         return {"error": str(e)}, 500
-    
-
 
 # Route to update user information (Admin or self)
 @auth_bp.route("/users/<int:id>", methods=["PUT", "PATCH"])
@@ -123,5 +118,30 @@ def update_user(id):
 
 # Route to delete a user (Admin-only)
 @auth_bp.route('/auth/users/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_user(id):
-    pass  # Placeholder for deleting a user
+    # Get the current user ID from the JWT
+    current_user_id = get_jwt_identity()
+
+    # Fetch the current user (the one making the request)
+    stmt_current_user = db.select(User).filter_by(user_id=current_user_id)
+    current_user = db.session.scalar(stmt_current_user)
+    
+    # Check if the current user is an admin
+    if not current_user.is_admin:
+        return {"error": "You do not have permission to delete this user."}, 403
+    
+    # Fetch the user to be deleted
+    stmt = db.select(User).filter_by(user_id=id)
+    user = db.session.scalar(stmt)
+
+    # Check if the user exists
+    if not user:
+        return {"error": "User does not exist."}, 404
+
+    # Delete the user
+    db.session.delete(user)
+    db.session.commit()
+
+    # Return success message
+    return {"message": "User deleted successfully."}, 200
