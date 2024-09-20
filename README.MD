@@ -22,7 +22,7 @@
 4. **Listing Management**
 
    - **Create Listing** (`POST /api/listings`): Critical for allowing users to list a car for sale. It should reference existing cars.
-   - **View Listings** (`GET /api/listings`): Core functionality for browsing available cars. Keep it simple by initially limiting filters to basic ones like price range and make.
+   - **View Listings** (`GET /api/listings`): Core functionality for browsing available cars. Keep it simple by initially limiting filters to basic ones like price range and make..
 
 5. **Transaction Management**
    - **Create Transaction** (`POST /api/transactions`): Basic endpoint for processing a car purchase and linking a user to a car. Start simple by just recording the buyer, car, date, and amount.

@@ -1,6 +1,9 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from init import db
 from models.makemodelyear import MakeModelYear, MakeModelYearSchema
+from models.user import User
+
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # Create a Blueprint for make, model, and year combinations
 makemodelyear_bp = Blueprint('makemodelyear', __name__)
