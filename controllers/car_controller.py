@@ -145,5 +145,31 @@ def update_car(id):
 
 # Route to delete a car
 @cars_bp.route('/cars/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_car(id):
-    pass  # Placeholder for deleting a car
+    
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    # Check if user exists and is an admin
+    if not user or not user.is_admin:
+        return jsonify({'error': 'You do not have permission to perform this action.'}), 403
+
+    try:
+        # Fetch the existing car by ID
+        car = Car.query.get(id)
+
+        # Check if the car exists
+        if not car:
+            return jsonify({'error': 'Car not found.'}), 404
+
+        # Delete the car from the database
+        db.session.delete(car)
+        db.session.commit()
+
+        # Return a success message
+        return jsonify({'message': 'Car deleted successfully.'}), 200
+    except Exception as e:
+        # Handle any exceptions and return an error message
+        return jsonify({'error': str(e)}), 500
