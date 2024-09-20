@@ -2,7 +2,7 @@
 
 # API Functionality Prioritization and Wish List
 
-## Priority List: Core Functionalities (High Priority)
+## Priority List: Core Functionalities (High Priority).
 
 1. **User Management**
 
