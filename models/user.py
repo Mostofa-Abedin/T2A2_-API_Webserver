@@ -28,18 +28,18 @@ class User(db.Model):
 # Define the UserSchema using Marshmallow for serialization and deserialization
 class UserSchema(ma.Schema):
     # Nested schemas for serializing relationships (listings and car_transactions)
-    listings = fields.List(fields.Nested('ListingSchema', exclude=["user"]))  # List of related 'ListingSchema' objects, excluding the 'user' field to prevent circular reference
-    car_transactions = fields.List(fields.Nested('CarTransactionSchema', exclude=["user"]))  # List of related 'CarTransactionSchema' objects, excluding the 'user' field to prevent circular reference
+    listings = fields.List(fields.Nested('ListingSchema', exclude=["user", "car"]))  # List of related 'ListingSchema' objects, excluding the 'user' field to prevent circular reference
+    car_transactions = fields.List(fields.Nested('CarTransactionSchema', exclude=["user", "car"]))  # List of related 'CarTransactionSchema' objects, excluding the 'user' field to prevent circular reference
     
     # Email field with validation for a correct email format using a regular expression
     email = fields.String(required=True, validate=Regexp(r"^\S+@\S+\.\S+$", error="Invalid Email Format."))  # Ensures the email is in a valid format
     
     class Meta:
         # Fields to include in the serialized output
-        fields = ("user_id", "name", "email", "password", "phone_number", "address", "is_admin", "listings", "car_transactions")
+        fields = ("user_id", "name", "email", "phone_number", "address", "is_admin", "listings", "car_transactions")
 
 # Schema instance for serializing a single user object, excluding the password field for security
-user_schema = UserSchema(exclude=["password"])
+user_schema = UserSchema()
 
 # Schema instance for serializing a list of user objects, excluding the password field for security
-users_schema = UserSchema(many=True, exclude=["password"])
+users_schema = UserSchema()

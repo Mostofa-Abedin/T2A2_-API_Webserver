@@ -27,9 +27,9 @@ class CarTransaction(db.Model):
 # Define the CarTransactionSchema using Marshmallow for serialization and deserialization
 class CarTransactionSchema(ma.Schema):
     # Nested schemas for serializing relationships with the 'User' and 'Car' models
-    user = fields.Nested('UserSchema', exclude=["car_transactions"])  # Use 'UserSchema' to represent the buyer, exclude 'car_transactions' to prevent circular reference
-    car = fields.Nested('CarSchema', exclude=["car_transactions"])  # Use 'CarSchema' to represent the car, exclude 'car_transactions' to prevent circular reference
+    user = fields.Nested('UserSchema', exclude=["car_transactions", "listings"])  # Use 'UserSchema' to represent the buyer, exclude 'car_transactions' to prevent circular reference
+    car = fields.Nested('CarSchema', exclude=["car_transactions", "listings"])  # Use 'CarSchema' to represent the car, exclude 'car_transactions' to prevent circular reference
 
     class Meta:
         # Fields to include in the serialized output
-        fields = ("transaction_id", "car_id", "buyer_id", "transaction_date", "amount","user","car")
+        fields = ("transaction_id", "car_id", "buyer_id", "transaction_date", "amount","user")
