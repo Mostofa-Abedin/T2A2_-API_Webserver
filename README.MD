@@ -8,7 +8,7 @@
 
    - **Register** (`POST /api/users/register`): Essential for adding users to the platform.
    - **Login** (`POST /api/users/login`): Necessary for user authentication.
-   - **Profile Management** (`GET /api/users/profile`, `PUT /api/users/profile`): Basic user management for viewing and updating user details.
+   - **Profile Management** (`GET /api/users/profile`, `PUT /api/users/profile`): Basic user management for viewing and updating user details..
 
 2. **MakeModelYear Management** (Read-Only)
 
