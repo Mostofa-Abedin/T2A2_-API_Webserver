@@ -157,7 +157,7 @@ def delete_car(id):
         return jsonify({'error': 'You do not have permission to perform this action.'}), 403
 
     try:
-        # Fetch the existing car by ID
+        # Fetch the existing car by ID.
         car = Car.query.get(id)
 
         # Check if the car exists
