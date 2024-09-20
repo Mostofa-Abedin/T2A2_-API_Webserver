@@ -1,4 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from init import db
+from models.makemodelyear import MakeModelYear, MakeModelYearSchema
 
 # Create a Blueprint for make, model, and year combinations
 makemodelyear_bp = Blueprint('makemodelyear', __name__)
@@ -6,7 +8,19 @@ makemodelyear_bp = Blueprint('makemodelyear', __name__)
 # Route to get all make, model, and year combinations
 @makemodelyear_bp.route('/makemodelyear', methods=['GET'])
 def get_makemodelyears():
-    pass  # Placeholder for getting all make/model/years
+    try:
+        # Query all MakeModelYear entries from the database
+        makemodelyears = MakeModelYear.query.all()
+        
+        # Serialize the data using the MakeModelYearSchema
+        makemodelyear_schema = MakeModelYearSchema(many=True)
+        data = makemodelyear_schema.dump(makemodelyears)
+        
+        # Return the serialized data as JSON with a 200 OK status
+        return jsonify(data), 200
+    except Exception as e:
+        # If an error occurs, return an error message with a 500 Internal Server Error status
+        return jsonify({'error': str(e)}), 500
 
 # Route to get a specific make, model, and year by ID
 @makemodelyear_bp.route('/makemodelyear/<int:id>', methods=['GET'])

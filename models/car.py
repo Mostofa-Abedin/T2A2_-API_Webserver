@@ -33,7 +33,7 @@ class CarSchema(ma.Schema):
     # Nested schemas for serializing relationships
     listings = fields.List(fields.Nested('ListingSchema', exclude=["car"]))  # Use 'ListingSchema' to represent associated listings, excluding the 'car' field to prevent circular reference
     make_model_year = fields.Nested('MakeModelYearSchema', exclude=["cars"])  # Use 'MakeModelYearSchema' to represent the make, model, and year, excluding 'cars' to prevent circular reference
-    
+    car_transactions = fields.List(fields.Nested('CarTransactionSchema', exclude=["car"]))
     class Meta:
         # Fields to include in the serialized output; defines how the data will be structured when the car is converted to JSON
-        fields = ("car_id", "mileage", "price", "condition", "description", "image_url", "make_model_year_id", "listings", "make_model_year")
+        fields = ("car_id", "mileage", "price", "condition", "description", "image_url", "make_model_year_id", "listings", "make_model_year", "car_transactions")

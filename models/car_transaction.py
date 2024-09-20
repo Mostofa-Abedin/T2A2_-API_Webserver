@@ -32,4 +32,4 @@ class CarTransactionSchema(ma.Schema):
 
     class Meta:
         # Fields to include in the serialized output
-        fields = ("transaction_id", "car_id", "buyer_id", "transaction_date", "amount")
+        fields = ("transaction_id", "car_id", "buyer_id", "transaction_date", "amount","user","car")
