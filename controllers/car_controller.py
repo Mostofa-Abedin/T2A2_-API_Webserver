@@ -1,4 +1,6 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from models.car import Car, CarSchema
+from init import db
 
 # Create a Blueprint for car management
 cars_bp = Blueprint('cars', __name__)
@@ -6,7 +8,19 @@ cars_bp = Blueprint('cars', __name__)
 # Route to get all cars
 @cars_bp.route('/cars', methods=['GET'])
 def get_cars():
-    pass  # Placeholder for getting all cars
+    try:
+        # Query all Car entries from the database
+        cars = Car.query.all()
+
+        # Serialize the data using the CarSchema
+        car_schema = CarSchema(many=True)
+        data = car_schema.dump(cars)
+
+        # Return the serialized data as JSON with a 200 OK status
+        return jsonify(data), 200
+    except Exception as e:
+        # If an error occurs, return an error message with a 500 Internal Server Error status
+        return jsonify({'error': str(e)}), 500
 
 # Route to get a specific car by ID
 @cars_bp.route('/cars/<int:id>', methods=['GET'])
