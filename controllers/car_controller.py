@@ -25,7 +25,24 @@ def get_cars():
 # Route to get a specific car by ID
 @cars_bp.route('/cars/<int:id>', methods=['GET'])
 def get_car(id):
-    pass  # Placeholder for getting a car by ID
+    
+    try:
+        # Query the Car entry by ID from the database
+        car = Car.query.get(id)
+
+        # Check if the car exists
+        if not car:
+            return jsonify({'error': 'Car not found.'}), 404
+
+        # Serialize the data using the CarSchema
+        car_schema = CarSchema()
+        data = car_schema.dump(car)
+
+        # Return the serialized data as JSON with a 200 OK status
+        return jsonify(data), 200
+    except Exception as e:
+        # If an error occurs, return an error message with a 500 Internal Server Error status
+        return jsonify({'error': str(e)}), 500
 
 # Route to create a new car
 @cars_bp.route('/cars', methods=['POST'])
