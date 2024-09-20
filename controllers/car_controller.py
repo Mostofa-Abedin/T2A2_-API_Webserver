@@ -1,5 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.car import Car, CarSchema
+from models.user import User
+from models.makemodelyear import MakeModelYear
 from init import db
 
 # Create a Blueprint for car management
@@ -46,8 +49,45 @@ def get_car(id):
 
 # Route to create a new car
 @cars_bp.route('/cars', methods=['POST'])
+@jwt_required()
 def create_car():
-    pass  # Placeholder for creating a new car
+   
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    # Check if user exists and is an admin
+    if not user or not user.is_admin:
+        return jsonify({'error': 'You do not have permission to perform this action.'}), 403
+
+    try:
+        # Load and validate input data
+        data = CarSchema().load(request.get_json())
+
+        # Check if the make_model_year_id exists
+        make_model_year = MakeModelYear.query.get(data['make_model_year_id'])
+        if not make_model_year:
+            return jsonify({'error': 'Invalid make_model_year_id.'}), 400
+
+        # Create a new Car instance
+        new_car = Car(
+            mileage=data['mileage'],
+            price=data['price'],
+            condition=data['condition'],
+            description=data.get('description'),
+            image_url=data.get('image_url'),
+            make_model_year_id=data['make_model_year_id']
+        )
+
+        # Add and commit the new entry to the database
+        db.session.add(new_car)
+        db.session.commit()
+
+        # Return the new car as JSON with a 201 Created status
+        return CarSchema().dump(new_car), 201
+    except Exception as e:
+        # Handle any exceptions and return an error message
+        return jsonify({'error': str(e)}), 500
 
 # Route to update a car
 @cars_bp.route('/cars/<int:id>', methods=['PUT'])
