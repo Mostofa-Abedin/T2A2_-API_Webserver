@@ -24,7 +24,7 @@ class Car(db.Model):
     # Establish a many-to-one relationship with the 'MakeModelYear' model; a car references a specific make, model, and year
     make_model_year = db.relationship("MakeModelYear", back_populates="cars")  
 
-    # String representation of the Car object for debugging purposes
+    # String representation of the Car object for debugging purposes.
     def __repr__(self):
         return f"<Car {self.car_id}, Price: {self.price}>"
 
