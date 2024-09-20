@@ -28,7 +28,7 @@ class Car(db.Model):
     def __repr__(self):
         return f"<Car {self.car_id}, Price: {self.price}>"
 
-# Define the CarSchema using Marshmallow for serialization and deserialization
+# Define the CarSchema using Marshmallow for serialization and deserialization.
 class CarSchema(ma.Schema):
     # Nested schemas for serializing relationships
     listings = fields.List(fields.Nested('ListingSchema', exclude=["car"]))  # Use 'ListingSchema' to represent associated listings, excluding the 'car' field to prevent circular reference
