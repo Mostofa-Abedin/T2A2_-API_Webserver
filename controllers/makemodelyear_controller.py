@@ -46,8 +46,46 @@ def get_makemodelyear(id):
     
 # Route to create a new make, model, and year
 @makemodelyear_bp.route('/makemodelyear', methods=['POST'])
+@jwt_required()
 def create_makemodelyear():
-    pass  # Placeholder for creating a new make/model/year
+    
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    # Check if user exists and is an admin
+    if not user or not user.is_admin:
+        return jsonify({'error': 'You do not have permission to perform this action.'}), 403
+
+    try:
+        # Load and validate input data
+        data = MakeModelYearSchema().load(request.get_json())
+
+        # Check if the combination already exists
+        existing_entry = MakeModelYear.query.filter_by(
+            make=data['make'],
+            model=data['model'],
+            year=data['year']
+        ).first()
+        if existing_entry:
+            return jsonify({'error': 'This make, model, and year combination already exists.'}), 400
+
+        # Create a new MakeModelYear instance
+        new_makemodelyear = MakeModelYear(
+            make=data['make'],
+            model=data['model'],
+            year=data['year']
+        )
+
+        # Add and commit the new entry to the database
+        db.session.add(new_makemodelyear)
+        db.session.commit()
+
+        # Return the new entry as JSON with a 201 Created status
+        return MakeModelYearSchema().dump(new_makemodelyear), 201
+    except Exception as e:
+        # Handle any exceptions and return an error message
+        return jsonify({'error': str(e)}), 500
 
 # Route to update a make, model, and year
 @makemodelyear_bp.route('/makemodelyear/<int:id>', methods=['PUT'])
