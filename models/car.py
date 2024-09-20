@@ -13,7 +13,7 @@ class Car(db.Model):
     description = db.Column(db.String(1000))  # Optional description of the car, maximum length of 1000 characters
     image_url = db.Column(db.String(100))  # URL to the car's image, max length of 100 characters
     
-    # Foreign key to reference the MakeModelYear table
+    # Foreign key to reference the MakeModelYear table.
     make_model_year_id = db.Column(db.Integer, db.ForeignKey('makemodelyear.make_model_year_id'), nullable=False)  # Foreign key referencing 'make_model_year_id' in the 'makemodelyear' table
     
     # Relationships with other tables
