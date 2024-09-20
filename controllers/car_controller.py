@@ -91,8 +91,57 @@ def create_car():
 
 # Route to update a car
 @cars_bp.route('/cars/<int:id>', methods=['PUT'])
+@jwt_required()
 def update_car(id):
-    pass  # Placeholder for updating a car
+    
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    # Check if user exists and is an admin
+    if not user or not user.is_admin:
+        return jsonify({'error': 'You do not have permission to perform this action.'}), 403
+
+    try:
+        # Fetch the existing car by ID
+        car = Car.query.get(id)
+
+        # Check if the car exists
+        if not car:
+            return jsonify({'error': 'Car not found.'}), 404
+
+        # Load and validate input data (partial updates allowed)
+        data = CarSchema().load(request.get_json(), partial=True)
+
+        # Update fields if they are provided in the request
+        if 'mileage' in data:
+            car.mileage = data['mileage']
+        if 'price' in data:
+            car.price = data['price']
+        if 'condition' in data:
+            car.condition = data['condition']
+        if 'description' in data:
+            car.description = data['description']
+        if 'image_url' in data:
+            car.image_url = data['image_url']
+        if 'make_model_year_id' in data:
+            # Check if the new make_model_year_id exists
+            make_model_year = MakeModelYear.query.get(data['make_model_year_id'])
+            if not make_model_year:
+                return jsonify({'error': 'Invalid make_model_year_id.'}), 400
+            car.make_model_year_id = data['make_model_year_id']
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Return the updated car as JSON with a 200 OK status
+        return CarSchema().dump(car), 200
+    except ValidationError as ve:
+        # Return validation errors with a 400 Bad Request status
+        return jsonify({'errors': ve.messages}), 400
+    except Exception as e:
+        # Handle any other exceptions
+        return jsonify({'error': str(e)}), 500
 
 # Route to delete a car
 @cars_bp.route('/cars/<int:id>', methods=['DELETE'])

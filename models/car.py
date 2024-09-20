@@ -1,5 +1,5 @@
 from init import db, ma  # Import the SQLAlchemy database instance (db) and Marshmallow (ma) for serialization
-from marshmallow import fields  # Import fields from Marshmallow for schema definitions
+from marshmallow import fields, validate  # Import fields from Marshmallow for schema definitions
 from models.makemodelyear import MakeModelYear  # Import MakeModelYear before referencing it
 # Define the Car model, representing the 'cars' table in the database
 class Car(db.Model):
