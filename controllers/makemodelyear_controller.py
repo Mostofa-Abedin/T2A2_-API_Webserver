@@ -92,8 +92,44 @@ def create_makemodelyear():
 
 # Route to update a make, model, and year
 @makemodelyear_bp.route('/makemodelyear/<int:id>', methods=['PUT'])
+@jwt_required()
 def update_makemodelyear(id):
-    pass  # Placeholder for updating a make/model/year
+   
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    # Check if user exists and is an admin
+    if not user or not user.is_admin:
+        return jsonify({'error': 'You do not have permission to perform this action.'}), 403
+
+    try:
+        # Fetch the existing MakeModelYear entry by ID
+        makemodelyear = MakeModelYear.query.get(id)
+
+        # Check if the entry exists
+        if not makemodelyear:
+            return jsonify({'error': 'MakeModelYear not found.'}), 404
+
+        # Load and validate input data (partial updates allowed)
+        data = MakeModelYearSchema().load(request.get_json(), partial=True)
+
+        # Update fields if they are provided in the request
+        if 'make' in data:
+            makemodelyear.make = data['make']
+        if 'model' in data:
+            makemodelyear.model = data['model']
+        if 'year' in data:
+            makemodelyear.year = data['year']
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Return the updated entry as JSON with a 200 OK status
+        return MakeModelYearSchema().dump(makemodelyear), 200
+    except Exception as e:
+        # Handle any exceptions and return an error message
+        return jsonify({'error': str(e)}), 500
 
 # Route to delete a make, model, and year
 @makemodelyear_bp.route('/makemodelyear/<int:id>', methods=['DELETE'])
