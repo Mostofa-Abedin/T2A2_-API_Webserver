@@ -174,7 +174,7 @@ def delete_car(id):
         db.session.delete(car)
         db.session.commit()
 
-        # Return a success message
+        # Return a success message.
         return jsonify({'message': 'Car deleted successfully.'}), 200
     except Exception as e:
         # Handle any exceptions and return an error message
