@@ -9,7 +9,7 @@ cars_bp = Blueprint('cars', __name__)
 @cars_bp.route('/cars', methods=['GET'])
 def get_cars():
     try:
-        # Query all Car entries from the database
+        # Query all Car entries from the database.
         cars = Car.query.all()
 
         # Serialize the data using the CarSchema
