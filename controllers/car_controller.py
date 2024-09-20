@@ -164,7 +164,13 @@ def delete_car(id):
         if not car:
             return jsonify({'error': 'Car not found.'}), 404
 
-        # Delete the car from the database
+        # Check for associated CarTransactions
+        if car.car_transactions:
+            return jsonify({
+                'error': 'Cannot delete car with associated transactions. Delete or reassign associated transactions first.'
+            }), 400
+
+        # Proceed to delete the car
         db.session.delete(car)
         db.session.commit()
 
