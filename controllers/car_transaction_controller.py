@@ -32,7 +32,7 @@ def get_car_transactions():
 # Route to get a specific car transaction by ID
 @car_transactions_bp.route('/car-transactions/<int:id>', methods=['GET'])
 def get_car_transaction(id):
-    pass  # Placeholder for getting a car transaction by ID
+    pass  # Placeholder for getting a car transaction by ID.
 
 # Route to create a new car transaction
 @car_transactions_bp.route('/car-transactions', methods=['POST'])
