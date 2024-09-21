@@ -76,7 +76,7 @@ def create_car_transaction():
             if field not in data:
                 return jsonify({'error': f"'{field}' is required."}), 400
 
-        # Check if the car exists
+        # Check if the car exists.
         car = Car.query.get(data['car_id'])
         if not car:
             return jsonify({'error': 'Invalid car_id.'}), 400
