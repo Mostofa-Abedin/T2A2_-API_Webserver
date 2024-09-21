@@ -54,5 +54,61 @@ def get_car_transaction(id):
     
 # Route to create a new car transaction
 @car_transactions_bp.route('/car-transactions', methods=['POST'])
+@jwt_required()
 def create_car_transaction():
-    pass  # Placeholder for creating a new car transaction.
+    
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    # Check if user exists
+    if not user:
+        return jsonify({'error': 'User not found.'}), 404
+
+    try:
+        # Load and validate input data
+        data = request.get_json()
+
+        # Validate required fields
+        required_fields = ['car_id', 'amount']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({'error': f"'{field}' is required."}), 400
+
+        # Check if the car exists
+        car = Car.query.get(data['car_id'])
+        if not car:
+            return jsonify({'error': 'Invalid car_id.'}), 400
+
+        # Check if the car has an available listing
+        listing = car.listings.filter_by(listing_status='available').first()
+        if not listing:
+            return jsonify({'error': 'Car is not available for purchase.'}), 400
+
+        # Check if the amount matches the car's price
+        if data['amount'] != car.price:
+            return jsonify({'error': 'Amount does not match car price.'}), 400
+
+        # Create a new CarTransaction instance
+        new_transaction = CarTransaction(
+            transaction_date=datetime.utcnow(),
+            amount=data['amount'],
+            car_id=data['car_id'],
+            buyer_id=current_user_id
+        )
+
+        # Update listing status to 'sold'
+        listing.listing_status = 'sold'
+
+        # Add and commit the new transaction to the database
+        db.session.add(new_transaction)
+        db.session.commit()
+
+        # Return the new transaction as JSON with a 201 Created status
+        return CarTransactionSchema().dump(new_transaction), 201
+    except ValidationError as ve:
+        # Return validation errors with a 400 Bad Request status
+        return jsonify({'errors': ve.messages}), 400
+    except Exception as e:
+        # Handle any other exceptions
+        return jsonify({'error': str(e)}), 500
