@@ -99,8 +99,55 @@ def create_listing():
 
 # Route to update a listing
 @listings_bp.route('/listings/<int:id>', methods=['PUT'])
+@jwt_required()
 def update_listing(id):
-    pass  # Placeholder for updating a listing
+    """
+    Update an existing listing entry.
+
+    Args:
+        id (int): The ID of the listing to update.
+
+    Requires:
+        - Authenticated user.
+
+    Returns:
+        - The updated listing as JSON.
+        - Appropriate error messages and status codes if the operation fails.
+    """
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id)
+
+    try:
+        # Retrieve the listing by ID
+        listing = Listing.query.get(id)
+
+        # Check if the listing exists
+        if not listing:
+            return jsonify({'error': 'Listing not found.'}), 404
+
+        # Check if the current user is the owner or an admin
+        if listing.user_id != current_user_id and not current_user.is_admin:
+            return jsonify({'error': 'Unauthorized access.'}), 403
+
+        # Load and validate input data
+        data = request.get_json()
+        # Only allow updating certain fields (e.g., listing_status)
+        if 'listing_status' in data:
+            # Validate the new status
+            if data['listing_status'] not in ['available', 'sold', 'pending']:
+                return jsonify({'error': 'Invalid listing status.'}), 400
+            listing.listing_status = data['listing_status']
+
+        # Commit changes to the database
+        db.session.commit()
+
+        # Return the updated listing as JSON
+        return ListingSchema().dump(listing), 200
+
+    except Exception as e:
+        # Handle any other exceptions
+        return jsonify({'error': str(e)}), 500
 
 # Route to delete a listing
 @listings_bp.route('/listings/<int:id>', methods=['DELETE'])
