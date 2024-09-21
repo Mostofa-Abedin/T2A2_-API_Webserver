@@ -12,7 +12,7 @@
 
 2. **MakeModelYear Management** (Read-Only)
 
-   - **View Makes and Models** (`GET /api/makemodelyear`): Necessary for users to select make, model, and year when adding cars. Simple to implement as it’s a read-only endpoint..
+   - **View Makes and Models** (`GET /api/makemodelyear`): Necessary for users to select make, model, and year when adding cars. Simple to implement as it’s a read-only endpoint...
 
 3. **Car Management**
 
