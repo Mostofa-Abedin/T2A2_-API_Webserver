@@ -139,5 +139,32 @@ def update_listing(id):
 
 # Route to delete a listing
 @listings_bp.route('/listings/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_listing(id):
-    pass  # Placeholder for deleting a listing
+   
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    current_user = User.query.get(current_user_id)
+
+    try:
+        # Retrieve the listing by ID
+        listing = Listing.query.get(id)
+
+        # Check if the listing exists
+        if not listing:
+            return jsonify({'error': 'Listing not found.'}), 404
+
+        # Check if the current user is the owner or an admin
+        if listing.user_id != current_user_id and not current_user.is_admin:
+            return jsonify({'error': 'Unauthorized access.'}), 403
+
+        # Delete the listing from the database
+        db.session.delete(listing)
+        db.session.commit()
+
+        # Return a success message
+        return jsonify({'message': 'Listing deleted successfully.'}), 200
+
+    except Exception as e:
+        # Handle any other exceptions
+        return jsonify({'error': str(e)}), 500
