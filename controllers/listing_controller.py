@@ -46,9 +46,77 @@ def get_listing(id):
         return jsonify({'error': str(e)}), 500
 
 # Route to create a new listing
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.listing import Listing, ListingSchema
+from models.user import User
+from models.car import Car
+from init import db
+from datetime import datetime
+from marshmallow import ValidationError
+
+# Create a Blueprint for listings
+listings_bp = Blueprint('listings', __name__)
+
+# Existing routes...
+
+# Route to create a new listing
 @listings_bp.route('/listings', methods=['POST'])
+@jwt_required()
 def create_listing():
-    pass  # Placeholder for creating a new listing
+    """
+    Create a new listing entry.
+
+    Requires:
+        - Authenticated user.
+
+    Returns:
+        - The newly created listing as JSON.
+        - Appropriate error messages and status codes if the operation fails.
+    """
+    # Get current user ID from the JWT token
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    # Check if user exists
+    if not user:
+        return jsonify({'error': 'User not found.'}), 404
+
+    try:
+        # Load and validate input data
+        data = ListingSchema().load(request.get_json())
+
+        # Check if the car exists
+        car = Car.query.get(data['car_id'])
+        if not car:
+            return jsonify({'error': 'Invalid car_id.'}), 400
+
+        # Check if the car is already listed
+        existing_listing = Listing.query.filter_by(car_id=data['car_id']).first()
+        if existing_listing:
+            return jsonify({'error': 'This car is already listed.'}), 400
+
+        # Create a new Listing instance
+        new_listing = Listing(
+            date_created=datetime.utcnow(),
+            status='available',
+            car_id=data['car_id'],
+            user_id=current_user_id
+        )
+
+        # Add and commit the new listing to the database
+        db.session.add(new_listing)
+        db.session.commit()
+
+        # Return the new listing as JSON with a 201 Created status
+        return ListingSchema().dump(new_listing), 201
+    except ValidationError as ve:
+        # Return validation errors with a 400 Bad Request status
+        return jsonify({'errors': ve.messages}), 400
+    except Exception as e:
+        # Handle any other exceptions
+        return jsonify({'error': str(e)}), 500
+
 
 # Route to update a listing
 @listings_bp.route('/listings/<int:id>', methods=['PUT'])
