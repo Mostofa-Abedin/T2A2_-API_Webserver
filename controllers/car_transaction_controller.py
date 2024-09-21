@@ -6,6 +6,7 @@ from models.car import Car  # Import the Car model
 from init import db  # Import the database instance
 from datetime import datetime  # Import datetime for timestamping
 from marshmallow import ValidationError  # Import ValidationError for error handling
+from models.listing import Listing
 
 # Create a Blueprint for car transactions
 car_transactions_bp = Blueprint('car_transactions', __name__)
@@ -80,8 +81,8 @@ def create_car_transaction():
         if not car:
             return jsonify({'error': 'Invalid car_id.'}), 400
 
-        # Check if the car has an available listing
-        listing = car.listings.filter_by(listing_status='available').first()
+        # Query the listing associated with the car where the listing status is 'available'
+        listing = Listing.query.filter_by(car_id=car.car_id, listing_status='available').first()
         if not listing:
             return jsonify({'error': 'Car is not available for purchase.'}), 400
 
