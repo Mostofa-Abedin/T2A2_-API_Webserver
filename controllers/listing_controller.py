@@ -28,7 +28,7 @@ def get_listings():
 def get_listing(id):
     
     try:
-        # Query the Listing entry by ID from the database
+        # Query the Listing entry by ID from the database.
         listing = Listing.query.get(id)
 
         # Check if the listing exists
