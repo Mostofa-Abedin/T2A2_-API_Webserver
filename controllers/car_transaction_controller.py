@@ -31,9 +31,27 @@ def get_car_transactions():
 
 # Route to get a specific car transaction by ID
 @car_transactions_bp.route('/car-transactions/<int:id>', methods=['GET'])
+@jwt_required()
 def get_car_transaction(id):
-    pass  # Placeholder for getting a car transaction by ID.
+    
+    try:
+        # Query the CarTransaction entry by ID from the database
+        transaction = CarTransaction.query.get(id)
 
+        # Check if the transaction exists
+        if not transaction:
+            return jsonify({'error': 'Car transaction not found.'}), 404
+
+        # Serialize the data using the CarTransactionSchema
+        transaction_schema = CarTransactionSchema()
+        data = transaction_schema.dump(transaction)
+
+        # Return the serialized data as JSON with a 200 OK status
+        return jsonify(data), 200
+    except Exception as e:
+        # Handle any exceptions
+        return jsonify({'error': str(e)}), 500
+    
 # Route to create a new car transaction
 @car_transactions_bp.route('/car-transactions', methods=['POST'])
 def create_car_transaction():
