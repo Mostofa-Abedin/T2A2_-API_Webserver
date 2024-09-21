@@ -55,4 +55,4 @@ def get_car_transaction(id):
 # Route to create a new car transaction
 @car_transactions_bp.route('/car-transactions', methods=['POST'])
 def create_car_transaction():
-    pass  # Placeholder for creating a new car transaction
+    pass  # Placeholder for creating a new car transaction.
