@@ -101,19 +101,7 @@ def create_listing():
 @listings_bp.route('/listings/<int:id>', methods=['PUT'])
 @jwt_required()
 def update_listing(id):
-    """
-    Update an existing listing entry.
-
-    Args:
-        id (int): The ID of the listing to update.
-
-    Requires:
-        - Authenticated user.
-
-    Returns:
-        - The updated listing as JSON.
-        - Appropriate error messages and status codes if the operation fails.
-    """
+   
     # Get current user ID from the JWT token
     current_user_id = get_jwt_identity()
     current_user = User.query.get(current_user_id)

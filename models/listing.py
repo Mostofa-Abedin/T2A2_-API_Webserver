@@ -44,13 +44,12 @@ class ListingSchema(ma.SQLAlchemyAutoSchema):
     # Nested schemas for serializing relationships with the 'User' and 'Car' models
     user = fields.Nested(
         'UserSchema',
-        exclude=["listings", "car_transactions"],
+        exclude=["listings"],
         many=False,
         dump_only=True
     )  # Use 'UserSchema' to represent the user, exclude 'listings' to prevent circular reference
     car = fields.Nested(
         'CarSchema',
-        exclude=["listings", "car_transactions"],
         many=False,
         dump_only=True
     )  # Use 'CarSchema' to represent the car, exclude 'listings' to prevent circular reference
@@ -65,7 +64,7 @@ class ListingSchema(ma.SQLAlchemyAutoSchema):
     
     class Meta:
         model = Listing  # Link this schema to the Listing model
-        #load_instance = True  # Allow deserialization to model instances
+        
         
         # Fields to include in the serialized output
         fields = ("listing_id", "car_id", "user_id", "listing_status", "date_posted", "user", "car")
