@@ -142,7 +142,7 @@ def update_listing(id):
 @jwt_required()
 def delete_listing(id):
    
-    # Get current user ID from the JWT token
+    # Get current user ID from the JWT token.
     current_user_id = get_jwt_identity()
     current_user = User.query.get(current_user_id)
 
