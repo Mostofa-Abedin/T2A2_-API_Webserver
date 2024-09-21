@@ -26,7 +26,24 @@ def get_listings():
 # Route to get a specific listing by ID
 @listings_bp.route('/listings/<int:id>', methods=['GET'])
 def get_listing(id):
-    pass  # Placeholder for getting a listing by ID
+    
+    try:
+        # Query the Listing entry by ID from the database
+        listing = Listing.query.get(id)
+
+        # Check if the listing exists
+        if not listing:
+            return jsonify({'error': 'Listing not found.'}), 404
+
+        # Serialize the data using the ListingSchema
+        listing_schema = ListingSchema()
+        data = listing_schema.dump(listing)
+
+        # Return the serialized data as JSON with a 200 OK status
+        return jsonify(data), 200
+    except Exception as e:
+        # If an error occurs, return an error message with a 500 Internal Server Error status
+        return jsonify({'error': str(e)}), 500
 
 # Route to create a new listing
 @listings_bp.route('/listings', methods=['POST'])
