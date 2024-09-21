@@ -162,7 +162,7 @@ def delete_listing(id):
         db.session.delete(listing)
         db.session.commit()
 
-        # Return a success message
+        # Return a success message.
         return jsonify({'message': 'Listing deleted successfully.'}), 200
 
     except Exception as e:
