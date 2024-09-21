@@ -1,6 +1,11 @@
-from flask import Blueprint, jsonify
-from models.listing import Listing, ListingSchema
-from init import db
+from flask import Blueprint, jsonify, request  # Import necessary Flask functions
+from flask_jwt_extended import jwt_required, get_jwt_identity  # Import JWT functions for authentication
+from models.listing import Listing, ListingSchema  # Import the Listing model and schema
+from models.user import User  # Import the User model
+from models.car import Car  # Import the Car model
+from init import db  # Import the database instance
+from datetime import datetime  # Import datetime for timestamping
+from marshmallow import ValidationError  # Import ValidationError for error handling
 
 # Create a Blueprint for listings
 listings_bp = Blueprint('listings', __name__)
@@ -46,34 +51,10 @@ def get_listing(id):
         return jsonify({'error': str(e)}), 500
 
 # Route to create a new listing
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
-from models.listing import Listing, ListingSchema
-from models.user import User
-from models.car import Car
-from init import db
-from datetime import datetime
-from marshmallow import ValidationError
-
-# Create a Blueprint for listings
-listings_bp = Blueprint('listings', __name__)
-
-# Existing routes...
-
-# Route to create a new listing
 @listings_bp.route('/listings', methods=['POST'])
 @jwt_required()
 def create_listing():
-    """
-    Create a new listing entry.
-
-    Requires:
-        - Authenticated user.
-
-    Returns:
-        - The newly created listing as JSON.
-        - Appropriate error messages and status codes if the operation fails.
-    """
+ 
     # Get current user ID from the JWT token
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
@@ -86,7 +67,7 @@ def create_listing():
         # Load and validate input data
         data = ListingSchema().load(request.get_json())
 
-        # Check if the car exists
+        # Access 'car_id' using subscript notation
         car = Car.query.get(data['car_id'])
         if not car:
             return jsonify({'error': 'Invalid car_id.'}), 400
@@ -98,10 +79,9 @@ def create_listing():
 
         # Create a new Listing instance
         new_listing = Listing(
-            date_created=datetime.utcnow(),
-            status='available',
             car_id=data['car_id'],
             user_id=current_user_id
+            # 'date_posted' and 'listing_status' are set by default in the model
         )
 
         # Add and commit the new listing to the database
@@ -116,7 +96,6 @@ def create_listing():
     except Exception as e:
         # Handle any other exceptions
         return jsonify({'error': str(e)}), 500
-
 
 # Route to update a listing
 @listings_bp.route('/listings/<int:id>', methods=['PUT'])
