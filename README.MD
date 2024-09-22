@@ -1,65 +1,110 @@
 # Coder Academy - Assignment T2A2 - API Webserver Project.
 
-# API Functionality Prioritization and Wish List
+# Table of Contents
 
-## Priority List: Core Functionalities (High Priority).
+- [Overview](#overview)
+  - [Purpose of the API](#purpose-of-the-api)
+  - [Problem Statement](#problem-statement)
+  - [Target Users](#target-users)
+  - [Real-World Use Cases](#real-world-use-cases)
+- [API Specifications](#api-specifications)
+  - [Base URL](#base-url)
+  - [Authentication & Authorization](#authentication--authorization)
+    - [JWT Authentication Process](#jwt-authentication-process)
+    - [Role-Based Access Control](#role-based-access-control)
+  - [Supported Formats](#supported-formats)
+    - [JSON Request/Response Format](#json-requestresponse-format)
+  - [HTTP Methods & Verbs](#http-methods--verbs)
+- [Endpoints](#endpoints)
+  - [Summary of Endpoints](#summary-of-endpoints)
+  - [Detailed Endpoints Reference](#detailed-endpoints-reference)
+    - [User Endpoints](#user-endpoints)
+    - [Car Endpoints](#car-endpoints)
+    - [Listing Endpoints](#listing-endpoints)
+    - [Car Transaction Endpoints](#car-transaction-endpoints)
+- [Data Model](#data-model)
+  - [Entity Relationship Diagram (ERD)](#entity-relationship-diagram-erd)
+  - [Data Models (Entities)](#data-models-entities)
+    - [User Model](#user-model)
+    - [Car Model](#car-model)
+    - [Listing Model](#listing-model)
+    - [CarTransaction Model](#cartransaction-model)
+    - [MakeModelYear Model](#makemodelyear-model)
+  - [Table Relationships](#table-relationships)
+- [Authentication & Authorization](#authentication--authorization-1)
+  - [JWT Token-Based Authentication](#jwt-token-based-authentication)
+    - [Token Generation](#token-generation)
+    - [Token Validation](#token-validation)
+    - [Refreshing Tokens](#refreshing-tokens)
+  - [Role-Based Access Control](#role-based-access-control-1)
+    - [Admin Permissions](#admin-permissions)
+    - [User Permissions](#user-permissions)
+- [Error Handling & Status Codes](#error-handling--status-codes)
+  - [Standard HTTP Status Codes](#standard-http-status-codes)
+  - [Custom Error Messages](#custom-error-messages)
+  - [Sample Error Responses](#sample-error-responses)
+- [Security](#security)
+  - [JWT Token Security](#jwt-token-security)
+  - [Best Practices for Securing API Keys](#best-practices-for-securing-api-keys)
+- [Testing](#testing)
+  - [Using Insomnia/Postman for Manual Testing](#using-insomniapostman-for-manual-testing)
+- [Deployment](#deployment)
+  - [Local Setup](#local-setup)
+  - [Deployment Process](#deployment-process)
+- [Project Management](#project-management)
+  - [Project Timeline](#project-timeline)
+  - [Sprint Planning & Milestones](#sprint-planning--milestones)
+    - [Epics and User Stories](#epics-and-user-stories)
+    - [Task Breakdown and Assignments](#task-breakdown-and-assignments)
+  - [Jira/Project Management Tools Used](#jiraproject-management-tools-used)
+    - [Jira Boards and Tracking](#jira-boards-and-tracking)
+  - [Risk Management and Mitigation](#risk-management-and-mitigation)
 
-1. **User Management**
+---
 
-   - **Register** (`POST /api/users/register`): Essential for adding users to the platform.
-   - **Login** (`POST /api/users/login`): Necessary for user authentication.
-   - **Profile Management** (`GET /api/users/profile`, `PUT /api/users/profile`): Basic user management for viewing and updating user details..
+# Overview
 
-2. **MakeModelYear Management** (Read-Only)
+### Purpose of the API
 
-   - **View Makes and Models** (`GET /api/makemodelyear`): Necessary for users to select make, model, and year when adding cars. Simple to implement as it’s a read-only endpoint...
+### Problem Statement
 
-3. **Car Management**
+### Target Users
 
-   - **Add Car** (`POST /api/cars`): Essential for adding a car to the database. Simplicity can be maintained by focusing on the basic fields.
-   - **View Car** (`GET /api/cars/{car_id}`): Necessary to see the details of a specific car.
+### Real-World Use Cases
 
-4. **Listing Management**
+# API Specifications
 
-   - **Create Listing** (`POST /api/listings`): Critical for allowing users to list a car for sale. It should reference existing cars.
-   - **View Listings** (`GET /api/listings`): Core functionality for browsing available cars. Keep it simple by initially limiting filters to basic ones like price range and make..
+### Base URL
 
-5. **Transaction Management**
-   - **Create Transaction** (`POST /api/transactions`): Basic endpoint for processing a car purchase and linking a user to a car. Start simple by just recording the buyer, car, date, and amount.
+### Authentication & Authorization
 
-## Wish List: Optional/Advanced Functionalities (Low Priority)
+#### JWT Authentication Process
 
-1. **Car Management**
+#### Role-Based Access Control
 
-   - **Update Car** (`PUT /api/cars/{car_id}`): Useful but can be postponed since changes can be managed through listings instead.
-   - **Delete Car** (`DELETE /api/cars/{car_id}`): More complex as it requires checks to ensure the car isn't part of an existing transaction. Can be deferred.
+### Supported Formats
 
-2. **Listing Management**
+#### JSON Request/Response Format
 
-   - **Update Listing** (`PUT /api/listings/{listing_id}`): This is slightly more complex as it may involve changing car details or status. Focus on creating and viewing listings first.
-   - **Delete Listing** (`DELETE /api/listings/{listing_id}`): More complex due to the need to handle edge cases (e.g., listings tied to a transaction).
+### HTTP Methods & Verbs
 
-3. **Transaction Management**
-   - **View Transactions** (`GET /api/transactions`, `GET /api/transactions/{transaction_id}`): Useful for buyers to view their purchase history, but can be deferred as the basic functionality of making transactions is already covered.
+# Endpoints
 
-## Simplified Path for Initial Implementation
+### Summary of Endpoints
 
-1. **User Management**: Registration, login, and profile viewing/updating.
-2. **MakeModelYear**: Basic read-only endpoint for viewing makes and models.
-3. **Car Management**: Adding and viewing car details.
-4. **Listing Management**: Creating and viewing listings.
-5. **Transaction**: Creating a transaction to simulate a purchase.
+### Detailed Endpoints Reference
 
-## Phased Approach to Development
+#### User Endpoints
 
-- **Phase 1**: Implement core functionalities that allow users to register, log in, list cars, and make transactions. This establishes the basic marketplace flow.
-- **Phase 2**: Add the "wish list" features if time permits, such as updating/deleting cars, listings, and transaction views.
+#### Car Endpoints
 
-## Final Thoughts
+#### Listing Endpoints
 
-By focusing on the simpler aspects first, we ensure a functional and straightforward car marketplace API. Starting with the most essential and easy-to-implement features allows you to meet basic requirements while keeping room for expansion if time allows.
+#### Car Transaction Endpoints
 
-# Database
+# Data Model
+
+### Entity Relationship Diagram (ERD)
 
 ```mermaid
 erDiagram
@@ -113,3 +158,73 @@ erDiagram
     CARS }o--|| MAKEMODELYEAR : "references"
 
 ```
+
+### Data Models (Entities)
+
+#### User Model
+
+#### Car Model
+
+#### Listing Model
+
+#### CarTransaction Model
+
+#### MakeModelYear Model
+
+### Table Relationships
+
+# Authentication & Authorization
+
+### JWT Token-Based Authentication
+
+#### Token Generation
+
+#### Token Validation
+
+#### Refreshing Tokens
+
+### Role-Based Access Control
+
+#### Admin Permissions
+
+#### User Permissions
+
+# Error Handling & Status Codes
+
+### Standard HTTP Status Codes
+
+### Custom Error Messages
+
+### Sample Error Responses
+
+# Security
+
+### JWT Token Security
+
+### Best Practices for Securing API Keys
+
+# Testing
+
+### Using Insomnia/Postman for Manual Testing
+
+# Deployment
+
+### Local Setup
+
+### Deployment Process
+
+# Project Management
+
+### Project Timeline
+
+### Sprint Planning & Milestones
+
+#### Epics and User Stories
+
+#### Task Breakdown and Assignments
+
+### Jira/Project Management Tools Used
+
+#### Jira Boards and Tracking
+
+### Risk Management and Mitigation
