@@ -135,19 +135,7 @@ def update_makemodelyear(id):
 @makemodelyear_bp.route('/makemodelyear/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_makemodelyear(id):
-    """
-    Delete an existing make, model, and year combination.
-
-    Args:
-        id (int): The ID of the make, model, and year combination to delete.
-
-    Requires:
-        - Authenticated user with admin privileges.
-
-    Returns:
-        - A success message if the deletion is successful.
-        - Appropriate error messages and status codes if the operation fails.
-    """
+   
     # Get current user ID from the JWT token
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)

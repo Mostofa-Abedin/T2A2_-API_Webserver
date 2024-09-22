@@ -246,6 +246,53 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 
 ## Summary of Endpoints
 
+### User Endpoints
+
+| Endpoint              | Method     | Description                                 | Admin Only       |
+| --------------------- | ---------- | ------------------------------------------- | ---------------- |
+| `/api/register`       | POST       | Register a new user.                        | No               |
+| `/api/login`          | POST       | Authenticate a user and return a JWT token. | No               |
+| `/api/users/<int:id>` | PUT, PATCH | Update user information (Admin or self).    | Yes (for others) |
+| `/api/users/<int:id>` | DELETE     | Delete a user.                              | Yes              |
+
+### Car Endpoints
+
+| Endpoint             | Method     | Description                        | Admin Only |
+| -------------------- | ---------- | ---------------------------------- | ---------- |
+| `/api/cars`          | GET        | Retrieve a list of all cars.       | No         |
+| `/api/cars/<int:id>` | GET        | Retrieve a specific car by its ID. | No         |
+| `/api/cars`          | POST       | Create a new car.                  | Yes        |
+| `/api/cars/<int:id>` | PUT, PATCH | Update an existing car.            | Yes        |
+| `/api/cars/<int:id>` | DELETE     | Delete a car by its ID.            | Yes        |
+
+### Listing Endpoints
+
+| Endpoint                 | Method     | Description                      | Admin Only       |
+| ------------------------ | ---------- | -------------------------------- | ---------------- |
+| `/api/listings`          | GET        | Retrieve all car listings.       | No               |
+| `/api/listings/<int:id>` | GET        | Retrieve a specific car listing. | No               |
+| `/api/listings`          | POST       | Create a new car listing.        | No               |
+| `/api/listings/<int:id>` | PUT, PATCH | Update an existing car listing.  | No (Owner/Admin) |
+| `/api/listings/<int:id>` | DELETE     | Delete a car listing by its ID.  | No (Owner/Admin) |
+
+### Car Transaction Endpoints
+
+| Endpoint                         | Method | Description                                    | Admin Only |
+| -------------------------------- | ------ | ---------------------------------------------- | ---------- |
+| `/api/car-transactions`          | GET    | Retrieve all car transactions.                 | No         |
+| `/api/car-transactions/<int:id>` | GET    | Retrieve a specific car transaction by its ID. | No         |
+| `/api/car-transactions`          | POST   | Create a new car transaction.                  | No         |
+
+### MakeModelYear Endpoints
+
+| Endpoint                      | Method     | Description                            | Admin Only |
+| ----------------------------- | ---------- | -------------------------------------- | ---------- |
+| `/api/makemodelyear`          | GET        | Retrieve all makes, models, and years. | No         |
+| `/api/makemodelyear/<int:id>` | GET        | Retrieve a specific make/model/year.   | No         |
+| `/api/makemodelyear`          | POST       | Create a new make/model/year entry.    | Yes        |
+| `/api/makemodelyear/<int:id>` | PUT, PATCH | Update an existing make/model/year.    | Yes        |
+| `/api/makemodelyear/<int:id>` | DELETE     | Delete a make/model/year entry.        | Yes        |
+
 ## Detailed Endpoints Reference
 
 ### User Endpoints
