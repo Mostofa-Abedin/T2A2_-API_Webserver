@@ -5,11 +5,11 @@
 - [Overview](#overview)
   - [Purpose of the API](#purpose-of-the-api)
   - [Problem Statement](#problem-statement)
-  - [Target Users](#target-users)
-  - [Real-World Use Cases](#real-world-use-cases)
 - [API Specifications](#api-specifications)
   - [Base URL](#base-url)
+    - [Customizing the Base URL](#customizing-the-base-url)
   - [Authentication & Authorization](#authentication--authorization)
+    - [Registration](#registration)
     - [JWT Authentication Process](#jwt-authentication-process)
     - [Role-Based Access Control](#role-based-access-control)
   - [Supported Formats](#supported-formats)
@@ -104,17 +104,148 @@ Autotrader, 2022. The Digital Future of Automotive Retail. [online] Available at
 
 ### Base URL
 
+The base URL for accessing the Car Marketplace API is:
+
+```bash
+http://localhost:8080/api
+```
+
+All API endpoints are prefixed with /api, and specific resources such as users, cars, and listings can be accessed via their respective paths.
+
+#### Customizing the Base URL
+
+To modify the base URL or database connection settings for your environment (e.g., development, testing, or production), you can use the .env file.
+
+- **Step 1:** In the project root, you will find a .env.example file that serves as a template for setting up your environment variables.
+- **Step 2:** Create a copy of this file and name it .env.
+- **Step 3:** Update the variables within .env to match your specific setup.
+
+For example:
+
+```bash
+DATABASE_URL = "postgresql+psycopg2://car_market_dev:123456@localhost:5432/car_market"
+JWT_SECRET_KEY = "YourSecretKey"
+```
+
 ### Authentication & Authorization
+
+The Car Marketplace API uses JWT (JSON Web Token) for user authentication and role-based access control. To access the majority of the API's functionalities, authentication is required and users need to include their token in the Authorization header when making requests
+
+#### Registration
+
+Users are required to register themselves in the system before they are provided with a JWT.
+
+1. **User Registration:** A new user must provide their details for registration. Details like name, email, password, phone number and address need to be provided via the registration endpoint. Upon successful registration, the user can log in.
+
+**Endpoint:** POST /api/register Request Body:
+
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "yourpassword",
+  "phone_number": "1234567890",
+  "address": "123 Main St"
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "User registered successfully"
+}
+```
 
 #### JWT Authentication Process
 
+1. **User Login:** To authenticate a user must begin by providing their credentials (email and password) via the login endpoint. Upon successful authentication, the API returns a JWT.
+
+**Endpoint:** POST /api/login Request Body:
+
+```json
+{
+  "email": "john@example.com",
+  "password": "yourpassword"
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "your.jwt.token"
+}
+```
+
+2. **Token Usage:** The user includes the JWT in the header of subsequent requests using the Authorization header in this format:
+
+```makefile
+Authorization: Bearer <JWT>
+```
+
+3. **Token Expiry:** Tokens have a limited lifespan for security purposes. If the token expires, users will need to log in again to obtain a new token.
+
+4. **Token Validation:** All protected endpoints check for a valid JWT before processing the request. Unauthorized users will receive a 401 Unauthorized response if the token is missing or invalid.
+
 #### Role-Based Access Control
+
+The Car Marketplace API enforces role-based access control (RBAC) with the following roles:
+
+- **Admin:** Can manage users, cars, and listings. Has full access to all endpoints.
+- **Standard User:** Can create, read, update, and delete their own listings and transactions.
+
+Depending on the user’s role, they will have different levels of access to the API’s resources. Admin users have broader control, including deleting users and managing all listings.
 
 ### Supported Formats
 
+The **Car Marketplace API** primarily uses JSON (JavaScript Object Notation) as the standard format for both requests and responses. JSON is widely used in API projects because it is lightweight, human-readable and ease of integration with various programming languages.
+
 #### JSON Request/Response Format
 
+All API requests to the **Car Marketplace API** must be made in JSON format, the server will also respond with JSON-encoded data. This format ensures seamless data exchange between client and server. Please ensure the Content-Type header is set to application/json for all POST, PUT, and PATCH requests.
+
+```bash
+Content-Type: application/json
+Accept: application/json
+```
+
+An example of Request and Response format is given below.
+
+**Example Request:**
+
+```json
+POST /api/listings
+{
+  "car_id": 1,
+  "price": 25000,
+  "listing_status": "available"
+}
+```
+
+**Example Response:**
+
+```json
+{
+  "listing_id": 5,
+  "car_id": 1,
+  "price": 25000,
+  "listing_status": "available",
+  "date_posted": "2024-09-22"
+}
+```
+
 ### HTTP Methods & Verbs
+
+The **Car Marketplace API** supports several HTTP methods (also known as verbs), each corresponding to a different type of operation. These methods adhere to RESTful API principles.
+
+| **HTTP Method** | **Description**                                                                      |
+| --------------- | ------------------------------------------------------------------------------------ |
+| **GET**         | Retrieves data from the server without altering the server's state.                  |
+| **POST**        | Submits data to the server, which usually results in the creation of a new resource. |
+| **PUT**         | Replaces the entire representation of the targeted resource with the data provided.  |
+| **PATCH**       | Partially updates a resource by modifying only specific fields.                      |
+| **DELETE**      | Removes the specified resource from the server.                                      |
 
 # Endpoints
 
