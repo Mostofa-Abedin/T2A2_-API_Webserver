@@ -31,14 +31,9 @@
     - [CarTransaction Model](#cartransaction-model)
     - [MakeModelYear Model](#makemodelyear-model)
   - [Table Relationships](#table-relationships)
-- [Authentication & Authorization](#authentication--authorization-1)
-  - [JWT Token-Based Authentication](#jwt-token-based-authentication)
-    - [Token Generation](#token-generation)
-    - [Token Validation](#token-validation)
-    - [Refreshing Tokens](#refreshing-tokens)
-  - [Role-Based Access Control](#role-based-access-control-1)
-    - [Admin Permissions](#admin-permissions)
-    - [User Permissions](#user-permissions)
+- [Developer Tools](#developer-tools)
+  - [CLI Controllers](#cli-controllers)
+  - [Admin Commands](#admin-commands)
 - [Error Handling & Status Codes](#error-handling--status-codes)
   - [Standard HTTP Status Codes](#standard-http-status-codes)
   - [Custom Error Messages](#custom-error-messages)
@@ -68,7 +63,7 @@ This README serves as the technical documentation for the **Car Marketplace API*
 
 ---
 
-### Purpose of the API
+## Purpose of the API
 
 The **Car Marketplace API** serves as the backend infrastructure that developers can leverage to build a comprehensive two-sided car marketplace. This API has strategic endpoints that are well-structured to handle typical car marketplace CRUD interactions such as user authentication, car listing management, secure transactions, and user roles. Developers may use this API to integrate with front-end platforms or mobile applications to create a fully functional car marketplace.
 
@@ -76,7 +71,7 @@ Furthermore, this API is developed as part of a web server development assignmen
 
 ---
 
-### Problem Statement
+## Problem Statement
 
 The used car market is predominantly an online affair these days. 80% of car buyers conducting research online before making a purchase decision (Cox Automotive, 2023). Moreover, 67% of buyers prefer an online platform to handle the majority of the purchasing process (Autotrader 2022)
 
@@ -102,7 +97,7 @@ Autotrader, 2022. The Digital Future of Automotive Retail. [online] Available at
 
 # API Specifications
 
-### Base URL
+## Base URL
 
 The base URL for accessing the Car Marketplace API is:
 
@@ -112,7 +107,7 @@ http://localhost:8080/api
 
 All API endpoints are prefixed with /api, and specific resources such as users, cars, and listings can be accessed via their respective paths.
 
-#### Customizing the Base URL
+### Customizing the Base URL
 
 To modify the base URL or database connection settings for your environment (e.g., development, testing, or production), you can use the .env file.
 
@@ -127,11 +122,11 @@ DATABASE_URL = "postgresql+psycopg2://car_market_dev:123456@localhost:5432/car_m
 JWT_SECRET_KEY = "YourSecretKey"
 ```
 
-### Authentication & Authorization
+## Authentication & Authorization
 
 The Car Marketplace API uses JWT (JSON Web Token) for user authentication and role-based access control. To access the majority of the API's functionalities, authentication is required and users need to include their token in the Authorization header when making requests
 
-#### Registration
+### Registration
 
 Users are required to register themselves in the system before they are provided with a JWT.
 
@@ -157,7 +152,7 @@ Users are required to register themselves in the system before they are provided
 }
 ```
 
-#### JWT Authentication Process
+### JWT Authentication Process
 
 1. **User Login:** To authenticate a user must begin by providing their credentials (email and password) via the login endpoint. Upon successful authentication, the API returns a JWT.
 
@@ -188,7 +183,7 @@ Authorization: Bearer <JWT>
 
 4. **Token Validation:** All protected endpoints check for a valid JWT before processing the request. Unauthorized users will receive a 401 Unauthorized response if the token is missing or invalid.
 
-#### Role-Based Access Control
+### Role-Based Access Control
 
 The Car Marketplace API enforces role-based access control (RBAC) with the following roles:
 
@@ -197,11 +192,11 @@ The Car Marketplace API enforces role-based access control (RBAC) with the follo
 
 Depending on the user’s role, they will have different levels of access to the API’s resources. Admin users have broader control, including deleting users and managing all listings.
 
-### Supported Formats
+## Supported Formats
 
 The **Car Marketplace API** primarily uses JSON (JavaScript Object Notation) as the standard format for both requests and responses. JSON is widely used in API projects because it is lightweight, human-readable and ease of integration with various programming languages.
 
-#### JSON Request/Response Format
+### JSON Request/Response Format
 
 All API requests to the **Car Marketplace API** must be made in JSON format, the server will also respond with JSON-encoded data. This format ensures seamless data exchange between client and server. Please ensure the Content-Type header is set to application/json for all POST, PUT, and PATCH requests.
 
@@ -235,7 +230,7 @@ POST /api/listings
 }
 ```
 
-### HTTP Methods & Verbs
+## HTTP Methods & Verbs
 
 The **Car Marketplace API** supports several HTTP methods (also known as verbs), each corresponding to a different type of operation. These methods adhere to RESTful API principles.
 
@@ -249,21 +244,21 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 
 # Endpoints
 
-### Summary of Endpoints
+## Summary of Endpoints
 
-### Detailed Endpoints Reference
+## Detailed Endpoints Reference
 
-#### User Endpoints
+### User Endpoints
 
-#### Car Endpoints
+### Car Endpoints
 
-#### Listing Endpoints
+### Listing Endpoints
 
-#### Car Transaction Endpoints
+### Car Transaction Endpoints
 
 # Data Model
 
-### Entity Relationship Diagram (ERD)
+## Entity Relationship Diagram (ERD)
 
 ```mermaid
 erDiagram
@@ -318,72 +313,62 @@ erDiagram
 
 ```
 
-### Data Models (Entities)
+## Data Models (Entities)
 
-#### User Model
+### User Model
 
-#### Car Model
+### Car Model
 
-#### Listing Model
+### Listing Model
 
-#### CarTransaction Model
+### CarTransaction Model
 
-#### MakeModelYear Model
+### MakeModelYear Model
 
-### Table Relationships
+## Table Relationships
 
-# Authentication & Authorization
+# Developer Tools
 
-### JWT Token-Based Authentication
+## CLI Controllers
 
-#### Token Generation
-
-#### Token Validation
-
-#### Refreshing Tokens
-
-### Role-Based Access Control
-
-#### Admin Permissions
-
-#### User Permissions
+## Admin Commands
 
 # Error Handling & Status Codes
 
-### Standard HTTP Status Codes
+## Standard HTTP Status Codes
 
-### Custom Error Messages
+## Custom Error Messages
 
-### Sample Error Responses
+## Sample Error Responses
 
 # Security
 
-### JWT Token Security
+## JWT Token Security
 
-### Best Practices for Securing API Keys
+## Best Practices for Securing API Keys
 
 # Testing
 
-### Using Insomnia/Postman for Manual Testing
+## Using Insomnia/Postman for Manual Testing
 
 # Deployment
 
-### Local Setup
+## Local Setup
 
-### Deployment Process
+## Deployment Process
 
 # Project Management
 
-### Project Timeline
+## Project Timeline
 
-### Sprint Planning & Milestones
+## Sprint Planning & Milestones
 
-#### Epics and User Stories
+### Epics and User Stories
 
-#### Task Breakdown and Assignments
+### Task Breakdown and Assignments
 
-### Jira/Project Management Tools Used
+## Jira/Project Management Tools Used
 
-#### Jira Boards and Tracking
+### Jira Boards and Tracking
 
-### Risk Management and Mitigation
+## Risk Management and Mitigation
