@@ -20,6 +20,7 @@
   - [Detailed Endpoints Reference](#detailed-endpoints-reference)
     - [User Endpoints](#user-endpoints)
     - [Car Endpoints](#car-endpoints)
+    - [Make Model Year Endpoints](#make-model-year-endpoints)
     - [Listing Endpoints](#listing-endpoints)
     - [Car Transaction Endpoints](#car-transaction-endpoints)
 - [Data Model](#data-model)
@@ -428,15 +429,6 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 - **Example Request:**
 - **Example Response:**
 
-- **Description:**
-
-- **Allowed Fields:**
-  - **Required:**
-  - **Optional**
-- **Restrictions:**
-- **Example Request:**
-- **Example Response:**
-
 ### Car Endpoints
 
 #### `GET /api/cars`
@@ -664,9 +656,383 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 }
 ```
 
+### Make Model Year Endpoints
+
+#### `GET /api/makemodelyears`
+
+- **Description:** Retrieves a list of all car make, model, and year combinations.
+
+- **Allowed Fields:**
+  - No input fields required for this request.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+[
+  {
+    "make_model_year_id": 1,
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2020
+  },
+  {
+    "make_model_year_id": 2,
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2019
+  }
+]
+```
+
+#### `GET /api/makemodelyears/<id>`
+
+- **Description:** Retrieves a specific make, model, and year entry by its ID.
+
+- **Allowed Fields:**
+  - No input fields required for this request.
+- **Restrictions:**
+  - The `id` must correspond to an existing make, model, and year combination.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "make_model_year_id": 1,
+  "make": "Toyota",
+  "model": "Corolla",
+  "year": 2020
+}
+```
+
+#### `POST /api/makemodelyears`
+
+- **Description:** Creates a new make, model, and year entry.
+
+- **Allowed Fields:**
+  - **Required:**
+    - make (VARCHAR, max length 100, not null)
+    - model (VARCHAR, max length 100, not null)
+    - year (INT, not null).
+- **Restrictions:**
+  - The make and model fields must be strings and should not exceed 100 characters.
+  - The year must be a valid integer (e.g., 2020).
+- **Example Request:**
+
+```json
+{
+  "make": "Ford",
+  "model": "Mustang",
+  "year": 2021
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "make_model_year_id": 3,
+  "make": "Ford",
+  "model": "Mustang",
+  "year": 2021
+}
+```
+
+#### `PUT /api/makemodelyears/<id>`
+
+- **Description:** Updates an existing make, model, and year entry by its ID
+
+- **Allowed Fields:**
+  - **Required:**
+    - make (VARCHAR, max length 100, not null)
+    - model (VARCHAR, max length 100, not null)
+    - year (INT, not null).
+- **Restrictions:**
+  - The make and model fields must be strings and should not exceed 100 characters.
+  - The year must be a valid integer (e.g., 2020).
+  - The id must correspond to an existing make, model, and year combination.
+- **Example Request:**
+
+```json
+{
+  "make": "Ford",
+  "model": "Mustang",
+  "year": 2022
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "make_model_year_id": 3,
+  "make": "Ford",
+  "model": "Mustang",
+  "year": 2022
+}
+```
+
+#### `DELETE /api/makemodelyears/<id>`
+
+**Description:** Deletes a specific make, model, and year entry by its ID.
+
+- **Restrictions:**
+  - The id must correspond to an existing make, model, and year combination.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "message": "Make, model, and year combination deleted successfully."
+}
+```
+
 ### Listing Endpoints
 
+#### `GET /api/listings`
+
+- **Description:** This endpoint retrieves all car listings.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+[
+  {
+    "listing_id": 1,
+    "car_id": 1,
+    "seller_id": 2,
+    "listing_status": "available",
+    "date_posted": "2024-09-22",
+    "car": {
+      "make_model_year": {
+        "make": "Toyota",
+        "model": "Corolla",
+        "year": 2020
+      },
+      "price": 20000,
+      "mileage": 15000,
+      "condition": "used"
+    }
+  }
+]
+```
+
+#### `GET /api/listings/<id>`
+
+- **Description:** This endpoint retrieves a specific car listing by its ID.
+- **Restrictions:**
+  - The listing must exist.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "listing_id": 1,
+  "car_id": 1,
+  "seller_id": 2,
+  "listing_status": "available",
+  "date_posted": "2024-09-22",
+  "car": {
+    "make_model_year": {
+      "make": "Toyota",
+      "model": "Corolla",
+      "year": 2020
+    },
+    "price": 20000,
+    "mileage": 15000,
+    "condition": "used"
+  }
+}
+```
+
+#### `POST /api/listings`
+
+- **Description:** This endpoint creates a new car listing. The listing will default to "available" status and is linked to the authenticated user as the seller.
+
+- **Allowed Fields:**
+  - **Required:** `car_id`
+  - **Auto-generated:** `listing_status`, `date_posted`
+- **Restrictions:**
+  - Only authenticated users can create listings.
+  - The car_id must exist.
+  - A car can only have one active listing.
+- **Example Request:**
+
+```json
+{
+  "car_id": 1
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "listing_id": 1,
+  "car_id": 1,
+  "seller_id": 2,
+  "listing_status": "available",
+  "date_posted": "2024-09-22"
+}
+```
+
+#### `PUT /api/listings/<id>`
+
+- **Description:** This endpoint updates an existing car listing with new details.
+
+- **Allowed Fields:**
+  - **Optional:** `listing_status`
+- **Restrictions:**
+  - The listing must exist.
+  - Only the seller or an admin can update the listing.
+- **Example Request:**
+
+```json
+{
+  "listing_status": "sold"
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "listing_id": 1,
+  "car_id": 1,
+  "seller_id": 2,
+  "listing_status": "sold",
+  "date_posted": "2024-09-22"
+}
+```
+
+#### `DELETE /api/listings/<id>`
+
+- **Description:** This endpoint deletes a car listing.
+- **Restrictions:**
+  - The listing must exist.
+  - Only the seller or an admin can delete the listing.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "message": "Listing deleted successfully."
+}
+```
+
 ### Car Transaction Endpoints
+
+#### `GET /api/car-transactions`
+
+- **Description:** Retrieve all car transactions.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+[
+  {
+    "transaction_id": 1,
+    "car_id": 1,
+    "buyer_id": 2,
+    "transaction_date": "2024-09-20",
+    "amount": 20000.0
+  }
+]
+```
+
+#### `GET /api/car-transactions/<id>`
+
+- **Description:** Retrieve a specific car transaction by its ID.
+
+- **Allowed Fields:**
+  - **Required:** `transaction_id` must be a valid integer
+- **Restrictions:**
+  - The transaction ID must exist in the system.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "transaction_id": 1,
+  "car_id": 1,
+  "buyer_id": 2,
+  "transaction_date": "2024-09-20",
+  "amount": 20000.0
+}
+```
+
+#### `POST /api/car-transactions`
+
+- **Description:** Create a new car transaction. This endpoint allows a user to purchase a car, given that the car is available, and processes the transaction.
+
+- **Allowed Fields:**
+  - **Required:**
+    - car_id: INT, FK referencing cars.car_id. Not Null
+    - buyer_id: INT, FK referencing users.user_id. Not Null
+    - amount: FLOAT, must be non-negative. Not Null
+    - transaction_date: DATE, automatically set to the current date. Not Null
+- **Restrictions:**
+  - The car must have a status of `available` in the LISTINGS table.
+  - The amount field should match the listed price of the car
+- **Example Request:**
+
+```json
+{
+  "car_id": 1,
+  "amount": 20000.0
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "transaction_id": 1,
+  "car_id": 1,
+  "buyer_id": 2,
+  "transaction_date": "2024-09-20",
+  "amount": 20000.0
+}
+```
 
 # Data Model
 
