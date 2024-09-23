@@ -1034,9 +1034,25 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 }
 ```
 
+---
+
 # Data Model
 
 ## Entity Relationship Diagram (ERD)
+
+The Entity Relationship Diagram (ERD) below illustrates how the different models in the Car Marketplace API database interact with each other. Each table has connections with other tables that facilitate the complex interactions of a car marketplace.
+
+**Normalization:**
+
+All entities in this database model have been normalized to the third normal form (3NF), with minimal redundancy. However, the MakeModelYear table could have been further normalized to separate the make, model, and year into distinct tables. Due to the already complex nature of a two -sides marketplace and scope of this assignment, the choice was made to prioritize simplicity and performance over further normalization complexity.
+
+**Diagram Overview:**
+
+- The **USERS** table is connected to **LISTINGS** and **TRANSACTIONS**, showing that users can create listings and engage in transactions.
+
+- **CARS** are listed by users in the **LISTINGS** table, and the transactions involving cars are stored in the **TRANSACTIONS** table.
+
+- The **MAKEMODELYEAR** table holds information about the make, model, and year of cars, referenced by the **CARS** table.
 
 ```mermaid
 erDiagram
@@ -1044,7 +1060,7 @@ erDiagram
         user_id INT PK
         name VARCHAR(100)
         email VARCHAR(50) UK
-        password_hash VARCHAR(255)
+        password VARCHAR(255)
         phone_number VARCHAR(15)
         address VARCHAR(255)
     }
@@ -1095,13 +1111,91 @@ erDiagram
 
 ### User Model
 
+- **Table Name:** USERS
+- **Description:** The `User` model stores information about users of the carmarketplace. This includes their email, password , and other personal details. This table has been normalized to 3NF.
+
+- **Fields:**
+
+  - `user_id` (INT, PK): Primary key, auto-incremented.
+  - `name` (VARCHAR(100), NOT NULL): The user's full name.
+  - `email` (VARCHAR(50), NOT NULL, UNIQUE): The user’s email, which must be unique.
+  - `password_hash` (VARCHAR(255), NOT NULL): The hashed password for secure authentication.
+  - `phone_number` (VARCHAR(15)): Optional phone number (can be null).
+  - `address` (VARCHAR(255)): Optional address (can be null).
+
+- **Cardinality & Relationships:**
+  - **One-to-Many:** A user can create multiple listings (`LISTINGS`) and complete multiple transactions (`TRANSACTIONS`).
+  - **Optional Relationships:** Phone number and address are optional fields.
+
 ### Car Model
+
+- **Table Name:** CARS
+- **Description:** The `Car` model holds data about individual cars in the marketplace. The table stores attributes like mileage, price, and the car's condition. This table has been normalized to 3NF.
+
+- **Fields:**
+
+  - `car_id` (INT, PK): Primary key, auto-incremented.
+  - `make_model_year_id` (INT, FK): Foreign key referencing the `MakeModelYear` table.
+  - `mileage` (INT, NOT NULL): The mileage of the car in kilometers.
+  - `price` (FLOAT, NOT NULL): The price of the car in the marketplace.
+  - `condition` (ENUM('new', 'used', 'certified'), NOT NULL): The condition of the car.
+  - `description` (VARCHAR(1000)): Optional description of the car (can be null).
+  - `image_url` (VARCHAR(100)): Optional URL for the car’s image (can be null).
+
+- **Cardinality & Relationships:**
+  - **Many-to-One:** Each car references a specific make, model, and year via the `MakeModelYear` table.
+  - **One-to-Many:** A car can be listed multiple times (`LISTINGS`) and sold multiple times (`TRANSACTIONS`).
+  - **Optional Relationships:** The `description` and `image_url` fields are optional.
 
 ### Listing Model
 
+- **Table Name:** LISTINGS
+- **Description:** The `Listing` model represents a listing of a car in the marketplace. Each listing is associated with a car and a seller (user).
+
+- **Fields:**
+
+  - `listing_id` (INT, PK): Primary key, auto-incremented.
+  - `car_id` (INT, FK): Foreign key referencing the `CARS` table.
+  - `seller_id` (INT, FK): Foreign key referencing the `USERS` table.
+  - `listing_status` (VARCHAR, NOT NULL): Status of the listing (e.g., available, sold).
+  - `date_posted` (DATE, NOT NULL): The date the listing was posted.
+
+- **Cardinality & Relationships:**
+  - **Many-to-One:** A listing is associated with one car and one seller.
+  - **Optional Relationships:** None. Both `car_id` and `seller_id` are required fields for listings.
+
 ### CarTransaction Model
 
+- **Table Name:** TRANSACTIONS
+- **Description:** The `CarTransaction` model records the transactions of cars being sold on the marketplace. It stores information about the buyer, the car, the transaction date, and the sale price.
+
+- **Fields:**
+
+  - `transaction_id` (INT, PK): Primary key, auto-incremented.
+  - `buyer_id` (INT, FK): Foreign key referencing the `USERS` table (the buyer).
+  - `car_id` (INT, FK): Foreign key referencing the `CARS` table (the car sold).
+  - `transaction_date` (DATE, NOT NULL): The date of the transaction.
+  - `amount` (FLOAT, NOT NULL): The sale price of the car.
+
+- **Cardinality & Relationships:**
+  - **Many-to-One:** A transaction is associated with one buyer and one car.
+  - **Optional Relationships:** None. All fields are required for a transaction to be recorded.
+
 ### MakeModelYear Model
+
+- **Table Name:** MAKEMODELYEAR
+- **Description:** The `MakeModelYear` model stores the make, model, and year of cars. This table could have been further normalized by separating these attributes into different tables, it was kept together to reduce complexity. This table is normalized to 2NF.
+
+- **Fields:**
+
+  - `make_model_year_id` (INT, PK): Primary key, auto-incremented.
+  - `make` (VARCHAR(100), NOT NULL): The make of the car.
+  - `model` (VARCHAR(100), NOT NULL): The model of the car.
+  - `year` (INT, NOT NULL): The year the car was manufactured.
+
+- **Cardinality & Relationships:**
+  - **One-to-Many:** Each make, model, and year combination can be referenced by multiple cars in the `CARS` table.
+  - **Optional Relationships:** None.
 
 ## Table Relationships
 
