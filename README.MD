@@ -297,6 +297,146 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 
 ### User Endpoints
 
+#### `POST /api/register`
+
+- **Description:** This endpoint registers a new user. The user must provide a valid email, password, name, and optionally phone number and address.
+- **Allowed Fields:**
+  - **Required:**
+    - **email:** `VARCHAR(50)`, unique, not null.
+    - **password:** `VARCHAR(200)`, not null.
+    - **name:** `VARCHAR(100)`, not null.
+  - **Optional:**
+    - **phone_number:** `VARCHAR(15)`, can include symbols like `+`.
+    - **address:** `VARCHAR(255)`
+- **Restrictions:**
+  - The email must be unique.
+  - The password must meet security requirements (e.g., length between 8-20 characters).
+  - Only non-admin users can be created here (admin roles must be assigned manually).
+- **Example Request:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "securepassword",
+  "name": "John Doe",
+  "phone_number": "+1234567890",
+  "address": "123 Example Street"
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "user_id": 1,
+  "name": "John Doe",
+  "email": "user@example.com",
+  "is_admin": false
+}
+```
+
+#### `POST /api/login`
+
+- **Description:** This endpoint authenticates a user and generates a JWT token.
+- **Allowed Fields:**
+  - **Required:**
+    - email: `VARCHAR(50)`, not null.
+    - password: `VARCHAR(200)`, not null.
+- **Restrictions:**
+  - The user must already be registered.
+  - The password must match the hashed password stored in the database.
+- **Example Request:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "securepassword"
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "token": "JWT token here",
+  "email": "user@example.com",
+  "is_admin": false
+}
+```
+
+#### `PUT /api/users/<id>`(also supports PATCH)
+
+- **Description:** This endpoint allows users to update their own profile or admins to update any user’s profile.
+
+- **Allowed Fields:**
+  - **Optional**
+    - email: `VARCHAR(50)`, unique.
+    - password: `VARCHAR(200)`, must meet security requirements.
+    - name: `VARCHAR(100)`
+    - phone_number: `VARCHAR(15)`
+    - address: `VARCHAR(255)`
+- **Restrictions:**
+
+  - Only admins can update other users' profiles.
+  - Non-admin users can only update their own profile.
+
+- **Example Request:**
+
+```json
+{
+  "name": "Updated Name",
+  "email": "updated_email@example.com"
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "user_id": 1,
+  "name": "Updated Name",
+  "email": "updated_email@example.com",
+  "is_admin": false
+}
+```
+
+#### `DELETE /api/users/<id>`
+
+- **Description:** This endpoint allows admins to delete a user from the system.
+- **Restrictions:**
+  - Only admin users can delete other users.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "message": "User deleted successfully."
+}
+```
+
+- **Description:**
+
+- **Allowed Fields:**
+  - **Required:**
+  - **Optional**
+- **Restrictions:**
+- **Example Request:**
+- **Example Response:**
+
+- **Description:**
+
+- **Allowed Fields:**
+  - **Required:**
+  - **Optional**
+- **Restrictions:**
+- **Example Request:**
+- **Example Response:**
+
 ### Car Endpoints
 
 ### Listing Endpoints
