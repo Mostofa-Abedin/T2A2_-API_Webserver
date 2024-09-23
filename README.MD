@@ -439,6 +439,231 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 
 ### Car Endpoints
 
+#### `GET /api/cars`
+
+- **Description:** Retrieves a list of all cars in the marketplace. No authentication is required.
+
+- **Restrictions:**
+  - The endpoint is publicly accessible.
+  - Pagination or filtering might be available based on additional features.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+[
+  {
+    "car_id": 1,
+    "mileage": 50000,
+    "price": 15000.0,
+    "condition": "used",
+    "description": "Well-maintained car with low mileage",
+    "image_url": "http://example.com/car1.jpg",
+    "make_model_year": {
+      "make": "Toyota",
+      "model": "Corolla",
+      "year": 2018
+    }
+  },
+  {
+    "car_id": 2,
+    "mileage": 10000,
+    "price": 25000.0,
+    "condition": "new",
+    "description": "Brand new car with advanced features",
+    "image_url": "http://example.com/car2.jpg",
+    "make_model_year": {
+      "make": "Honda",
+      "model": "Civic",
+      "year": 2020
+    }
+  }
+]
+```
+
+#### `GET /api/cars/<id>`
+
+- **Description:** Retrieves a specific car by its ID.
+
+- **Allowed Fields:**
+  - No request fields are necessary; the car's ID is provided in the URL path.
+- **Restrictions:**
+  - This endpoint is publicly accessible.
+  - Returns 404 if the car is not found.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "car_id": 1,
+  "mileage": 50000,
+  "price": 15000.0,
+  "condition": "used",
+  "description": "Well-maintained car with low mileage",
+  "image_url": "http://example.com/car1.jpg",
+  "make_model_year": {
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2018
+  }
+}
+```
+
+#### `POST /api/cars`
+
+- **Description:** Creates a new car in the marketplace. Only admins can create cars.
+
+- **Allowed Fields:**
+  - **Required:** `mileage, price, condition, make_model_year_id`
+  - **Optional:** `description, image_url`
+- **Restrictions:**
+- This endpoint requires admin authentication.
+- The `make_model_year_id` must reference a valid make, model, and year.
+- The `condition` field must be one of: `new`, `used`, or `certified`.
+- **Example Request:**
+
+```json
+{
+  "mileage": 50000,
+  "price": 15000.0,
+  "condition": "used",
+  "description": "Well-maintained car with low mileage",
+  "image_url": "http://example.com/car1.jpg",
+  "make_model_year_id": 1
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "car_id": 1,
+  "mileage": 50000,
+  "price": 15000.0,
+  "condition": "used",
+  "description": "Well-maintained car with low mileage",
+  "image_url": "http://example.com/car1.jpg",
+  "make_model_year": {
+    "make_model_year_id": 1,
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2018
+  }
+}
+```
+
+#### `PUT /api/cars/<id>`
+
+- **Description:** Updates an existing car by replacing all details with new values. Admin access is required.
+
+- **Allowed Fields:**
+  - **Required:** `mileage`, `price`, `condition`, `make_model_year_id`
+  - **Optional:** `description`, `image_url`
+- **Restrictions:**
+  - Only an admin can perform this operation.
+  - The make_model_year_id must reference an existing make, model, and year.
+  - Any associated listings or transactions are not modified by this update.
+- **Example Request:**
+
+```json
+{
+  "mileage": 60000,
+  "price": 14000.0,
+  "condition": "used",
+  "description": "Updated description for the car",
+  "image_url": "http://example.com/car1_updated.jpg",
+  "make_model_year_id": 2
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "car_id": 1,
+  "mileage": 60000,
+  "price": 14000.0,
+  "condition": "used",
+  "description": "Updated description for the car",
+  "image_url": "http://example.com/car1_updated.jpg",
+  "make_model_year": {
+    "make_model_year_id": 2,
+    "make": "Honda",
+    "model": "Civic",
+    "year": 2019
+  }
+}
+```
+
+#### `PUT /api/cars/<id>`
+
+- **Description:** Partially updates a car's information, allowing specific fields to be modified without replacing the entire resource.
+
+- **Allowed Fields:**
+  - **Optional:** `mileage`, `price`, `condition`, `description`, `image_url`, `make_model_year_id`
+- **Restrictions:**
+  - Admin access is required.
+  - Only the fields provided in the request body will be updated.
+- **Example Request:**
+
+```json
+{
+  "price": 13000.0,
+  "condition": "certified"
+}
+```
+
+- **Example Response:**
+
+```json
+{
+  "car_id": 1,
+  "mileage": 50000,
+  "price": 13000.0,
+  "condition": "certified",
+  "description": "Well-maintained car with low mileage",
+  "image_url": "http://example.com/car1.jpg",
+  "make_model_year": {
+    "make_model_year_id": 1,
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2018
+  }
+}
+```
+
+#### `DELETE /api/cars/<id>`
+
+- **Description:** Deletes a car by its ID. Admin access is required. Cars with associated transactions cannot be deleted.
+
+- **Allowed Fields:**
+  - No fields are required in the request body, but the car's ID is included in the URL path.
+- **Restrictions:**
+  - Only admins can delete cars.
+  - A car cannot be deleted if it has associated transactions.
+- **Example Request:**
+
+```json
+(No body required)
+```
+
+- **Example Response:**
+
+```json
+{
+  "message": "Car deleted successfully."
+}
+```
+
 ### Listing Endpoints
 
 ### Car Transaction Endpoints
