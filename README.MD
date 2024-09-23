@@ -31,7 +31,6 @@
     - [Listing Model](#listing-model)
     - [CarTransaction Model](#cartransaction-model)
     - [MakeModelYear Model](#makemodelyear-model)
-  - [Table Relationships](#table-relationships)
 - [Developer Tools](#developer-tools)
   - [CLI Controllers](#cli-controllers)
   - [Admin Commands](#admin-commands)
@@ -1125,7 +1124,9 @@ erDiagram
 
 - **Cardinality & Relationships:**
   - **One-to-Many:** A user can create multiple listings (`LISTINGS`) and complete multiple transactions (`TRANSACTIONS`).
-  - **Optional Relationships:** Phone number and address are optional fields.
+  - **Optional Relationships:**
+    - A user may not create any listings; therefore, a user may exist without any related listings.
+    - A user may not engage in any transactions; therefore, they can exist without any transactions
 
 ### Car Model
 
@@ -1145,7 +1146,9 @@ erDiagram
 - **Cardinality & Relationships:**
   - **Many-to-One:** Each car references a specific make, model, and year via the `MakeModelYear` table.
   - **One-to-Many:** A car can be listed multiple times (`LISTINGS`) and sold multiple times (`TRANSACTIONS`).
-  - **Optional Relationships:** The `description` and `image_url` fields are optional.
+  - **Optional Relationships:**
+    - A car may not have any listings, meaning it has been added to the database but is not yet listed for sale.
+    - A car may not have any transactions if it hasn't been sold.
 
 ### Listing Model
 
@@ -1162,7 +1165,8 @@ erDiagram
 
 - **Cardinality & Relationships:**
   - **Many-to-One:** A listing is associated with one car and one seller.
-  - **Optional Relationships:** None. Both `car_id` and `seller_id` are required fields for listings.
+  - **Optional Relationships:**
+    - A listing may not be linked to a transaction, meaning a car has been listed but hasn't been sold yet.
 
 ### CarTransaction Model
 
@@ -1179,7 +1183,8 @@ erDiagram
 
 - **Cardinality & Relationships:**
   - **Many-to-One:** A transaction is associated with one buyer and one car.
-  - **Optional Relationships:** None. All fields are required for a transaction to be recorded.
+  - **Optional Relationships:**
+  - A car transaction must have both a buyer and a car, so there are no optional relationships here.
 
 ### MakeModelYear Model
 
@@ -1195,9 +1200,8 @@ erDiagram
 
 - **Cardinality & Relationships:**
   - **One-to-Many:** Each make, model, and year combination can be referenced by multiple cars in the `CARS` table.
-  - **Optional Relationships:** None.
-
-## Table Relationships
+  - **Optional Relationships:**
+    - This relationship is not optional, as every car must have a valid make, model, and year reference
 
 # Developer Tools
 
