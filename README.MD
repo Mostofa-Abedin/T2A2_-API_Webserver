@@ -27,6 +27,7 @@
   - [Entity Relationship Diagram (ERD)](#entity-relationship-diagram-erd)
   - [ORM Explanation](#orm-explanation)
   - [Database System](#database-system)
+  - [Normalization of Tables](#normalization-of-tables)
   - [Data Models (Entities)](#data-models-entities)
     - [User Model](#user-model)
     - [Car Model](#car-model)
@@ -1045,10 +1046,6 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 
 The Entity Relationship Diagram (ERD) below illustrates how the different models in the Car Marketplace API database interact with each other. Each table has connections with other tables that facilitate the complex interactions of a car marketplace.
 
-**Normalization:**
-
-All entities in this database model have been normalized to the third normal form (3NF), with minimal redundancy. However, the MakeModelYear table could have been further normalized to separate the make, model, and year into distinct tables. Due to the already complex nature of a two -sides marketplace and scope of this assignment, the choice was made to prioritize simplicity and performance over further normalization complexity.
-
 **Diagram Overview:**
 
 - The **USERS** table is connected to **LISTINGS** and **TRANSACTIONS**, showing that users can create listings and engage in transactions.
@@ -1111,6 +1108,78 @@ erDiagram
 
 
 ```
+
+## Normalization of Tables
+
+**Normalization:**
+
+Normalization is a method of organizing data within table in a manner that minimizes redundancy and maintains data integrity.
+
+- **1NF (First Normal Form):** Ensures that all columns are atomic (ie: no multiple values in a single column) and each column contains unique and indivisible data.
+
+- **2NF (Second Normal Form):** Removes partial dependencies. This ensuring that non-key attributes depend on the entire composite primary key, not just part of it. Tables must first be in 1NF.
+
+- **3NF (Third Normal Form):** Removes transitive dependencies, ensuring that non-key attributes depend only on the primary key and not on other non-key attributes. Tables must first be in 2NF.
+
+- **4NF (Fourth Normal Form):** Ensures that tables are free from multi-valued dependencies. This can occur when one attribute in a table uniquely determines another set of attributes. 4NF ensures that if multiple independent relationships exist, they are separated into different tables. Tables must first be in 3NF.
+
+All entities in this database model have been normalized to the third normal form (3NF), with minimal redundancy.
+
+**Further Normalization of the MakeModelYear Table**
+
+**Example of Higher Normalization (4NF):**
+
+```mermaid
+erDiagram
+    CARS {
+        car_id INT PK
+        make_id INT FK
+        model_id INT FK
+        year_id INT FK
+        mileage INT
+        price FLOAT
+        condition ENUM
+        description VARCHAR(1000)
+        image_url VARCHAR(100)
+    }
+
+    MAKE {
+        make_id INT PK
+        make_name VARCHAR(100)
+    }
+
+    MODEL {
+        model_id INT PK
+        model_name VARCHAR(100)
+    }
+
+    YEAR {
+        year_id INT PK
+        year INT
+    }
+
+    CARS }o--|| MAKE : "references"
+    CARS }o--|| MODEL : "references"
+    CARS }o--|| YEAR : "references"
+```
+
+The MakeModelYear table could have been further normalized to separate the make, model, and year into distinct tables as shown in the ERD above. In 4NF, the MakeModelYear table could be divided as follows:
+
+**Make Table:** Contains distinct car manufacturers.
+**Model Table:** Contains distinct car models.
+**Year Table:** Stores car production years.
+
+However, Due to the already complex nature of a two -sides marketplace and scope of this assignment, the choice was made to prioritize simplicity and performance over further normalization complexity.
+
+**Benefits:**
+
+- Further reduced redundancy in the MakeModelYear table.
+- Improved data integrity by separating concerns into different tables.
+
+**Drawbacks:**
+
+- Increased complexity with multiple joins required to query for a car's make, model, and year.
+- Higher overhead in managing three tables instead of one. Workload is increased.
 
 ## ORM Explanation
 
