@@ -36,7 +36,6 @@
     - [MakeModelYear Model](#makemodelyear-model)
 - [Developer Tools](#developer-tools)
   - [CLI Controllers](#cli-controllers)
-  - [Admin Commands](#admin-commands)
 - [Error Handling & Status Codes](#error-handling--status-codes)
   - [Standard HTTP Status Codes](#standard-http-status-codes)
   - [Custom Error Messages](#custom-error-messages)
@@ -1430,7 +1429,202 @@ class MakeModelYear(db.Model):
 
 ## CLI Controllers
 
-## Admin Commands
+The Car Marketplace API includes several CLI (Command Line Interface) commands under the db_commands namespace to manage the database.
+The command allow developers to interact and mange the database without the need to write raw SQL queries.
+
+**Setting Up the Environment**
+
+Before using the CLI commands, ensure that the environment is set up correctly by configuring your `.env` and `.flaskenv` files.
+
+**Steps to Set Up:**
+
+1. Create a .env file by copying the provided .env.example:
+
+```bash
+cp .env.example .env
+```
+
+2. Fill in the required values for DATABASE_URL and JWT_SECRET_KEY in the .env file:Example provided below.
+
+```bash
+DATABASE_URL="postgresql+psycopg2://username:password@localhost:5432/db_name"
+JWT_SECRET_KEY="your_secret_key"
+```
+
+3. Ensure the .flaskenv file is set up correctly to configure Flask. Make sure flask_app redirects to `main.py`. If you want to run flask on debugging mode leave `FLASK_DEBUG=1` or else remove the line. You may choose any port you would like to run the flask application on. The default has been set to `8080`.
+
+```bash
+FLASK_APP=main
+FLASK_DEBUG=1
+FLASK_RUN_PORT=8080
+```
+
+4. source venv/bin/activate
+
+```bash
+source venv/bin/activate
+```
+
+5. Install project dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+6. Run the Flask app:
+
+```bash
+flask run
+```
+
+With this, your Flask app will be up and running with all dependencies installed based on the configurations set in .env and .flaskenv.
+
+**Available CLI Commands**
+
+The CLI commands are grouped under flask db_commands and allow developers to manage the database and seed data.
+
+1. **Create Tables:**
+
+- This creates all database tables as per the models.
+
+```bash
+flask db_commands create_tables
+```
+
+- If the models are working as expected, you should see the the message:
+
+```bash
+All tables created successfully!
+```
+
+- If an error occurs during table creation, you will receive a message like:
+
+```bash
+An error occurred while creating tables: <error message>
+```
+
+2. **Drop Tables:**
+
+- This drops all the tables in the database,permanently deleting all data.
+
+```bash
+flask db_commands drop_tables
+```
+
+- After confirming, the following message will appear
+
+```bash
+All tables dropped successfully.
+```
+
+- If an error occurs while dropping tables, you will receive a message like:
+
+```bash
+An error occurred while dropping tables: <error message>
+```
+
+3. **Seed Database:** Seeds the database with initial data from a JSON file. Replace `<path/to/file>` with JSON file location.
+
+```
+flask db_commands seed <path/to/file>
+```
+
+- After seeding, the following message will appear:
+
+```bash
+Database seeded with data from the JSON file.
+```
+
+- If the specified file is not found, or if there is an error in reading the file or adding data:
+
+```bash
+File '<file_path>' not found.
+Invalid JSON file format.
+An error occurred: <error message>
+```
+
+- An example JSON file has been provided in the root directory of this project. It is called `seed_data.json`. To seed using this file:
+
+```bash
+flask db_commands seed_tables seed_data.json
+```
+
+- An example of the json file format has been provided below.
+
+```json
+{
+  "users": [
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "hashed_password_1",
+      "phone_number": "1234567890",
+      "address": "123 Main St",
+      "is_admin": false
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "password": "hashed_password_2",
+      "phone_number": "0987654321",
+      "address": "456 Elm St",
+      "is_admin": true
+    }
+  ],
+  "makemodelyears": [
+    {
+      "make": "Toyota",
+      "model": "Corolla",
+      "year": 2020
+    },
+    {
+      "make": "Honda",
+      "model": "Civic",
+      "year": 2019
+    }
+  ],
+  "cars": [
+    {
+      "make_model_year_id": 1,
+      "mileage": 15000,
+      "price": 20000,
+      "condition": "used",
+      "description": "Well-maintained sedan",
+      "image_url": "http://example.com/car1.jpg"
+    },
+    {
+      "make_model_year_id": 2,
+      "mileage": 5000,
+      "price": 22000,
+      "condition": "new",
+      "description": "Brand new model",
+      "image_url": "http://example.com/car2.jpg"
+    }
+  ],
+  "listings": [
+    {
+      "car_id": 1,
+      "user_id": 1,
+      "listing_status": "available",
+      "date_posted": "2024-09-15"
+    },
+    {
+      "car_id": 2,
+      "user_id": 2,
+      "listing_status": "sold",
+      "date_posted": "2024-09-16"
+    }
+  ],
+  "car_transactions": [
+    {
+      "car_id": 1,
+      "buyer_id": 2,
+      "transaction_date": "2024-09-20",
+      "amount": 20000
+    }
+  ]
+}
+```
 
 # Error Handling & Status Codes
 
