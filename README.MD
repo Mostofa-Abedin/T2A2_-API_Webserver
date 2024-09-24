@@ -16,15 +16,17 @@
     - [JSON Request/Response Format](#json-requestresponse-format)
   - [HTTP Methods & Verbs](#http-methods--verbs)
 - [Endpoints](#endpoints)
-  - [Summary of Endpoints](#summary-of-endpoints)
   - [Detailed Endpoints Reference](#detailed-endpoints-reference)
     - [User Endpoints](#user-endpoints)
     - [Car Endpoints](#car-endpoints)
     - [Make Model Year Endpoints](#make-model-year-endpoints)
     - [Listing Endpoints](#listing-endpoints)
     - [Car Transaction Endpoints](#car-transaction-endpoints)
+  - [Summary of Endpoints](#summary-of-endpoints)
 - [Data Model](#data-model)
   - [Entity Relationship Diagram (ERD)](#entity-relationship-diagram-erd)
+  - [ORM Explanation](#orm-explanation)
+  - [Database System](#database-system)
   - [Data Models (Entities)](#data-models-entities)
     - [User Model](#user-model)
     - [Car Model](#car-model)
@@ -242,56 +244,9 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 | **PATCH**       | Partially updates a resource by modifying only specific fields.                      |
 | **DELETE**      | Removes the specified resource from the server.                                      |
 
+---
+
 # Endpoints
-
-## Summary of Endpoints
-
-### User Endpoints
-
-| Endpoint              | Method     | Description                                 | Admin Only       |
-| --------------------- | ---------- | ------------------------------------------- | ---------------- |
-| `/api/register`       | POST       | Register a new user.                        | No               |
-| `/api/login`          | POST       | Authenticate a user and return a JWT token. | No               |
-| `/api/users/<int:id>` | PUT, PATCH | Update user information (Admin or self).    | Yes (for others) |
-| `/api/users/<int:id>` | DELETE     | Delete a user.                              | Yes              |
-
-### Car Endpoints
-
-| Endpoint             | Method     | Description                        | Admin Only |
-| -------------------- | ---------- | ---------------------------------- | ---------- |
-| `/api/cars`          | GET        | Retrieve a list of all cars.       | No         |
-| `/api/cars/<int:id>` | GET        | Retrieve a specific car by its ID. | No         |
-| `/api/cars`          | POST       | Create a new car.                  | Yes        |
-| `/api/cars/<int:id>` | PUT, PATCH | Update an existing car.            | Yes        |
-| `/api/cars/<int:id>` | DELETE     | Delete a car by its ID.            | Yes        |
-
-### Listing Endpoints
-
-| Endpoint                 | Method     | Description                      | Admin Only       |
-| ------------------------ | ---------- | -------------------------------- | ---------------- |
-| `/api/listings`          | GET        | Retrieve all car listings.       | No               |
-| `/api/listings/<int:id>` | GET        | Retrieve a specific car listing. | No               |
-| `/api/listings`          | POST       | Create a new car listing.        | No               |
-| `/api/listings/<int:id>` | PUT, PATCH | Update an existing car listing.  | No (Owner/Admin) |
-| `/api/listings/<int:id>` | DELETE     | Delete a car listing by its ID.  | No (Owner/Admin) |
-
-### Car Transaction Endpoints
-
-| Endpoint                         | Method | Description                                    | Admin Only |
-| -------------------------------- | ------ | ---------------------------------------------- | ---------- |
-| `/api/car-transactions`          | GET    | Retrieve all car transactions.                 | No         |
-| `/api/car-transactions/<int:id>` | GET    | Retrieve a specific car transaction by its ID. | No         |
-| `/api/car-transactions`          | POST   | Create a new car transaction.                  | No         |
-
-### MakeModelYear Endpoints
-
-| Endpoint                      | Method     | Description                            | Admin Only |
-| ----------------------------- | ---------- | -------------------------------------- | ---------- |
-| `/api/makemodelyear`          | GET        | Retrieve all makes, models, and years. | No         |
-| `/api/makemodelyear/<int:id>` | GET        | Retrieve a specific make/model/year.   | No         |
-| `/api/makemodelyear`          | POST       | Create a new make/model/year entry.    | Yes        |
-| `/api/makemodelyear/<int:id>` | PUT, PATCH | Update an existing make/model/year.    | Yes        |
-| `/api/makemodelyear/<int:id>` | DELETE     | Delete a make/model/year entry.        | Yes        |
 
 ## Detailed Endpoints Reference
 
@@ -1033,6 +988,55 @@ The **Car Marketplace API** supports several HTTP methods (also known as verbs),
 }
 ```
 
+## Summary of Endpoints
+
+### User Endpoints
+
+| Endpoint              | Method     | Description                                 | Admin Only       |
+| --------------------- | ---------- | ------------------------------------------- | ---------------- |
+| `/api/register`       | POST       | Register a new user.                        | No               |
+| `/api/login`          | POST       | Authenticate a user and return a JWT token. | No               |
+| `/api/users/<int:id>` | PUT, PATCH | Update user information (Admin or self).    | Yes (for others) |
+| `/api/users/<int:id>` | DELETE     | Delete a user.                              | Yes              |
+
+### Car Endpoints
+
+| Endpoint             | Method     | Description                        | Admin Only |
+| -------------------- | ---------- | ---------------------------------- | ---------- |
+| `/api/cars`          | GET        | Retrieve a list of all cars.       | No         |
+| `/api/cars/<int:id>` | GET        | Retrieve a specific car by its ID. | No         |
+| `/api/cars`          | POST       | Create a new car.                  | Yes        |
+| `/api/cars/<int:id>` | PUT, PATCH | Update an existing car.            | Yes        |
+| `/api/cars/<int:id>` | DELETE     | Delete a car by its ID.            | Yes        |
+
+### Listing Endpoints
+
+| Endpoint                 | Method     | Description                      | Admin Only       |
+| ------------------------ | ---------- | -------------------------------- | ---------------- |
+| `/api/listings`          | GET        | Retrieve all car listings.       | No               |
+| `/api/listings/<int:id>` | GET        | Retrieve a specific car listing. | No               |
+| `/api/listings`          | POST       | Create a new car listing.        | No               |
+| `/api/listings/<int:id>` | PUT, PATCH | Update an existing car listing.  | No (Owner/Admin) |
+| `/api/listings/<int:id>` | DELETE     | Delete a car listing by its ID.  | No (Owner/Admin) |
+
+### Car Transaction Endpoints
+
+| Endpoint                         | Method | Description                                    | Admin Only |
+| -------------------------------- | ------ | ---------------------------------------------- | ---------- |
+| `/api/car-transactions`          | GET    | Retrieve all car transactions.                 | No         |
+| `/api/car-transactions/<int:id>` | GET    | Retrieve a specific car transaction by its ID. | No         |
+| `/api/car-transactions`          | POST   | Create a new car transaction.                  | No         |
+
+### MakeModelYear Endpoints
+
+| Endpoint                      | Method     | Description                            | Admin Only |
+| ----------------------------- | ---------- | -------------------------------------- | ---------- |
+| `/api/makemodelyear`          | GET        | Retrieve all makes, models, and years. | No         |
+| `/api/makemodelyear/<int:id>` | GET        | Retrieve a specific make/model/year.   | No         |
+| `/api/makemodelyear`          | POST       | Create a new make/model/year entry.    | Yes        |
+| `/api/makemodelyear/<int:id>` | PUT, PATCH | Update an existing make/model/year.    | Yes        |
+| `/api/makemodelyear/<int:id>` | DELETE     | Delete a make/model/year entry.        | Yes        |
+
 ---
 
 # Data Model
@@ -1097,14 +1101,43 @@ erDiagram
         amount FLOAT
     }
 
-    USERS ||--o{ LISTINGS : "creates"
-    USERS ||--o{ TRANSACTIONS : "makes"
-
     CARS ||--o{ LISTINGS : "is listed in"
     CARS ||--o{ TRANSACTIONS : "is sold in"
     CARS }o--|| MAKEMODELYEAR : "references"
 
+    USERS ||--o{ LISTINGS : "creates"
+    USERS ||--o{ TRANSACTIONS : "makes"
+
+
+
 ```
+
+## ORM Explanation
+
+The ERD structue shown above has been implemented using the ORM (Object Relational Mapper) tool SQLAlchemy. Using an ORM such as this allows for more simplified code, removing the need for raw SQL queries by mapping database tables to Python classes. It also allows us to implement features such as query building, schemas, relationship management between tables.
+
+**Key features used:**
+
+- **Model Definitions:** Tables like User, Car, and Listing are defined as Python classes. The attributes are represented by columns.
+- **Querying:** SQLAlchemy enables neat and easy querying, such as Car.query.all() to retrieve all cars or using filters like Listing.query.filter_by(listing_status='available')
+- **Insertions and Updates:** New records are added via db.session.add() and saved with db.session.commit(), handling transactions efficiently.
+- **Joins and Relationships:** SQLAlchemy handles relationships and joins with ease. It allowing us to access related data without complex SQL JOIN statements.
+- **Schema Validation:** SQLAlchemy enforces column constraints like NOT NULL and UNIQUE, ensuring data integrity.
+
+## Database System
+
+We use PostgreSQL as the underlying database relationship management system for the the Car MARKETPLACE API. This system was chosen for its robustness, ACID compliance, and ability to handle complex queries efficiently. The API interacts with PostgreSQL through the ORM SQLAlchemy, which abstracts much of the complexity.
+
+**Benefits of PostgreSQL:**
+
+- **ACID Compliance:** Ensures data reliability and consistency.
+- **Scalability:** PostgreSQL can handle the growing data needs of a the number of users, car, listings etc increases on the marketplace.
+- **Complex Queries:** It supports advanced SQL features that allow for complex data retrieval, aggregation, and analysis.
+
+**Drawbacks of PostgreSQL:**
+
+- **Resource Consumption:** PostgreSQL is more resource heavy (e.g., CPU, memory) than lighter databases like SQLite.
+- **Learning Curve:** The system's complexity can make it harder for beginners to learn and manage.
 
 ## Data Models (Entities)
 
@@ -1123,10 +1156,36 @@ erDiagram
   - `address` (VARCHAR(255)): Optional address (can be null).
 
 - **Cardinality & Relationships:**
+
   - **One-to-Many:** A user can create multiple listings (`LISTINGS`) and complete multiple transactions (`TRANSACTIONS`).
   - **Optional Relationships:**
     - A user may not create any listings; therefore, a user may exist without any related listings.
     - A user may not engage in any transactions; therefore, they can exist without any transactions
+
+- **ORM Model:**
+
+```python
+class User(db.Model):
+    __tablename__ = 'users'
+
+    user_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    password_hash = db.Column(db.String(255), nullable=False)
+    phone_number = db.Column(db.String(15))
+    address = db.Column(db.String(255))
+
+    # Relationships
+    listings = db.relationship('Listing', back_populates='user')
+    car_transactions = db.relationship('CarTransaction', back_populates='user')
+
+    def __repr__(self):
+        return f"<User {self.email}>"
+
+```
+
+- **Model Definitions:** Defines the User table, with attributes `user_id`, `name`, `email`, `password`, `phone_number`, and `address`.
+- **Joins and Relationships:** This model relates to both the Listing and CarTransaction models, with a one-to-many relationship allowing a user to have multiple listings and transactions.
 
 ### Car Model
 
@@ -1144,11 +1203,39 @@ erDiagram
   - `image_url` (VARCHAR(100)): Optional URL for the car’s image (can be null).
 
 - **Cardinality & Relationships:**
+
   - **Many-to-One:** Each car references a specific make, model, and year via the `MakeModelYear` table.
   - **One-to-Many:** A car can be listed multiple times (`LISTINGS`) and sold multiple times (`TRANSACTIONS`).
   - **Optional Relationships:**
     - A car may not have any listings, meaning it has been added to the database but is not yet listed for sale.
     - A car may not have any transactions if it hasn't been sold.
+
+- **ORM Model:**
+
+```python
+class Car(db.Model):
+    __tablename__ = 'cars'
+
+    car_id = db.Column(db.Integer, primary_key=True)
+    make_model_year_id = db.Column(db.Integer, db.ForeignKey('makemodelyear.make_model_year_id'), nullable=False)
+    mileage = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    condition = db.Column(db.Enum('new', 'used', 'certified', name='car_condition_enum'), nullable=False)
+    description = db.Column(db.String(1000))
+    image_url = db.Column(db.String(100))
+
+    # Relationships
+    listings = db.relationship('Listing', back_populates='car')
+    car_transactions = db.relationship('CarTransaction', back_populates='car')
+    make_model_year = db.relationship('MakeModelYear', back_populates='cars')
+
+    def __repr__(self):
+        return f"<Car {self.car_id}, Price: {self.price}>"
+```
+
+- **Model Definitions:** Defines the Car table, with attributes `car_id`, `mileage`, `price`, `condition`, `description`, `image_url`, and `make_model_year_id`.
+
+- **Joins and Relationships:** This model relates to the MakeModelYear, Listing, and CarTransaction models, with a many-to-one relationship to MakeModelYear and one-to-many relationships to both Listing and CarTransaction.
 
 ### Listing Model
 
@@ -1164,9 +1251,34 @@ erDiagram
   - `date_posted` (DATE, NOT NULL): The date the listing was posted.
 
 - **Cardinality & Relationships:**
+
   - **Many-to-One:** A listing is associated with one car and one seller.
   - **Optional Relationships:**
     - A listing may not be linked to a transaction, meaning a car has been listed but hasn't been sold yet.
+
+- **ORM Model:**
+
+```python
+class Listing(db.Model):
+    __tablename__ = "listings"
+
+    listing_id = db.Column(db.Integer, primary_key=True)
+    listing_status = db.Column(
+        db.Enum('available', 'sold', name='listing_status_enum'),
+        nullable=False,
+        default='available'
+    )
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    car_id = db.Column(db.Integer, db.ForeignKey("cars.car_id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+
+    user = db.relationship("User", back_populates="listings")
+    car = db.relationship("Car", back_populates="listings")
+
+```
+
+- **Model Definitions:** Defines the Listing table, with attributes `listing_id`, `listing_status`, `date_posted`,`car_id`,`user_id`.
+- **Joins and Relationships:** This model relates to both the User and Car models, using foreign keys to reference those tables.
 
 ### CarTransaction Model
 
@@ -1182,9 +1294,30 @@ erDiagram
   - `amount` (FLOAT, NOT NULL): The sale price of the car.
 
 - **Cardinality & Relationships:**
+
   - **Many-to-One:** A transaction is associated with one buyer and one car.
   - **Optional Relationships:**
   - A car transaction must have both a buyer and a car, so there are no optional relationships here.
+
+- **ORM Model:**
+
+```python
+class CarTransaction(db.Model):
+    __tablename__ = "car_transactions"
+
+    transaction_id = db.Column(db.Integer, primary_key=True)
+    transaction_date = db.Column(db.Date, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    car_id = db.Column(db.Integer, db.ForeignKey("cars.car_id"), nullable=False)
+    buyer_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+
+    user = db.relationship("User", back_populates="car_transactions")
+    car = db.relationship("Car", back_populates="car_transactions")
+
+```
+
+- **Model Definitions:** Defines the CarTransaction table, with attributes `transaction_id`, `transaction_date`, `amount`, `car_id`, and `buyer_id`.
+- **Joins and Relationships:** This model relates to both the User and Car models, using foreign keys to reference those tables.
 
 ### MakeModelYear Model
 
@@ -1199,9 +1332,30 @@ erDiagram
   - `year` (INT, NOT NULL): The year the car was manufactured.
 
 - **Cardinality & Relationships:**
+
   - **One-to-Many:** Each make, model, and year combination can be referenced by multiple cars in the `CARS` table.
   - **Optional Relationships:**
     - This relationship is not optional, as every car must have a valid make, model, and year reference
+
+- **ORM Model:**
+
+```python
+class MakeModelYear(db.Model):
+    __tablename__ = "makemodelyear"
+
+    make_model_year_id = db.Column(db.Integer, primary_key=True)
+    make = db.Column(db.String(100), nullable=False)
+    model = db.Column(db.String(100), nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+
+    cars = db.relationship("Car", back_populates="make_model_year")
+
+```
+
+- **Model Definitions:** Defines the MakeModelYear table, with attributes `make_model_year_id`, `make`, `model`, and `year`.
+- **Joins and Relationships:** This model relates to the Car model, with a one-to-many relationship, meaning multiple cars can reference a single make, model, and year combination.
+
+---
 
 # Developer Tools
 
