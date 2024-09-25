@@ -3,9 +3,12 @@
 # Table of Contents
 
 - [Overview](#overview)
+
   - [Purpose of the API](#purpose-of-the-api)
   - [Problem Statement](#problem-statement)
+
 - [API Specifications](#api-specifications)
+
   - [Base URL](#base-url)
     - [Customizing the Base URL](#customizing-the-base-url)
   - [Authentication & Authorization](#authentication--authorization)
@@ -15,7 +18,9 @@
   - [Supported Formats](#supported-formats)
     - [JSON Request/Response Format](#json-requestresponse-format)
   - [HTTP Methods & Verbs](#http-methods--verbs)
+
 - [Endpoints](#endpoints)
+
   - [Detailed Endpoints Reference](#detailed-endpoints-reference)
     - [User Endpoints](#user-endpoints)
     - [Car Endpoints](#car-endpoints)
@@ -23,7 +28,9 @@
     - [Listing Endpoints](#listing-endpoints)
     - [Car Transaction Endpoints](#car-transaction-endpoints)
   - [Summary of Endpoints](#summary-of-endpoints)
+
 - [Data Model](#data-model)
+
   - [Entity Relationship Diagram (ERD)](#entity-relationship-diagram-erd)
   - [ORM Explanation](#orm-explanation)
   - [Database System](#database-system)
@@ -34,33 +41,35 @@
     - [Listing Model](#listing-model)
     - [CarTransaction Model](#cartransaction-model)
     - [MakeModelYear Model](#makemodelyear-model)
-- [Developer Tools](#developer-tools)
-  - [CLI Controllers](#cli-controllers)
+
 - [Error Handling & Status Codes](#error-handling--status-codes)
+
   - [Standard HTTP Status Codes](#standard-http-status-codes)
   - [Custom Error Messages For Developer Debugging](#custom-error-messages-for-developer-debugging)
-    - [Authorization Controller](#authorization-controller-auth_controllerpy)
-    - [Car Controller](#car-controller-car_controllerpy)
-    - [Listing Controller](#listing-controller-listing_controllerpyontrollerpy)
-    - [Car Transaction Controller](#car-transaction-controller-car_transaction_controllerpy)
-    - [MakeModelYEAR Controller](#makemodelyear-controller-makemodelyear_controllerpy)
-    - [Models (Errors related to constraints) ](#models-errors-related-to-constraints)
+
 - [Security](#security)
+
   - [JWT Token Security](#jwt-token-security)
   - [Best Practices for Securing API Keys](#best-practices-for-securing-api-keys)
+
 - [Testing](#testing)
+
   - [Using Insomnia/Postman for Manual Testing](#using-insomniapostman-for-manual-testing)
-- [Deployment](#deployment)
-  - [Local Setup](#local-setup)
-  - [Deployment Process](#deployment-process)
+
+- [Local Setup & Developer Utilities](#local-setup--developer-utilities)
+
+  - [Local Setup and Running Flask ](#local-setup-and-running-flask)
+  - [CLI controllers ](#cli-controllers)
+  - [PostgreSQL Setup](#postgresql-setup)
+
 - [Project Management](#project-management)
+
   - [Project Timeline](#project-timeline)
   - [Sprint Planning & Milestones](#sprint-planning--milestones)
     - [Epics and User Stories](#epics-and-user-stories)
     - [Task Breakdown and Assignments](#task-breakdown-and-assignments)
   - [Jira/Project Management Tools Used](#jiraproject-management-tools-used)
     - [Jira Boards and Tracking](#jira-boards-and-tracking)
-  - [Risk Management and Mitigation](#risk-management-and-mitigation)
 
 ---
 
@@ -103,6 +112,8 @@ Autotrader, 2022. The Digital Future of Automotive Retail. [online] Available at
 ---
 
 # API Specifications
+
+For **SETUP** see section **[Local Setup & Developer Utilities](#local-setup--developer-utilities)**
 
 ## Base URL
 
@@ -1430,16 +1441,13 @@ class MakeModelYear(db.Model):
 
 ---
 
-# Developer Tools
+# Local Setup & Developer Utilities
 
-## CLI Controllers
-
-The Car Marketplace API includes several CLI (Command Line Interface) commands under the db_commands namespace to manage the database.
-The command allow developers to interact and mange the database without the need to write raw SQL queries.
+## Local Setup and Running Flask
 
 **Setting Up the Environment**
 
-Before using the CLI commands, ensure that the environment is set up correctly by configuring your `.env` and `.flaskenv` files.
+Ensure that the environment is set up correctly by configuring your `.env` and `.flaskenv` files.
 
 **Steps to Set Up:**
 
@@ -1483,6 +1491,11 @@ flask run
 ```
 
 With this, your Flask app will be up and running with all dependencies installed based on the configurations set in .env and .flaskenv.
+
+## CLI Controllers
+
+The Car Marketplace API includes several CLI (Command Line Interface) commands under the db_commands namespace to manage the database.
+The command allow developers to interact and mange the database without the need to write raw SQL queries.
 
 **Available CLI Commands**
 
@@ -1631,6 +1644,49 @@ flask db_commands seed_tables seed_data.json
 }
 ```
 
+## PostgreSQL Setup
+
+To set up and connect to PostgreSQL for local development:
+
+1. **Install PostgreSQL:** Install PostgreSQL on your system if it isn't already present.
+
+- **Ubuntu/Linux:**
+
+```bash
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+```
+
+- **macOS (using Homebrew):**
+
+```bash
+brew install postgresql
+```
+
+- **Windows:**
+  - Download and install PostgreSQL from the [official site](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads).
+
+2. **Create a New Database:** After installing PostgreSQL, create a new database for the API:
+
+```bash
+psql -U postgres
+CREATE DATABASE car_market;
+```
+
+3. **Set Up Database Credentials:** Ensure your `.env` file contains the correct PostgreSQL credentials:
+
+```bash
+DATABASE_URL="postgresql+psycopg2://username:password@localhost:5432/car_market"
+```
+
+4. **Connect and Query the Database:** You can connect to PostgreSQL and query your database using psql
+
+```bash
+psql -U postgres -d car_market
+```
+
+5. **Use Cheatsheet:** You can now query the database using SQL commands. Commonly used commands can be found in the [SQL cheatsheet](https://www.sqltutorial.org/sql-cheat-sheet/)
+
 # Error Handling & Status Codes
 
 ## Standard HTTP Status Codes
@@ -1647,7 +1703,7 @@ The Car Marketplace API uses several standard HTTP status codes. Belwo are some 
 
 ## Custom Error Messages for Developer Debugging
 
-#### Authorization Controller (auth_controller.py)
+**Authorization Controller (auth_controller.py)**
 
 - **Error**: `{"error": "User does not exist."}`
   - Occurs when trying to fetch or update a user that does not exist.
@@ -1658,7 +1714,7 @@ The Car Marketplace API uses several standard HTTP status codes. Belwo are some 
 - **Error**: `{"error": "You do not have permission to update this user's information."}`
   - Occurs when a non-admin user tries to update another user’s info.
 
-#### Car Controller (car_controller.py)
+**Car Controller (car_controller.py)**
 
 - **Error**: `{"error": "Invalid make_model_year_id."}`
   - Occurs when referencing an invalid `make_model_year_id` in a request.
@@ -1667,7 +1723,7 @@ The Car Marketplace API uses several standard HTTP status codes. Belwo are some 
 - **Error**: `{"error": "You do not have permission to perform this action."}`
   - Occurs when a non-admin user tries to perform an admin-restricted action.
 
-#### Listing Controller (listing_controller.py)
+**Listing Controller (listing_controller.py)**
 
 - **Error**: `{"error": "Listing not found."}`
   - Raised when attempting to access or update a listing that does not exist.
@@ -1678,7 +1734,7 @@ The Car Marketplace API uses several standard HTTP status codes. Belwo are some 
 - **Error**: `{"error": "Invalid listing status."}`
   - Occurs when the listing status (e.g., "sold", "available") is invalid.
 
-#### Car Transaction Controller (car_transaction_controller.py)
+**Car Transaction Controller (car_transaction_controller.py)**
 
 - **Error**: `{"error": "Invalid car_id."}`
   - Raised when the car ID provided is invalid or does not exist.
@@ -1691,7 +1747,7 @@ The Car Marketplace API uses several standard HTTP status codes. Belwo are some 
 - **Error**: `{"error": "Amount does not match car price."}`
   - Raised when the transaction amount does not match the listed price of the car.
 
-#### MakeModelYear Controller (makemodelyear_controller.py)
+**MakeModelYear Controller (makemodelyear_controller.py)**
 
 - **Error**: `{"error": "This make, model, and year combination already exists."}`
   - Occurs when trying to create a duplicate make-model-year combination.
@@ -1700,7 +1756,7 @@ The Car Marketplace API uses several standard HTTP status codes. Belwo are some 
 - **Error**: `{"error": "Cannot delete MakeModelYear with associated cars. Delete associated cars first."}`
   - Occurs when trying to delete a MakeModelYear entry that is linked to cars.
 
-#### Models (Errors related to constraints)
+**Models (Errors related to constraints)**
 
 - **Unique constraints**:
   - `"error": "Email address must be unique"` (User model - when creating or updating a user).
@@ -1804,12 +1860,6 @@ JWT_SECRET_KEY = "a_random_very_long_string_with_special_characters"
 # Testing
 
 ## Using Insomnia/Postman for Manual Testing
-
-# Deployment
-
-## Local Setup
-
-## Deployment Process
 
 # Project Management
 
