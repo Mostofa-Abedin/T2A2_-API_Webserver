@@ -56,7 +56,6 @@ def seed_tables(file_path):
                 user_data['password'] = bcrypt.generate_password_hash(user_data['password']).decode('utf-8')
                 user = User(**user_data)
                 db.session.add(user)
-                print(f"Adding user: {user.name}")  # Debugging line to check user addition
             except Exception as e:
                 print(f"Error adding user: {e}")  # Print any errors that occur
 

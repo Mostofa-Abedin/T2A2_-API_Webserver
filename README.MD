@@ -1669,7 +1669,7 @@ brew install postgresql
 2. **Create a New Database:** After installing PostgreSQL, create a new database for the API:
 
 ```bash
-psql -U postgres
+sudo -u postgres psql
 CREATE DATABASE car_market;
 ```
 
@@ -1686,6 +1686,8 @@ psql -U postgres -d car_market
 ```
 
 5. **Use Cheatsheet:** You can now query the database using SQL commands. Commonly used commands can be found in the [SQL cheatsheet](https://www.sqltutorial.org/sql-cheat-sheet/)
+
+---
 
 # Error Handling & Status Codes
 
@@ -1762,6 +1764,8 @@ The Car Marketplace API uses several standard HTTP status codes. Belwo are some 
   - `"error": "Email address must be unique"` (User model - when creating or updating a user).
 - **Not-null constraints**:
   - `"error": "The column {column_name} is required"` (applies to various models like `Car`, `User`, etc.).
+
+---
 
 # Security
 
@@ -1857,9 +1861,26 @@ JWT_SECRET_KEY = "a_random_very_long_string_with_special_characters"
 
 - Implement proper access control that limits the permission based on user roles. Admin access should be restricted, and sensitive endpoints should be protected.
 
+---
+
 # Testing
 
-## Using Insomnia/Postman for Manual Testing
+**User Endpoints**
+
+| **Endpoint**            | **Test Type**           | **Test Description**                                         | **Expected Outcome**                                | **Patch Required?** | **Patch Commit Hash** |
+| ----------------------- | ----------------------- | ------------------------------------------------------------ | --------------------------------------------------- | ------------------- | --------------------- |
+| POST `/api/register`    | Valid Request           | Register a new user with valid data.                         | 201 Created, user is successfully registered.       | No                  | N/A                   |
+| POST `/api/register`    | Missing Required Fields | Omit email and password in the request body.                 | 400 Bad Request, "Email and password are required." | No                  | N/A                   |
+| POST `/api/register`    | Duplicate Entry         | Attempt to register with an already registered email.        | 400 Bad Request, "Email address must be unique."    | No                  | N/A                   |
+| POST `/api/login`       | Valid Request           | Log in with valid credentials.                               | 200 OK, JWT token is returned.                      | No                  | N/A                   |
+| POST `/api/login`       | Invalid Credentials     | Log in with incorrect password.                              | 400 Bad Request, "Invalid email or password."       | No                  | N/A                   |
+| PUT `/api/users/:id`    | Valid Request           | Update user info as admin or the user themselves.            | 200 OK, updated user data is returned.              | No                  | N/A                   |
+| PUT `/api/users/:id`    | Unauthorized Access     | Try to update user info without permission (non-admin).      | 403 Forbidden, "You do not have permission."        | No                  | N/A                   |
+| DELETE `/api/users/:id` | Valid Request (Admin)   | Delete a user as an admin.                                   | 200 OK, user is successfully deleted.               | No                  | N/A                   |
+| POST `/api/cars`        | Valid Request           | Create a new car with valid data.                            | 201 Created, car is successfully added.             | No                  | N/A                   |
+| POST `/api/cars`        | Invalid Data            | Provide invalid data for the car (e.g., invalid make_model). | 400 Bad Request, "Invalid make_model_year_id."      | No                  | N/A                   |
+| DELETE `/api/cars/:id`  | Valid Request (Admin)   | Delete a car listing as an admin.                            | 200 OK, car is successfully deleted.                | No                  | N/A                   |
+| ...                     | ...                     | ...                                                          | ...                                                 | ...                 | ...                   |
 
 # Project Management
 
@@ -1875,4 +1896,104 @@ JWT_SECRET_KEY = "a_random_very_long_string_with_special_characters"
 
 ### Jira Boards and Tracking
 
-## Risk Management and Mitigation
+#### Endpoint: `POST /api/register`
+
+### Correct Request Testing:
+
+1. **Description:** This endpoint registers a new user. Description [here](#user-endpoints)
+
+2. **Request:**
+
+   - **Method:** `GET/POST/PUT/DELETE/PATCH`
+   - **URL:** `http://localhost:8080/api/<endpoint-path>`
+   - **Headers:**
+     ```json
+     {
+       "Authorization": "Bearer <JWT>",
+       "Content-Type": "application/json"
+     }
+     ```
+   - **Body (if applicable):**
+     ```json
+     {
+       "<field1>": "<value1>",
+       "<field2>": "<value2>"
+     }
+     ```
+
+3. **Response:**
+
+   - **Expected Response (200 OK):**
+     ```json
+     {
+       "<response_field1>": "<response_value1>",
+       "<response_field2>": "<response_value2>"
+     }
+     ```
+
+4. **Example in Insomnia/Postman:**
+   Include screenshot of the correct request and response (if possible).
+
+---
+
+### Breaking the Endpoint (Error Testing):
+
+1. **Test 1: Missing Field(s):**
+
+   - **Request:**
+     ```json
+     {
+       "<field1>": "<value1>"
+     }
+     ```
+   - **Expected Error Response (400 Bad Request):**
+     ```json
+     {
+       "error": "<description_of_error>"
+     }
+     ```
+
+2. **Test 2: Invalid JWT Token:**
+
+   - **Request:**
+     ```json
+     {
+       "Authorization": "Bearer <Invalid_JWT>"
+     }
+     ```
+   - **Expected Error Response (401 Unauthorized):**
+     ```json
+     {
+       "error": "Invalid or expired token"
+     }
+     ```
+
+3. **Test 3: Invalid Input Data (if applicable):**
+
+   - **Request:**
+     ```json
+     {
+       "<field1>": "<invalid_value>"
+     }
+     ```
+   - **Expected Error Response (422 Unprocessable Entity):**
+     ```json
+     {
+       "error": "<specific_error_message>"
+     }
+     ```
+
+4. **Other Possible Errors:**
+   - Include any other test cases where the endpoint can break or return unexpected errors.
+
+---
+
+### Patching the Code (If Needed):
+
+1. **Issue Found:**
+   Describe the issue found in the initial testing.
+
+2. **Patch Commit:**
+   ```bash
+   git commit -m "Fixed issue with <endpoint-path> [Commit Hash: xxxxxxxxxxxxx]"
+   ```

@@ -1,0 +1,1389 @@
+{
+    "_type": "export",
+    "__export_format": 4,
+    "__export_date": "2024-09-25T00:00:00.000Z",
+    "__export_source": "insomnia.desktop.app:v2023.3.0",
+    "resources": [
+      {
+        "_id": "wrk_123456",
+        "parentId": null,
+        "name": "Testing API",
+        "_type": "workspace"
+      },
+      {
+        "_id": "fld_user_endpoints",
+        "parentId": "wrk_123456",
+        "name": "User/Authentication Endpoints",
+        "_type": "request_group"
+      },
+      {
+        "_id": "req_register_valid",
+        "parentId": "fld_user_endpoints",
+        "name": "Register - Valid Registration",
+        "method": "POST",
+        "url": "http://localhost:8080/api/register",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword\",\n  \"phone_number\": \"1234567890\",\n  \"address\": \"123 Main St\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_register_missing_fields",
+        "parentId": "fld_user_endpoints",
+        "name": "Register - Missing Required Fields",
+        "method": "POST",
+        "url": "http://localhost:8080/api/register",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"Jane Doe\",\n  \"phone_number\": \"0987654321\",\n  \"address\": \"456 Another St\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_register_invalid_email",
+        "parentId": "fld_user_endpoints",
+        "name": "Register - Invalid Email Format",
+        "method": "POST",
+        "url": "http://localhost:8080/api/register",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"Invalid Email\",\n  \"email\": \"invalidemail\",\n  \"password\": \"password123\",\n  \"phone_number\": \"1234567890\",\n  \"address\": \"123 Main St\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_register_duplicate_email",
+        "parentId": "fld_user_endpoints",
+        "name": "Register - Duplicate Email",
+        "method": "POST",
+        "url": "http://localhost:8080/api/register",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword\",\n  \"phone_number\": \"1234567890\",\n  \"address\": \"123 Main St\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_register_no_password",
+        "parentId": "fld_user_endpoints",
+        "name": "Register - Password Not Provided",
+        "method": "POST",
+        "url": "http://localhost:8080/api/register",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"No Password\",\n  \"email\": \"nopassword@example.com\",\n  \"phone_number\": \"1234567890\",\n  \"address\": \"123 Main St\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_login_valid",
+        "parentId": "fld_user_endpoints",
+        "name": "Login - Valid Login",
+        "method": "POST",
+        "url": "http://localhost:8080/api/login",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_login_invalid_password",
+        "parentId": "fld_user_endpoints",
+        "name": "Login - Invalid Password",
+        "method": "POST",
+        "url": "http://localhost:8080/api/login",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"wrongpassword\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_login_nonexistent_email",
+        "parentId": "fld_user_endpoints",
+        "name": "Login - Non-existent Email",
+        "method": "POST",
+        "url": "http://localhost:8080/api/login",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"email\": \"nonexistent@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_user_self",
+        "parentId": "fld_user_endpoints",
+        "name": "Update User - Valid Update by Self",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/users/{{user_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"John Updated\",\n  \"address\": \"New Address\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_user_admin",
+        "parentId": "fld_user_endpoints",
+        "name": "Update User - Valid Update by Admin",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/users/{{other_user_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"User Updated by Admin\",\n  \"address\": \"Admin Updated Address\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_user_unauthorized",
+        "parentId": "fld_user_endpoints",
+        "name": "Update User - Unauthorized Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/users/{{other_user_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"Unauthorized Update\",\n  \"address\": \"Should Fail\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_user_nonexistent",
+        "parentId": "fld_user_endpoints",
+        "name": "Update User - Update Non-existent User",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/users/9999",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"name\": \"Non-existent User\",\n  \"address\": \"Nowhere\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_user_invalid_data",
+        "parentId": "fld_user_endpoints",
+        "name": "Update User - Invalid Data Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/users/{{user_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"email\": \"invalidemailformat\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_user_admin",
+        "parentId": "fld_user_endpoints",
+        "name": "Delete User - Valid Delete by Admin",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/users/{{user_to_delete_id}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_user_unauthorized",
+        "parentId": "fld_user_endpoints",
+        "name": "Delete User - Unauthorized Delete",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/users/{{user_to_delete_id}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_user_nonexistent",
+        "parentId": "fld_user_endpoints",
+        "name": "Delete User - Delete Non-existent User",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/users/9999",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "fld_car_endpoints",
+        "parentId": "wrk_123456",
+        "name": "Car Endpoints",
+        "_type": "request_group"
+      },
+      {
+        "_id": "req_get_all_cars",
+        "parentId": "fld_car_endpoints",
+        "name": "Get Cars - Retrieve All Cars",
+        "method": "GET",
+        "url": "http://localhost:8080/api/cars",
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_car_valid",
+        "parentId": "fld_car_endpoints",
+        "name": "Get Car - Valid Car ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/cars/{{car_id}}",
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_car_nonexistent",
+        "parentId": "fld_car_endpoints",
+        "name": "Get Car - Non-existent Car ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/cars/9999",
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_car_admin",
+        "parentId": "fld_car_endpoints",
+        "name": "Create Car - Valid Creation by Admin",
+        "method": "POST",
+        "url": "http://localhost:8080/api/cars",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"mileage\": 10000,\n  \"price\": 20000,\n  \"condition\": \"used\",\n  \"description\": \"A nice used car\",\n  \"image_url\": \"http://example.com/car.jpg\",\n  \"make_model_year_id\": {{make_model_year_id}}\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_car_unauthorized",
+        "parentId": "fld_car_endpoints",
+        "name": "Create Car - Unauthorized Creation",
+        "method": "POST",
+        "url": "http://localhost:8080/api/cars",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"mileage\": 10000,\n  \"price\": 20000,\n  \"condition\": \"used\",\n  \"description\": \"A nice used car\",\n  \"image_url\": \"http://example.com/car.jpg\",\n  \"make_model_year_id\": {{make_model_year_id}}\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_car_missing_fields",
+        "parentId": "fld_car_endpoints",
+        "name": "Create Car - Missing Required Fields",
+        "method": "POST",
+        "url": "http://localhost:8080/api/cars",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"price\": 20000,\n  \"condition\": \"used\",\n  \"make_model_year_id\": {{make_model_year_id}}\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_car_invalid_mmyid",
+        "parentId": "fld_car_endpoints",
+        "name": "Create Car - Invalid make_model_year_id",
+        "method": "POST",
+        "url": "http://localhost:8080/api/cars",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"mileage\": 10000,\n  \"price\": 20000,\n  \"condition\": \"used\",\n  \"make_model_year_id\": 9999\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_car_invalid_condition",
+        "parentId": "fld_car_endpoints",
+        "name": "Create Car - Invalid Condition Value",
+        "method": "POST",
+        "url": "http://localhost:8080/api/cars",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"mileage\": 10000,\n  \"price\": 20000,\n  \"condition\": \"brandnew\",\n  \"make_model_year_id\": {{make_model_year_id}}\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_car_admin",
+        "parentId": "fld_car_endpoints",
+        "name": "Update Car - Valid Update by Admin",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/cars/{{car_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"price\": 19000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_car_unauthorized",
+        "parentId": "fld_car_endpoints",
+        "name": "Update Car - Unauthorized Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/cars/{{car_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"price\": 18000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_car_nonexistent",
+        "parentId": "fld_car_endpoints",
+        "name": "Update Car - Update Non-existent Car",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/cars/9999",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"price\": 18000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_car_invalid_data",
+        "parentId": "fld_car_endpoints",
+        "name": "Update Car - Invalid Data Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/cars/{{car_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"make_model_year_id\": \"invalid\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_car_admin",
+        "parentId": "fld_car_endpoints",
+        "name": "Delete Car - Valid Delete by Admin",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/cars/{{car_id_to_delete}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_car_unauthorized",
+        "parentId": "fld_car_endpoints",
+        "name": "Delete Car - Unauthorized Delete",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/cars/{{car_id_to_delete}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_car_nonexistent",
+        "parentId": "fld_car_endpoints",
+        "name": "Delete Car - Delete Non-existent Car",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/cars/9999",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_car_with_transactions",
+        "parentId": "fld_car_endpoints",
+        "name": "Delete Car - Delete Car with Transactions",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/cars/{{car_id_with_transactions}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "fld_car_transaction_endpoints",
+        "parentId": "wrk_123456",
+        "name": "Car Transaction Endpoints",
+        "_type": "request_group"
+      },
+      {
+        "_id": "req_get_all_transactions",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Get Transactions - Valid Request",
+        "method": "GET",
+        "url": "http://localhost:8080/api/car-transactions",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_all_transactions_unauth",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Get Transactions - Unauthorized Request",
+        "method": "GET",
+        "url": "http://localhost:8080/api/car-transactions",
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_transaction_valid",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Get Transaction - Valid Transaction ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/car-transactions/{{transaction_id}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_transaction_nonexistent",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Get Transaction - Non-existent Transaction ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/car-transactions/9999",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_transaction_unauth",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Get Transaction - Unauthorized Request",
+        "method": "GET",
+        "url": "http://localhost:8080/api/car-transactions/{{transaction_id}}",
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_transaction_valid",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Create Transaction - Valid Purchase",
+        "method": "POST",
+        "url": "http://localhost:8080/api/car-transactions",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_available}},\n  \"amount\": 20000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_transaction_unauth",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Create Transaction - Unauthorized Request",
+        "method": "POST",
+        "url": "http://localhost:8080/api/car-transactions",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_available}},\n  \"amount\": 20000\n}"
+        },
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_transaction_missing_fields",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Create Transaction - Missing Required Fields",
+        "method": "POST",
+        "url": "http://localhost:8080/api/car-transactions",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"amount\": 20000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_transaction_invalid_car_id",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Create Transaction - Invalid car_id",
+        "method": "POST",
+        "url": "http://localhost:8080/api/car-transactions",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": 9999,\n  \"amount\": 20000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_transaction_car_not_available",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Create Transaction - Car Not Available",
+        "method": "POST",
+        "url": "http://localhost:8080/api/car-transactions",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_sold}},\n  \"amount\": 20000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_transaction_amount_mismatch",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Create Transaction - Amount Mismatch",
+        "method": "POST",
+        "url": "http://localhost:8080/api/car-transactions",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_available}},\n  \"amount\": 15000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_transaction_invalid_amount",
+        "parentId": "fld_car_transaction_endpoints",
+        "name": "Create Transaction - Invalid Amount Value",
+        "method": "POST",
+        "url": "http://localhost:8080/api/car-transactions",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_available}},\n  \"amount\": -20000\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "fld_makemodelyear_endpoints",
+        "parentId": "wrk_123456",
+        "name": "Make Model Year Endpoints",
+        "_type": "request_group"
+      },
+      {
+        "_id": "req_get_all_makemodelyear",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Get MakeModelYear - Valid Request",
+        "method": "GET",
+        "url": "http://localhost:8080/api/makemodelyear",
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_makemodelyear_valid",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Get MakeModelYear - Valid ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/makemodelyear/{{make_model_year_id}}",
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_makemodelyear_nonexistent",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Get MakeModelYear - Non-existent ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/makemodelyear/9999",
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_makemodelyear_admin",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Create MakeModelYear - Valid Creation by Admin",
+        "method": "POST",
+        "url": "http://localhost:8080/api/makemodelyear",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2020\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_makemodelyear_unauthorized",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Create MakeModelYear - Unauthorized Creation",
+        "method": "POST",
+        "url": "http://localhost:8080/api/makemodelyear",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2020\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_makemodelyear_missing_fields",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Create MakeModelYear - Missing Required Fields",
+        "method": "POST",
+        "url": "http://localhost:8080/api/makemodelyear",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_makemodelyear_duplicate",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Create MakeModelYear - Duplicate Entry",
+        "method": "POST",
+        "url": "http://localhost:8080/api/makemodelyear",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": 2020\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_makemodelyear_invalid_data",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Create MakeModelYear - Invalid Data",
+        "method": "POST",
+        "url": "http://localhost:8080/api/makemodelyear",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"make\": \"Toyota\",\n  \"model\": \"Corolla\",\n  \"year\": \"Two Thousand Twenty\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_makemodelyear_admin",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Update MakeModelYear - Valid Update by Admin",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/makemodelyear/{{make_model_year_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"year\": 2021\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_makemodelyear_unauthorized",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Update MakeModelYear - Unauthorized Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/makemodelyear/{{make_model_year_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"year\": 2021\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_makemodelyear_nonexistent",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Update MakeModelYear - Update Non-existent Entry",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/makemodelyear/9999",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"year\": 2021\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_makemodelyear_invalid_data",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Update MakeModelYear - Invalid Data Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/makemodelyear/{{make_model_year_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"year\": \"Two Thousand Twenty One\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_makemodelyear_admin",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Delete MakeModelYear - Valid Delete by Admin",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/makemodelyear/{{make_model_year_id_to_delete}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_makemodelyear_unauthorized",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Delete MakeModelYear - Unauthorized Delete",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/makemodelyear/{{make_model_year_id_to_delete}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_makemodelyear_nonexistent",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Delete MakeModelYear - Delete Non-existent Entry",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/makemodelyear/9999",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_makemodelyear_with_cars",
+        "parentId": "fld_makemodelyear_endpoints",
+        "name": "Delete MakeModelYear - Delete Entry with Cars",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/makemodelyear/{{make_model_year_id_with_cars}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "fld_listing_endpoints",
+        "parentId": "wrk_123456",
+        "name": "Listing Endpoints",
+        "_type": "request_group"
+      },
+      {
+        "_id": "req_get_all_listings",
+        "parentId": "fld_listing_endpoints",
+        "name": "Get Listings - Valid Request",
+        "method": "GET",
+        "url": "http://localhost:8080/api/listings",
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_listing_valid",
+        "parentId": "fld_listing_endpoints",
+        "name": "Get Listing - Valid Listing ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "_type": "request"
+      },
+      {
+        "_id": "req_get_listing_nonexistent",
+        "parentId": "fld_listing_endpoints",
+        "name": "Get Listing - Non-existent Listing ID",
+        "method": "GET",
+        "url": "http://localhost:8080/api/listings/9999",
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_listing_valid",
+        "parentId": "fld_listing_endpoints",
+        "name": "Create Listing - Valid Creation",
+        "method": "POST",
+        "url": "http://localhost:8080/api/listings",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_unlisted}}\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_listing_unauthorized",
+        "parentId": "fld_listing_endpoints",
+        "name": "Create Listing - Unauthorized Creation",
+        "method": "POST",
+        "url": "http://localhost:8080/api/listings",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_unlisted}}\n}"
+        },
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_listing_missing_fields",
+        "parentId": "fld_listing_endpoints",
+        "name": "Create Listing - Missing Required Fields",
+        "method": "POST",
+        "url": "http://localhost:8080/api/listings",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_listing_invalid_car_id",
+        "parentId": "fld_listing_endpoints",
+        "name": "Create Listing - Invalid car_id",
+        "method": "POST",
+        "url": "http://localhost:8080/api/listings",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": 9999\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_create_listing_car_already_listed",
+        "parentId": "fld_listing_endpoints",
+        "name": "Create Listing - Car Already Listed",
+        "method": "POST",
+        "url": "http://localhost:8080/api/listings",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"car_id\": {{car_id_listed}}\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_listing_owner",
+        "parentId": "fld_listing_endpoints",
+        "name": "Update Listing - Valid Update by Owner",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"listing_status\": \"sold\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_listing_admin",
+        "parentId": "fld_listing_endpoints",
+        "name": "Update Listing - Valid Update by Admin",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"listing_status\": \"sold\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_listing_unauthorized",
+        "parentId": "fld_listing_endpoints",
+        "name": "Update Listing - Unauthorized Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"listing_status\": \"sold\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{unauthorized_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_listing_nonexistent",
+        "parentId": "fld_listing_endpoints",
+        "name": "Update Listing - Update Non-existent Listing",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/listings/9999",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"listing_status\": \"sold\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_update_listing_invalid_data",
+        "parentId": "fld_listing_endpoints",
+        "name": "Update Listing - Invalid Data Update",
+        "method": "PUT",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "body": {
+          "mimeType": "application/json",
+          "text": "{\n  \"listing_status\": \"unknownstatus\"\n}"
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_listing_owner",
+        "parentId": "fld_listing_endpoints",
+        "name": "Delete Listing - Valid Delete by Owner",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_listing_admin",
+        "parentId": "fld_listing_endpoints",
+        "name": "Delete Listing - Valid Delete by Admin",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_listing_unauthorized",
+        "parentId": "fld_listing_endpoints",
+        "name": "Delete Listing - Unauthorized Delete",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/listings/{{listing_id}}",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{unauthorized_access_token}}"
+          }
+        ],
+        "_type": "request"
+      },
+      {
+        "_id": "req_delete_listing_nonexistent",
+        "parentId": "fld_listing_endpoints",
+        "name": "Delete Listing - Delete Non-existent Listing",
+        "method": "DELETE",
+        "url": "http://localhost:8080/api/listings/9999",
+        "headers": [
+          {
+            "name": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "_type": "request"
+      }
+    ]
+  }
+  

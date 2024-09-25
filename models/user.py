@@ -28,18 +28,23 @@ class User(db.Model):
 # Define the UserSchema using Marshmallow for serialization and deserialization
 class UserSchema(ma.Schema):
     # Nested schemas for serializing relationships (listings and car_transactions)
-    listings = fields.List(fields.Nested('ListingSchema', exclude=["user", "car"]))  # List of related 'ListingSchema' objects, excluding the 'user' field to prevent circular reference
-    car_transactions = fields.List(fields.Nested('CarTransactionSchema', exclude=["user", "car"]))  # List of related 'CarTransactionSchema' objects, excluding the 'user' field to prevent circular reference
-    
+    listings = fields.List(fields.Nested('ListingSchema', exclude=["user", "car"]))
+    car_transactions = fields.List(fields.Nested('CarTransactionSchema', exclude=["user", "car"]))
+
     # Email field with validation for a correct email format using a regular expression
-    email = fields.String(required=True, validate=Regexp(r"^\S+@\S+\.\S+$", error="Invalid Email Format."))  # Ensures the email is in a valid format
-    
+    email = fields.String(required=True, validate=Regexp(r"^\S+@\S+\.\S+$", error="Invalid Email Format."))
+
+    # Add password field as load_only to ensure it's only used during deserialization
+    password = fields.String(required=True, load_only=True)  # Password is required for registration but won't be exposed
+
     class Meta:
         # Fields to include in the serialized output
-        fields = ("user_id", "name", "email", "phone_number", "address", "is_admin", "listings", "car_transactions")
+        fields = ("user_id", "name", "email","password", "phone_number", "address", "is_admin", "listings", "car_transactions")
+        
 
-# Schema instance for serializing a single user object, excluding the password field for security
+# Schema instance for serializing a single user object
 user_schema = UserSchema()
 
-# Schema instance for serializing a list of user objects, excluding the password field for security
-users_schema = UserSchema()
+# Schema instance for serializing a list of user objects
+users_schema = UserSchema(many=True)
+

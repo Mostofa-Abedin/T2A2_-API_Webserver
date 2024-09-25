@@ -1,72 +1,475 @@
 {
-  "users": [
-    {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "password": "hashed_password_1",
-      "phone_number": "1234567890",
-      "address": "123 Main St",
-      "is_admin": false
-    },
-    {
-      "name": "Jane Smith",
-      "email": "jane@example.com",
-      "password": "hashed_password_2",
-      "phone_number": "0987654321",
-      "address": "456 Elm St",
-      "is_admin": true
-    }
-  ],
-  "makemodelyears": [
-    {
-      "make": "Toyota",
-      "model": "Corolla",
-      "year": 2020
-    },
-    {
-      "make": "Honda",
-      "model": "Civic",
-      "year": 2019
-    }
-  ],
-  "cars": [
-    {
-      "make_model_year_id": 1,
-      "mileage": 15000,
-      "price": 20000,
-      "condition": "used",
-      "description": "Well-maintained sedan",
-      "image_url": "http://example.com/car1.jpg"
-    },
-    {
-      "make_model_year_id": 2,
-      "mileage": 5000,
-      "price": 22000,
-      "condition": "new",
-      "description": "Brand new model",
-      "image_url": "http://example.com/car2.jpg"
-    }
-  ],
-  "listings": [
-    {
-      "car_id": 1,
-      "user_id": 1,
-      "listing_status": "available",
-      "date_posted": "2024-09-15"
-    },
-    {
-      "car_id": 2,
-      "user_id": 2,
-      "listing_status": "sold",
-      "date_posted": "2024-09-16"
-    }
-  ],
-  "car_transactions": [
-    {
-      "car_id": 1,
-      "buyer_id": 2,
-      "transaction_date": "2024-09-20",
-      "amount": 20000
-    }
-  ]
-}
+    "users": [
+      {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "password": "hashed_password_john",
+        "phone_number": "1111111111",
+        "address": "123 Main St",
+        "is_admin": false
+      },
+      {
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "password": "hashed_password_jane",
+        "phone_number": "2222222222",
+        "address": "456 Elm St",
+        "is_admin": true
+      },
+      {
+        "name": "Bob Johnson",
+        "email": "bob@example.com",
+        "password": "hashed_password_bob",
+        "phone_number": "3333333333",
+        "address": "789 Oak St",
+        "is_admin": false
+      },
+      {
+        "name": "Alice Williams",
+        "email": "alice@example.com",
+        "password": "hashed_password_alice",
+        "phone_number": "4444444444",
+        "address": "321 Pine St",
+        "is_admin": false
+      },
+      {
+        "name": "Charlie Brown",
+        "email": "charlie@example.com",
+        "password": "hashed_password_charlie",
+        "phone_number": "5555555555",
+        "address": "654 Maple St",
+        "is_admin": false
+      },
+      {
+        "name": "David Wilson",
+        "email": "david@example.com",
+        "password": "hashed_password_david",
+        "phone_number": "6666666666",
+        "address": "987 Cedar St",
+        "is_admin": false
+      },
+      {
+        "name": "Eva Green",
+        "email": "eva@example.com",
+        "password": "hashed_password_eva",
+        "phone_number": "7777777777",
+        "address": "159 Birch St",
+        "is_admin": true
+      },
+      {
+        "name": "Frank Harris",
+        "email": "frank@example.com",
+        "password": "hashed_password_frank",
+        "phone_number": "8888888888",
+        "address": "753 Walnut St",
+        "is_admin": false
+      },
+      {
+        "name": "Grace Lee",
+        "email": "grace@example.com",
+        "password": "hashed_password_grace",
+        "phone_number": "9999999999",
+        "address": "852 Chestnut St",
+        "is_admin": false
+      },
+      {
+        "name": "Henry Clark",
+        "email": "henry@example.com",
+        "password": "hashed_password_henry",
+        "phone_number": "1010101010",
+        "address": "456 Spruce St",
+        "is_admin": false
+      }
+    ],
+    "makemodelyears": [
+      {"make": "Toyota", "model": "Corolla", "year": 2010},
+      {"make": "Toyota", "model": "Corolla", "year": 2011},
+      {"make": "Toyota", "model": "Corolla", "year": 2012},
+      {"make": "Toyota", "model": "Camry", "year": 2010},
+      {"make": "Toyota", "model": "Camry", "year": 2011},
+      {"make": "Toyota", "model": "Camry", "year": 2012},
+      {"make": "Toyota", "model": "Prius", "year": 2010},
+      {"make": "Toyota", "model": "Prius", "year": 2011},
+      {"make": "Toyota", "model": "Prius", "year": 2012},
+      {"make": "Honda", "model": "Civic", "year": 2010},
+      {"make": "Honda", "model": "Civic", "year": 2011},
+      {"make": "Honda", "model": "Civic", "year": 2012},
+      {"make": "Honda", "model": "Accord", "year": 2010},
+      {"make": "Honda", "model": "Accord", "year": 2011},
+      {"make": "Honda", "model": "Accord", "year": 2012},
+      {"make": "Ford", "model": "Focus", "year": 2010},
+      {"make": "Ford", "model": "Focus", "year": 2011},
+      {"make": "Ford", "model": "Focus", "year": 2012},
+      {"make": "Ford", "model": "Fusion", "year": 2010},
+      {"make": "Ford", "model": "Fusion", "year": 2011},
+      {"make": "Ford", "model": "Fusion", "year": 2012},
+      {"make": "BMW", "model": "3 Series", "year": 2010},
+      {"make": "BMW", "model": "3 Series", "year": 2011},
+      {"make": "BMW", "model": "3 Series", "year": 2012},
+      {"make": "Audi", "model": "A4", "year": 2010},
+      {"make": "Audi", "model": "A4", "year": 2011},
+      {"make": "Audi", "model": "A4", "year": 2012},
+      {"make": "Toyota", "model": "Corolla", "year": 2013},
+      {"make": "Toyota", "model": "Camry", "year": 2013},
+      {"make": "Toyota", "model": "Prius", "year": 2013},
+      {"make": "Honda", "model": "Civic", "year": 2013},
+      {"make": "Honda", "model": "Accord", "year": 2013},
+      {"make": "Ford", "model": "Focus", "year": 2013},
+      {"make": "Ford", "model": "Fusion", "year": 2013},
+      {"make": "BMW", "model": "3 Series", "year": 2013},
+      {"make": "Audi", "model": "A4", "year": 2013},
+      {"make": "Toyota", "model": "Corolla", "year": 2014},
+      {"make": "Toyota", "model": "Camry", "year": 2014},
+      {"make": "Honda", "model": "Civic", "year": 2014},
+      {"make": "Ford", "model": "Fusion", "year": 2014},
+      {"make": "BMW", "model": "3 Series", "year": 2014},
+      {"make": "Audi", "model": "A4", "year": 2014},
+      {"make": "Toyota", "model": "Corolla", "year": 2015},
+      {"make": "Toyota", "model": "Camry", "year": 2015},
+      {"make": "Honda", "model": "Civic", "year": 2015},
+      {"make": "Ford", "model": "Fusion", "year": 2015},
+      {"make": "BMW", "model": "3 Series", "year": 2015},
+      {"make": "Audi", "model": "A4", "year": 2015},
+      {"make": "Toyota", "model": "Corolla", "year": 2016},
+      {"make": "Toyota", "model": "Camry", "year": 2016},
+      {"make": "Honda", "model": "Civic", "year": 2016},
+      {"make": "Ford", "model": "Fusion", "year": 2016}
+    ],
+    "cars": [
+      {
+        "make_model_year_id": 1,
+        "mileage": 60000,
+        "price": 7000,
+        "condition": "used",
+        "description": "Used Toyota Corolla 2010, well-maintained",
+        "image_url": "http://example.com/car1.jpg"
+      },
+      {
+        "make_model_year_id": 5,
+        "mileage": 50000,
+        "price": 8000,
+        "condition": "used",
+        "description": "Used Toyota Camry 2011, good condition",
+        "image_url": "http://example.com/car2.jpg"
+      },
+      {
+        "make_model_year_id": 10,
+        "mileage": 40000,
+        "price": 9000,
+        "condition": "used",
+        "description": "Used Honda Civic 2010, excellent condition",
+        "image_url": "http://example.com/car3.jpg"
+      },
+      {
+        "make_model_year_id": 15,
+        "mileage": 30000,
+        "price": 10000,
+        "condition": "used",
+        "description": "Used Honda Accord 2012, low mileage",
+        "image_url": "http://example.com/car4.jpg"
+      },
+      {
+        "make_model_year_id": 20,
+        "mileage": 25000,
+        "price": 12000,
+        "condition": "used",
+        "description": "Used Ford Fusion 2011, great condition",
+        "image_url": "http://example.com/car5.jpg"
+      },
+      {
+        "make_model_year_id": 25,
+        "mileage": 80000,
+        "price": 11000,
+        "condition": "used",
+        "description": "Used Audi A4 2010, luxury car",
+        "image_url": "http://example.com/car6.jpg"
+      },
+      {
+        "make_model_year_id": 30,
+        "mileage": 15000,
+        "price": 15000,
+        "condition": "used",
+        "description": "Used Toyota Prius 2013, hybrid",
+        "image_url": "http://example.com/car7.jpg"
+      },
+      {
+        "make_model_year_id": 35,
+        "mileage": 20000,
+        "price": 18000,
+        "condition": "used",
+        "description": "Used BMW 3 Series 2013, sporty",
+        "image_url": "http://example.com/car8.jpg"
+      },
+      {
+        "make_model_year_id": 40,
+        "mileage": 30000,
+        "price": 16000,
+        "condition": "used",
+        "description": "Used Ford Fusion 2014, reliable",
+        "image_url": "http://example.com/car9.jpg"
+      },
+      {
+        "make_model_year_id": 45,
+        "mileage": 10000,
+        "price": 20000,
+        "condition": "used",
+        "description": "Used Honda Civic 2015, like new",
+        "image_url": "http://example.com/car10.jpg"
+      },
+      {
+        "make_model_year_id": 50,
+        "mileage": 5000,
+        "price": 22000,
+        "condition": "used",
+        "description": "Used Ford Fusion 2016, low mileage",
+        "image_url": "http://example.com/car11.jpg"
+      },
+      {
+        "make_model_year_id": 2,
+        "mileage": 55000,
+        "price": 7500,
+        "condition": "used",
+        "description": "Used Toyota Corolla 2011, good condition",
+        "image_url": "http://example.com/car12.jpg"
+      },
+      {
+        "make_model_year_id": 6,
+        "mileage": 45000,
+        "price": 8500,
+        "condition": "used",
+        "description": "Used Toyota Camry 2012, reliable",
+        "image_url": "http://example.com/car13.jpg"
+      },
+      {
+        "make_model_year_id": 11,
+        "mileage": 35000,
+        "price": 9500,
+        "condition": "used",
+        "description": "Used Honda Civic 2011, well-maintained",
+        "image_url": "http://example.com/car14.jpg"
+      },
+      {
+        "make_model_year_id": 16,
+        "mileage": 40000,
+        "price": 8000,
+        "condition": "used",
+        "description": "Used Ford Focus 2010, compact",
+        "image_url": "http://example.com/car15.jpg"
+      },
+      {
+        "make_model_year_id": 21,
+        "mileage": 30000,
+        "price": 11500,
+        "condition": "used",
+        "description": "Used Ford Fusion 2012, good value",
+        "image_url": "http://example.com/car16.jpg"
+      },
+      {
+        "make_model_year_id": 26,
+        "mileage": 70000,
+        "price": 12000,
+        "condition": "used",
+        "description": "Used Audi A4 2011, luxury sedan",
+        "image_url": "http://example.com/car17.jpg"
+      },
+      {
+        "make_model_year_id": 31,
+        "mileage": 25000,
+        "price": 13000,
+        "condition": "used",
+        "description": "Used Honda Civic 2013, reliable",
+        "image_url": "http://example.com/car18.jpg"
+      },
+      {
+        "make_model_year_id": 36,
+        "mileage": 22000,
+        "price": 17000,
+        "condition": "used",
+        "description": "Used Audi A4 2013, excellent condition",
+        "image_url": "http://example.com/car19.jpg"
+      },
+      {
+        "make_model_year_id": 41,
+        "mileage": 28000,
+        "price": 19000,
+        "condition": "used",
+        "description": "Used BMW 3 Series 2014, sporty",
+        "image_url": "http://example.com/car20.jpg"
+      },
+      {
+        "make_model_year_id": 46,
+        "mileage": 12000,
+        "price": 21000,
+        "condition": "used",
+        "description": "Used Ford Fusion 2015, like new",
+        "image_url": "http://example.com/car21.jpg"
+      },
+      {
+        "make_model_year_id": 3,
+        "mileage": 50000,
+        "price": 7200,
+        "condition": "used",
+        "description": "Used Toyota Corolla 2012, affordable",
+        "image_url": "http://example.com/car22.jpg"
+      },
+      {
+        "make_model_year_id": 7,
+        "mileage": 60000,
+        "price": 8000,
+        "condition": "used",
+        "description": "Used Toyota Prius 2010, hybrid",
+        "image_url": "http://example.com/car23.jpg"
+      },
+      {
+        "make_model_year_id": 12,
+        "mileage": 40000,
+        "price": 9700,
+        "condition": "used",
+        "description": "Used Honda Civic 2012, reliable",
+        "image_url": "http://example.com/car24.jpg"
+      },
+      {
+        "make_model_year_id": 17,
+        "mileage": 45000,
+        "price": 8200,
+        "condition": "used",
+        "description": "Used Ford Focus 2011, compact",
+        "image_url": "http://example.com/car25.jpg"
+      },
+      {
+        "make_model_year_id": 22,
+        "mileage": 35000,
+        "price": 14000,
+        "condition": "used",
+        "description": "Used BMW 3 Series 2010, luxury",
+        "image_url": "http://example.com/car26.jpg"
+      },
+      {
+        "make_model_year_id": 27,
+        "mileage": 65000,
+        "price": 11500,
+        "condition": "used",
+        "description": "Used Audi A4 2012, well-maintained",
+        "image_url": "http://example.com/car27.jpg"
+      },
+      {
+        "make_model_year_id": 32,
+        "mileage": 23000,
+        "price": 13500,
+        "condition": "used",
+        "description": "Used Honda Accord 2013, low mileage",
+        "image_url": "http://example.com/car28.jpg"
+      },
+      {
+        "make_model_year_id": 37,
+        "mileage": 27000,
+        "price": 15000,
+        "condition": "used",
+        "description": "Used Toyota Corolla 2014, good condition",
+        "image_url": "http://example.com/car29.jpg"
+      },
+      {
+        "make_model_year_id": 42,
+        "mileage": 29000,
+        "price": 19500,
+        "condition": "used",
+        "description": "Used Audi A4 2014, excellent condition",
+        "image_url": "http://example.com/car30.jpg"
+      }
+    ],
+    "listings": [
+      {
+        "car_id": 1,
+        "user_id": 1,
+        "listing_status": "available",
+        "date_posted": "2023-10-01"
+      },
+      {
+        "car_id": 2,
+        "user_id": 2,
+        "listing_status": "sold",
+        "date_posted": "2023-09-15"
+      },
+      {
+        "car_id": 3,
+        "user_id": 3,
+        "listing_status": "available",
+        "date_posted": "2023-10-05"
+      },
+      {
+        "car_id": 4,
+        "user_id": 4,
+        "listing_status": "available",
+        "date_posted": "2023-10-10"
+      },
+      {
+        "car_id": 5,
+        "user_id": 5,
+        "listing_status": "sold",
+        "date_posted": "2023-09-20"
+      },
+      {
+        "car_id": 6,
+        "user_id": 6,
+        "listing_status": "available",
+        "date_posted": "2023-10-15"
+      },
+      {
+        "car_id": 7,
+        "user_id": 7,
+        "listing_status": "available",
+        "date_posted": "2023-10-18"
+      },
+      {
+        "car_id": 8,
+        "user_id": 8,
+        "listing_status": "available",
+        "date_posted": "2023-10-20"
+      },
+      {
+        "car_id": 9,
+        "user_id": 9,
+        "listing_status": "sold",
+        "date_posted": "2023-09-25"
+      },
+      {
+        "car_id": 10,
+        "user_id": 10,
+        "listing_status": "available",
+        "date_posted": "2023-10-22"
+      },
+      {
+        "car_id": 11,
+        "user_id": 1,
+        "listing_status": "available",
+        "date_posted": "2023-10-24"
+      },
+      {
+        "car_id": 12,
+        "user_id": 2,
+        "listing_status": "available",
+        "date_posted": "2023-10-26"
+      }
+    ],
+    "car_transactions": [
+      {
+        "car_id": 2,
+        "buyer_id": 3,
+        "transaction_date": "2023-09-20",
+        "amount": 8000
+      },
+      {
+        "car_id": 5,
+        "buyer_id": 6,
+        "transaction_date": "2023-09-25",
+        "amount": 12000
+      },
+      {
+        "car_id": 9,
+        "buyer_id": 10,
+        "transaction_date": "2023-09-30",
+        "amount": 16000
+      }
+    ]
+  }
+  

@@ -1,0 +1,72 @@
+{
+  "users": [
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "hashed_password_1",
+      "phone_number": "1234567890",
+      "address": "123 Main St",
+      "is_admin": false
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "password": "hashed_password_2",
+      "phone_number": "0987654321",
+      "address": "456 Elm St",
+      "is_admin": true
+    }
+  ],
+  "makemodelyears": [
+    {
+      "make": "Toyota",
+      "model": "Corolla",
+      "year": 2020
+    },
+    {
+      "make": "Honda",
+      "model": "Civic",
+      "year": 2019
+    }
+  ],
+  "cars": [
+    {
+      "make_model_year_id": 1,
+      "mileage": 15000,
+      "price": 20000,
+      "condition": "used",
+      "description": "Well-maintained sedan",
+      "image_url": "http://example.com/car1.jpg"
+    },
+    {
+      "make_model_year_id": 2,
+      "mileage": 5000,
+      "price": 22000,
+      "condition": "new",
+      "description": "Brand new model",
+      "image_url": "http://example.com/car2.jpg"
+    }
+  ],
+  "listings": [
+    {
+      "car_id": 1,
+      "user_id": 1,
+      "listing_status": "available",
+      "date_posted": "2024-09-15"
+    },
+    {
+      "car_id": 2,
+      "user_id": 2,
+      "listing_status": "sold",
+      "date_posted": "2024-09-16"
+    }
+  ],
+  "car_transactions": [
+    {
+      "car_id": 1,
+      "buyer_id": 2,
+      "transaction_date": "2024-09-20",
+      "amount": 20000
+    }
+  ]
+}

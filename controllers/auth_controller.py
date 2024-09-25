@@ -26,6 +26,12 @@ def register_user():
         
         # Hash the password and store it in the 'password' field
         password = body_data.get("password")
+        
+        # Check if password is in the body data
+        password = body_data.get("password")
+        if not password:
+            return {"error": "Password is required"}, 400
+        
         if password:
             user.password = bcrypt.generate_password_hash(password).decode("utf-8")
 
