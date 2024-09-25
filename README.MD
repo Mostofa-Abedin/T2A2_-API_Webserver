@@ -54,7 +54,7 @@
 
 - [Testing](#testing)
 
-  - [Using Insomnia/Postman for Manual Testing](#using-insomniapostman-for-manual-testing)
+  - [Using Insomnia for Manual Testing](#using-insomniapostman-for-manual-testing)
 
 - [Local Setup & Developer Utilities](#local-setup--developer-utilities)
 
@@ -1865,22 +1865,189 @@ JWT_SECRET_KEY = "a_random_very_long_string_with_special_characters"
 
 # Testing
 
-**User Endpoints**
+## Testing Procedure
 
-| **Endpoint**            | **Test Type**           | **Test Description**                                         | **Expected Outcome**                                | **Patch Required?** | **Patch Commit Hash** |
-| ----------------------- | ----------------------- | ------------------------------------------------------------ | --------------------------------------------------- | ------------------- | --------------------- |
-| POST `/api/register`    | Valid Request           | Register a new user with valid data.                         | 201 Created, user is successfully registered.       | No                  | N/A                   |
-| POST `/api/register`    | Missing Required Fields | Omit email and password in the request body.                 | 400 Bad Request, "Email and password are required." | No                  | N/A                   |
-| POST `/api/register`    | Duplicate Entry         | Attempt to register with an already registered email.        | 400 Bad Request, "Email address must be unique."    | No                  | N/A                   |
-| POST `/api/login`       | Valid Request           | Log in with valid credentials.                               | 200 OK, JWT token is returned.                      | No                  | N/A                   |
-| POST `/api/login`       | Invalid Credentials     | Log in with incorrect password.                              | 400 Bad Request, "Invalid email or password."       | No                  | N/A                   |
-| PUT `/api/users/:id`    | Valid Request           | Update user info as admin or the user themselves.            | 200 OK, updated user data is returned.              | No                  | N/A                   |
-| PUT `/api/users/:id`    | Unauthorized Access     | Try to update user info without permission (non-admin).      | 403 Forbidden, "You do not have permission."        | No                  | N/A                   |
-| DELETE `/api/users/:id` | Valid Request (Admin)   | Delete a user as an admin.                                   | 200 OK, user is successfully deleted.               | No                  | N/A                   |
-| POST `/api/cars`        | Valid Request           | Create a new car with valid data.                            | 201 Created, car is successfully added.             | No                  | N/A                   |
-| POST `/api/cars`        | Invalid Data            | Provide invalid data for the car (e.g., invalid make_model). | 400 Bad Request, "Invalid make_model_year_id."      | No                  | N/A                   |
-| DELETE `/api/cars/:id`  | Valid Request (Admin)   | Delete a car listing as an admin.                            | 200 OK, car is successfully deleted.                | No                  | N/A                   |
-| ...                     | ...                     | ...                                                          | ...                                                 | ...                 | ...                   |
+#### Test Planning and Design
+
+To begin testing, we started off by identifying a comprehensive list of cases that would cover both normal operations and edge cases. The details of the each test can be found in the tables below.
+
+\*Please note that the tables must already be created and seeded in PostgreSQL. To do that see section [CLI Controllers](#cli-controllers).
+
+#### Testing Tables
+
+**Users/Authentication Endpoints**
+
+| **Endpoint**                | **Test Type**            | **Test Description**                                           | **Expected Outcome**                                  | **Patch Required?** | **Patch Commit Hash** |
+| --------------------------- | ------------------------ | -------------------------------------------------------------- | ----------------------------------------------------- | ------------------- | --------------------- |
+| **POST** `/api/register`    | Valid Registration       | Register a new user with valid data.                           | **201 Created**, user is successfully registered.     | No                  | N/A                   |
+| **POST** `/api/register`    | Missing Required Fields  | Attempt to register without required fields (email, password). | **400 Bad Request**, error indicating missing fields. | No                  | N/A                   |
+| **POST** `/api/register`    | Invalid Email Format     | Register with an invalid email format.                         | **400 Bad Request**, "Invalid Email Format."          | No                  | N/A                   |
+| **POST** `/api/register`    | Duplicate Email          | Attempt to register with an email that already exists.         | **400 Bad Request**, "Email address must be unique."  | No                  | N/A                   |
+| **POST** `/api/register`    | Password Not Provided    | Register without providing a password.                         | **400 Bad Request**, "Password is required."          | No                  | N/A                   |
+| **POST** `/api/login`       | Valid Login              | Log in with valid credentials.                                 | **200 OK**, JWT token is returned.                    | No                  | N/A                   |
+| **POST** `/api/login`       | Invalid Password         | Log in with incorrect password.                                | **400 Bad Request**, "Invalid email or password."     | No                  | N/A                   |
+| **POST** `/api/login`       | Non-existent Email       | Log in with an email that doesn't exist.                       | **400 Bad Request**, "Invalid email or password."     | No                  | N/A                   |
+| **PUT** `/api/users/:id`    | Valid Update by Self     | User updates their own information.                            | **200 OK**, updated user data is returned.            | No                  | N/A                   |
+| **PUT** `/api/users/:id`    | Valid Update by Admin    | Admin updates another user's information.                      | **200 OK**, updated user data is returned.            | No                  | N/A                   |
+| **PUT** `/api/users/:id`    | Unauthorized Update      | User tries to update another user's info without admin rights. | **403 Forbidden**, "You do not have permission..."    | No                  | N/A                   |
+| **PUT** `/api/users/:id`    | Update Non-existent User | Attempt to update a user that doesn't exist.                   | **404 Not Found**, "User does not exist."             | No                  | N/A                   |
+| **PUT** `/api/users/:id`    | Invalid Data Update      | Provide invalid data when updating user (e.g., invalid email). | **400 Bad Request**, "Invalid Email Format."          | No                  | N/A                   |
+| **DELETE** `/api/users/:id` | Valid Delete by Admin    | Admin deletes a user.                                          | **200 OK**, "User deleted successfully."              | No                  | N/A                   |
+| **DELETE** `/api/users/:id` | Unauthorized Delete      | Non-admin user attempts to delete a user.                      | **403 Forbidden**, "You do not have permission..."    | No                  | N/A                   |
+| **DELETE** `/api/users/:id` | Delete Non-existent User | Attempt to delete a user that isn't in the database.           | **404 Not Found**, "User does not exist."             | No                  | N/A                   |
+
+**Car Endpoints**
+
+| **Endpoint**               | **Test Type**                | **Test Description**                                                     | **Expected Outcome**                                                    | **Patch Required?** | **Patch Commit Hash** |
+| -------------------------- | ---------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------- | --------------------- |
+| **GET** `/api/cars`        | Retrieve All Cars            | Fetch all cars in the database.                                          | **200 OK**, list of all cars is returned.                               | No                  | N/A                   |
+| **GET** `/api/cars/:id`    | Valid Car ID                 | Retrieve a specific car by valid ID.                                     | **200 OK**, car data is returned.                                       | No                  | N/A                   |
+| **GET** `/api/cars/:id`    | Non-existent Car ID          | Attempt to retrieve a car with an ID that doesn't exist.                 | **404 Not Found**, "Car not found."                                     | No                  | N/A                   |
+| **POST** `/api/cars`       | Valid Creation by Admin      | Admin creates a new car with valid data.                                 | **201 Created**, car is successfully added.                             | No                  | N/A                   |
+| **POST** `/api/cars`       | Unauthorized Creation        | Non-admin user attempts to create a new car.                             | **403 Forbidden**, "You do not have permission to perform this action." | No                  | N/A                   |
+| **POST** `/api/cars`       | Missing Required Fields      | Omit required fields (e.g., `mileage`, `price`, `condition`).            | **400 Bad Request**, validation error messages are returned.            | No                  | N/A                   |
+| **POST** `/api/cars`       | Invalid `make_model_year_id` | Use a `make_model_year_id` that doesn't exist.                           | **400 Bad Request**, "Invalid make_model_year_id."                      | No                  | N/A                   |
+| **POST** `/api/cars`       | Invalid Condition Value      | Provide an invalid `condition` value (not 'new', 'used', 'certified').   | **400 Bad Request**, validation error on `condition`.                   | No                  | N/A                   |
+| **PUT** `/api/cars/:id`    | Valid Update by Admin        | Admin updates an existing car with valid data.                           | **200 OK**, updated car data is returned.                               | No                  | N/A                   |
+| **PUT** `/api/cars/:id`    | Unauthorized Update          | Non-admin user attempts to update a car.                                 | **403 Forbidden**, "You do not have permission to perform this action." | No                  | N/A                   |
+| **PUT** `/api/cars/:id`    | Update Non-existent Car      | Attempt to update a car that doesn't exist.                              | **404 Not Found**, "Car not found."                                     | No                  | N/A                   |
+| **PUT** `/api/cars/:id`    | Invalid Data Update          | Provide invalid data during update (e.g., invalid `make_model_year_id`). | **400 Bad Request**, validation error messages are returned.            | No                  | N/A                   |
+| **DELETE** `/api/cars/:id` | Valid Delete by Admin        | Admin deletes a car with no associated transactions.                     | **200 OK**, "Car deleted successfully."                                 | No                  | N/A                   |
+| **DELETE** `/api/cars/:id` | Unauthorized Delete          | Non-admin user attempts to delete a car.                                 | **403 Forbidden**, "You do not have permission to perform this action." | No                  | N/A                   |
+| **DELETE** `/api/cars/:id` | Delete Non-existent Car      | Attempt to delete a car that doesn't exist.                              | **404 Not Found**, "Car not found."                                     | No                  | N/A                   |
+| **DELETE** `/api/cars/:id` | Delete Car with Transactions | Attempt to delete a car that has associated transactions.                | **400 Bad Request**, error about associated transactions.               | No                  | N/A                   |
+
+**Car Transaction Endpoints**
+
+| **Endpoint**                        | **Test Type**               | **Test Description**                                                      | **Expected Outcome**                                                 | **Patch Required?** | **Patch Commit Hash** |
+| ----------------------------------- | --------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------- | --------------------- |
+| **GET** `/api/car-transactions`     | Valid Request               | Retrieve all car transactions with a valid JWT token.                     | **200 OK**, list of all transactions is returned.                    | No                  | N/A                   |
+| **GET** `/api/car-transactions`     | Unauthorized Request        | Attempt to retrieve transactions without a JWT token.                     | **401 Unauthorized**, error about missing or invalid authentication. | No                  | N/A                   |
+| **GET** `/api/car-transactions/:id` | Valid Transaction ID        | Retrieve a specific transaction by valid ID with JWT.                     | **200 OK**, transaction data is returned.                            | No                  | N/A                   |
+| **GET** `/api/car-transactions/:id` | Non-existent Transaction ID | Attempt to retrieve a transaction with an ID that doesn't exist.          | **404 Not Found**, "Car transaction not found."                      | No                  | N/A                   |
+| **GET** `/api/car-transactions/:id` | Unauthorized Request        | Attempt to retrieve a transaction without a JWT token.                    | **401 Unauthorized**, error about missing or invalid authentication. | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Valid Purchase              | Create a new transaction with valid data and JWT.                         | **201 Created**, transaction is successfully created.                | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Unauthorized Request        | Attempt to create a transaction without a JWT token.                      | **401 Unauthorized**, error about missing or invalid authentication. | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Missing Required Fields     | Omit required fields like `car_id` or `amount`.                           | **400 Bad Request**, error indicating missing fields.                | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Invalid `car_id`            | Use a `car_id` that doesn't exist.                                        | **400 Bad Request**, "Invalid car_id."                               | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Car Not Available           | Attempt to purchase a car that is not available (no 'available' listing). | **400 Bad Request**, "Car is not available for purchase."            | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Amount Mismatch             | Provide an `amount` that doesn't match the car's price.                   | **400 Bad Request**, "Amount does not match car price."              | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Purchase Already Sold Car   | Attempt to purchase a car that has already been sold.                     | **400 Bad Request**, "Car is not available for purchase."            | No                  | N/A                   |
+| **POST** `/api/car-transactions`    | Invalid Amount Value        | Provide an invalid `amount` (e.g., negative number).                      | **400 Bad Request**, validation error messages.                      | No                  | N/A                   |
+
+**Make Model Year Endpoints**
+
+| **Endpoint**                        | **Test Type**             | **Test Description**                                        | **Expected Outcome**                                                          | **Patch Required?** | **Patch Commit Hash** |
+| ----------------------------------- | ------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------- | --------------------- |
+| **GET** `/api/makemodelyear`        | Valid Request             | Retrieve all make, model, year combinations.                | **200 OK**, list of all entries is returned.                                  | No                  | N/A                   |
+| **GET** `/api/makemodelyear/:id`    | Valid ID                  | Retrieve a specific entry by valid ID.                      | **200 OK**, entry data is returned.                                           | No                  | N/A                   |
+| **GET** `/api/makemodelyear/:id`    | Non-existent ID           | Attempt to retrieve an entry with an ID that doesn't exist. | **404 Not Found**, "MakeModelYear not found."                                 | No                  | N/A                   |
+| **POST** `/api/makemodelyear`       | Valid Creation by Admin   | Admin creates a new entry with valid data.                  | **201 Created**, entry is successfully added.                                 | No                  | N/A                   |
+| **POST** `/api/makemodelyear`       | Unauthorized Creation     | Non-admin user attempts to create a new entry.              | **403 Forbidden**, "You do not have permission to perform this action."       | No                  | N/A                   |
+| **POST** `/api/makemodelyear`       | Missing Required Fields   | Omit required fields (e.g., `make`, `model`, `year`).       | **400 Bad Request**, validation error messages are returned.                  | No                  | N/A                   |
+| **POST** `/api/makemodelyear`       | Duplicate Entry           | Attempt to create an entry that already exists.             | **400 Bad Request**, "This make, model, and year combination already exists." | No                  | N/A                   |
+| **POST** `/api/makemodelyear`       | Invalid Data              | Provide invalid data (e.g., non-integer `year`).            | **400 Bad Request**, validation error messages are returned.                  | No                  | N/A                   |
+| **PUT** `/api/makemodelyear/:id`    | Valid Update by Admin     | Admin updates an existing entry with valid data.            | **200 OK**, updated entry data is returned.                                   | No                  | N/A                   |
+| **PUT** `/api/makemodelyear/:id`    | Unauthorized Update       | Non-admin user attempts to update an entry.                 | **403 Forbidden**, "You do not have permission to perform this action."       | No                  | N/A                   |
+| **PUT** `/api/makemodelyear/:id`    | Update Non-existent Entry | Attempt to update an entry that doesn't exist.              | **404 Not Found**, "MakeModelYear not found."                                 | No                  | N/A                   |
+| **PUT** `/api/makemodelyear/:id`    | Invalid Data Update       | Provide invalid data during update (e.g., invalid `year`).  | **400 Bad Request**, validation error messages are returned.                  | No                  | N/A                   |
+| **DELETE** `/api/makemodelyear/:id` | Valid Delete by Admin     | Admin deletes an entry with no associated cars.             | **200 OK**, "MakeModelYear deleted successfully."                             | No                  | N/A                   |
+| **DELETE** `/api/makemodelyear/:id` | Unauthorized Delete       | Non-admin user attempts to delete an entry.                 | **403 Forbidden**, "You do not have permission to perform this action."       | No                  | N/A                   |
+| **DELETE** `/api/makemodelyear/:id` | Delete Non-existent Entry | Attempt to delete an entry that doesn't exist.              | **404 Not Found**, "MakeModelYear not found."                                 | No                  | N/A                   |
+| **DELETE** `/api/makemodelyear/:id` | Delete Entry with Cars    | Attempt to delete an entry that has associated cars.        | **400 Bad Request**, error about associated cars.                             | No                  | N/A                   |
+
+**Listing Endpoints**
+
+| **Endpoint**                   | **Test Type**               | **Test Description**                                                 | **Expected Outcome**                                                 | **Patch Required?** | **Patch Commit Hash** |
+| ------------------------------ | --------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------- | --------------------- |
+| **GET** `/api/listings`        | Valid Request               | Retrieve all listings.                                               | **200 OK**, list of all listings is returned.                        | No                  | N/A                   |
+| **GET** `/api/listings/:id`    | Valid Listing ID            | Retrieve a specific listing by valid ID.                             | **200 OK**, listing data is returned.                                | No                  | N/A                   |
+| **GET** `/api/listings/:id`    | Non-existent Listing ID     | Attempt to retrieve a listing with an ID that doesn't exist.         | **404 Not Found**, "Listing not found."                              | No                  | N/A                   |
+| **POST** `/api/listings`       | Valid Creation              | Authenticated user creates a new listing with valid data.            | **201 Created**, listing is successfully added.                      | No                  | N/A                   |
+| **POST** `/api/listings`       | Unauthorized Creation       | Attempt to create a listing without a JWT token.                     | **401 Unauthorized**, error about missing or invalid authentication. | No                  | N/A                   |
+| **POST** `/api/listings`       | Missing Required Fields     | Omit required fields (e.g., `car_id`).                               | **400 Bad Request**, validation error messages are returned.         | No                  | N/A                   |
+| **POST** `/api/listings`       | Invalid `car_id`            | Use a `car_id` that doesn't exist.                                   | **400 Bad Request**, "Invalid car_id."                               | No                  | N/A                   |
+| **POST** `/api/listings`       | Car Already Listed          | Attempt to list a car that is already listed.                        | **400 Bad Request**, "This car is already listed."                   | No                  | N/A                   |
+| **PUT** `/api/listings/:id`    | Valid Update by Owner       | Owner updates their listing with valid data.                         | **200 OK**, updated listing data is returned.                        | No                  | N/A                   |
+| **PUT** `/api/listings/:id`    | Valid Update by Admin       | Admin updates a listing with valid data.                             | **200 OK**, updated listing data is returned.                        | No                  | N/A                   |
+| **PUT** `/api/listings/:id`    | Unauthorized Update         | Non-owner, non-admin user attempts to update a listing.              | **403 Forbidden**, "Unauthorized access."                            | No                  | N/A                   |
+| **PUT** `/api/listings/:id`    | Update Non-existent Listing | Attempt to update a listing that doesn't exist.                      | **404 Not Found**, "Listing not found."                              | No                  | N/A                   |
+| **PUT** `/api/listings/:id`    | Invalid Data Update         | Provide invalid data during update (e.g., invalid `listing_status`). | **400 Bad Request**, "Invalid listing status."                       | No                  | N/A                   |
+| **DELETE** `/api/listings/:id` | Valid Delete by Owner       | Owner deletes their own listing.                                     | **200 OK**, "Listing deleted successfully."                          | No                  | N/A                   |
+| **DELETE** `/api/listings/:id` | Valid Delete by Admin       | Admin deletes a listing.                                             | **200 OK**, "Listing deleted successfully."                          | No                  | N/A                   |
+| **DELETE** `/api/listings/:id` | Unauthorized Delete         | Non-owner, non-admin user attempts to delete a listing.              | **403 Forbidden**, "Unauthorized access."                            | No                  | N/A                   |
+| **DELETE** `/api/listings/:id` | Delete Non-existent Listing | Attempt to delete a listing that doesn't exist.                      | **404 Not Found**, "Listing not found."                              | No                  | N/A                   |
+
+#### Implementing Tests in Insomnia
+
+**Creating a JSON Import File**
+
+To streamline the testing process in, a JSON file was created that could be used to easily import requests into Insomnia.
+
+- The file can be found in the `Testing` folder under the name `insomnia_import.json`
+- The test requests have been organized into logical groups that correspond to each endpoint category.
+- The JSON file Includes URLs, methods, headers, and body content where applicable.
+- Variables have been used in the JSON file such as `{{access_token}}` and `{{user_id}}`. These types of variables have to be replaced with actual values during testing. Alternatively you can also use the `environment variables` in Insomnia as outlined below.
+
+**Using Environment Variables**
+
+To enhance testing flexibility, we utilized environmental variables that have to be manually added to Insomnia.
+
+- The `environment variables` allows us to quickly change variables in requests.
+- These variables need to be added to Insomnia in the section `Manage Environments`
+- A template file `environment_template.json` is provided in the `Testing` folder. You would have to fill in the variables by yourself.
+- Instructions for Filling Variables:
+
+  - **Obtain Access Tokens:**
+    - **Regular User** `(access_token)`:
+      1. Use the Login request to authenticate as the user with user_id.
+      2. Copy the JWT token from the response body.
+      3. Paste it into the access_token variable.
+    - **Admin User** `(admin_access_token)`:
+      1. Authenticate as the admin user (e.g., user_id 2).
+      2. Copy the JWT token from the response.
+      3. Paste it into the admin_access_token variable.
+    - **Unauthorized User** `(unauthorized_access_token)`:
+      1. Log in as another regular user (other_user_id).
+      2. Copy the JWT token from the response.
+      3. Paste it into the unauthorized_access_token variable.
+  - **Set IDs:**
+    - `user_id`: Set to the ID of the user you are authenticated as with `access_token` (e.g., "1").
+    - `other_user_id`: Set to the ID of another user (e.g., "3").
+    - `user_to_delete_id`: Set to the ID of the user you plan to delete in user deletion tests.
+    - `car_id`: Use the ID of an existing car (e.g., "1").
+    - `car_id_to_delete`: Use the ID of a car you intend to delete.
+    - `car_id_with_transactions`: Use the ID of a car that has associated transactions.
+    - `car_id_available`: Use the ID of a car that is available for purchase.
+    - `car_id_sold`: Use the ID of a car that has already been sold.
+    - `transaction_id`: Use the ID of an existing transaction.
+    - `make_model_year_id`: Use the ID of an existing MakeModelYear entry.
+    - `make_model_year_id_to_delete`: Use the ID of a MakeModelYear entry you intend to delete.
+    - `make_model_year_id_with_cars`: Use the ID of a MakeModelYear that has associated cars.
+    - `listing_id`: Use the ID of an existing listing.
+    - `car_id_unlisted`: Use the ID of a car that is not yet listed.
+    - `car_id_listed`: Use the ID of a car that is already listed.
+
+- Finally, I have also included the actual environmental variables used in testing in a file called `environment_variables_used.json` in the same `Testing` folder. You would have to fill in `"access_token"`,`"admin_access_token"`,`"unauthorized_access_token"` as these tokens will not be same every time.
+
+#### Running the Tests
+
+Due to dependencies between requests, it's important to run tests in a specific order:
+
+1. User Registration and Authentication:
+2. MakeModelYear Endpoints:
+3. Car Endpoints:
+4. Listing Endpoints:
+5. Car Transaction Endpoints:
+
+#### Verifying Test Results
+
+**Response Inspection:**
+
+1. Check the response status codes.
+2. Examine response bodies for expected data or error messages.
+3. If expected result not seen, code patching is required.
+4. Update [Testing Tables](#testing-tables) with patches and the respective git commit hash for record keeping.
 
 # Project Management
 

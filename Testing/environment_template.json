@@ -1,0 +1,21 @@
+{
+    "access_token": "",
+    "admin_access_token": "",
+    "unauthorized_access_token": "",
+    "user_id": "",
+    "other_user_id": "",
+    "user_to_delete_id": "",
+    "car_id": "",
+    "car_id_to_delete": "",
+    "car_id_with_transactions": "",
+    "car_id_available": "",
+    "car_id_sold": "",
+    "transaction_id": "",
+    "make_model_year_id": "",
+    "make_model_year_id_to_delete": "",
+    "make_model_year_id_with_cars": "",
+    "listing_id": "",
+    "car_id_unlisted": "",
+    "car_id_listed": ""
+  }
+  
