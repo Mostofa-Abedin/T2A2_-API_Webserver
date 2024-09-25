@@ -38,8 +38,13 @@
   - [CLI Controllers](#cli-controllers)
 - [Error Handling & Status Codes](#error-handling--status-codes)
   - [Standard HTTP Status Codes](#standard-http-status-codes)
-  - [Custom Error Messages](#custom-error-messages)
-  - [Sample Error Responses](#sample-error-responses)
+  - [Custom Error Messages For Developer Debugging](#custom-error-messages-for-developer-debugging)
+    - [Authorization Controller](#authorization-controller-auth_controllerpy)
+    - [Car Controller](#car-controller-car_controllerpy)
+    - [Listing Controller](#listing-controller-listing_controllerpyontrollerpy)
+    - [Car Transaction Controller](#car-transaction-controller-car_transaction_controllerpy)
+    - [MakeModelYEAR Controller](#makemodelyear-controller-makemodelyear_controllerpy)
+    - [Models (Errors related to constraints) ](#models-errors-related-to-constraints)
 - [Security](#security)
   - [JWT Token Security](#jwt-token-security)
   - [Best Practices for Securing API Keys](#best-practices-for-securing-api-keys)
@@ -1630,15 +1635,171 @@ flask db_commands seed_tables seed_data.json
 
 ## Standard HTTP Status Codes
 
-## Custom Error Messages
+The Car Marketplace API uses several standard HTTP status codes. Belwo are some commonly used ones.
 
-## Sample Error Responses
+- **200 OK:** The request was successful. This is usually returned for successful GET, PUT, PATCH, or DELETE requests.
+- **201 Created:** The resource has been successfully created. This is used for POST requests where a new record is created in the database.
+- **400 Bad Request:** The server cannot process the request due to client error. This may be cause by equest syntax error or validation failure.
+- **401 Unauthorized:** Returned when the user is not authenticated. Comminly returned if user's JWT token is missing or invalid.
+- **403 Forbidden:** The is returned if the user does not have the necessary permissions to access the requested resource.
+- **404 Not Found:** The requested resource was not found in the system.
+- **500 Internal Server Error:** This is a generic error when something unexpected happens on the server.
+
+## Custom Error Messages for Developer Debugging
+
+#### Authorization Controller (auth_controller.py)
+
+- **Error**: `{"error": "User does not exist."}`
+  - Occurs when trying to fetch or update a user that does not exist.
+- **Error**: `{"error": "Invalid email or password."}`
+  - Returned during login when incorrect credentials are provided.
+- **Error**: `{"error": "Email address must be unique."}`
+  - Raised when attempting to register a user with a duplicate email.
+- **Error**: `{"error": "You do not have permission to update this user's information."}`
+  - Occurs when a non-admin user tries to update another user’s info.
+
+#### Car Controller (car_controller.py)
+
+- **Error**: `{"error": "Invalid make_model_year_id."}`
+  - Occurs when referencing an invalid `make_model_year_id` in a request.
+- **Error**: `{"error": "Car not found."}`
+  - Raised when a car with the specified `car_id` does not exist.
+- **Error**: `{"error": "You do not have permission to perform this action."}`
+  - Occurs when a non-admin user tries to perform an admin-restricted action.
+
+#### Listing Controller (listing_controller.py)
+
+- **Error**: `{"error": "Listing not found."}`
+  - Raised when attempting to access or update a listing that does not exist.
+- **Error**: `{"error": "This car is already listed."}`
+  - Occurs when a car is already listed, preventing duplicate listings.
+- **Error**: `{"error": "Unauthorized access."}`
+  - Raised when a user without permission tries to update or delete a listing.
+- **Error**: `{"error": "Invalid listing status."}`
+  - Occurs when the listing status (e.g., "sold", "available") is invalid.
+
+#### Car Transaction Controller (car_transaction_controller.py)
+
+- **Error**: `{"error": "Invalid car_id."}`
+  - Raised when the car ID provided is invalid or does not exist.
+- **Error**: `{"error": "User not found."}`
+  - Occurs when referencing a non-existent buyer during a transaction.
+- **Error**: `{"error": "'{field}' is required."}`
+  - Raised when required fields such as `car_id` or `amount` are missing.
+- **Error**: `{"error": "Car is not available for purchase."}`
+  - Occurs when attempting to purchase a car that is no longer available (e.g., already sold).
+- **Error**: `{"error": "Amount does not match car price."}`
+  - Raised when the transaction amount does not match the listed price of the car.
+
+#### MakeModelYear Controller (makemodelyear_controller.py)
+
+- **Error**: `{"error": "This make, model, and year combination already exists."}`
+  - Occurs when trying to create a duplicate make-model-year combination.
+- **Error**: `{"error": "MakeModelYear not found."}`
+  - Raised when attempting to reference or update a non-existent make-model-year combination.
+- **Error**: `{"error": "Cannot delete MakeModelYear with associated cars. Delete associated cars first."}`
+  - Occurs when trying to delete a MakeModelYear entry that is linked to cars.
+
+#### Models (Errors related to constraints)
+
+- **Unique constraints**:
+  - `"error": "Email address must be unique"` (User model - when creating or updating a user).
+- **Not-null constraints**:
+  - `"error": "The column {column_name} is required"` (applies to various models like `Car`, `User`, etc.).
 
 # Security
 
 ## JWT Token Security
 
+As explained in the former section [Authentication & Authorization](#authentication--authorization). The Car Marketplace API uses JWT (JSON Web Tokens) for secure user authentication and authorization. Upon login, a JWT token is generated, and it must be included in the `Authorization` header for all subsequent requests.
+
+**Token Expiry**
+
+The default JWT expiration time limit for this API is set to **1 day**. The token is set to expire after 24 hours. After which, the user will need to log in again to receive a new token.
+
+**Note for Developers**
+
+This expiration limit is handled within the `auth_controller.py` file using the `create_access_token` function from the `flask_jwt_extended` library.
+
+```python
+from flask_jwt_extended import create_access_token
+from datetime import timedelta
+
+# Generating JWT token with 1-day expiration
+token = create_access_token(identity=user.id, expires_delta=timedelta(days=1))
+```
+
+The token expiration can be adjusted by changing the value of `timedelta` in the auth_controller.py file. For example:
+
+- To set the token expiration to 12 hours:
+
+```python
+token = create_access_token(identity=user.id, expires_delta=timedelta(hours=12))
+```
+
+- To set the token expiration to 7 days:
+
+```python
+token = create_access_token(identity=user.id, expires_delta=timedelta(hours=12))
+```
+
+**Token Validation**
+
+For protected endpoints, the JWt token must be included in the `header` of the request under `Authorization`. If the token is missing, expired, or invalid, a `401 Unauthorized` error is returned.
+
+In `Insomnia`, he token should be passed like this:
+
+1. Open Insomnia and select the protected endpoint you want to test.
+2. In the request, go to the Headers tab.
+3. Add a new header with the following key-value pair:
+
+- Key: `Authorization`
+- Value: `Bearer <Your JWT Token>`
+
+For example, if your token is eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..., your header will look like:
+
+```bash
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+4. After adding the token, click Send to make the request.
+
 ## Best Practices for Securing API Keys
+
+Securing API keys and sensitive information like JWT secret keys and database credentials is crucial for the overall security of any application, including the Car Marketplace API. Please follow these best practices provided below:
+
+1. **Store API Keys in Environment Variables**
+
+- Sensitive Information like the JWT secret key should not be hard-coded in the source code of the API. Please use the `.envexample` to create your own `.env` file. A `gitignore` file that excludes the `.env` file from being added to the git repository is already present in the root directory.
+
+2. **Limit Access to Secrets**
+
+- Ensure that the `.env` is only accessed by trusted individuals. Limit read/write access to these files.
+
+3. **Rotate API Keys Regularly**
+
+- Regularly change your API key, JWT secret keys, and other credentials. This can help mitigate risk of security begin compromised.
+
+4. **Use Secure Connections**
+
+- Always serve your API over HTTPS to ensure that any sensitive data, such as tokens or API keys, are transmitted securely over the network.
+
+5. **Avoid Logging Sensitive Information**
+
+- Ensure sensitive information such as API keys, JWT tokens, or personal user information is excluded from logs.
+
+6. **Use Strong Secret Keys**
+
+- Use complicated combinations for your JWT secret key. strong secret key should be long, random, and hard to guess.
+- Example of a strong JWT secret key:
+
+```bash
+JWT_SECRET_KEY = "a_random_very_long_string_with_special_characters"
+```
+
+7. **Set Proper Access Control**
+
+- Implement proper access control that limits the permission based on user roles. Admin access should be restricted, and sensitive endpoints should be protected.
 
 # Testing
 
