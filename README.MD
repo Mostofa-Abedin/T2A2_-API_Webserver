@@ -2,10 +2,14 @@
 
 # Table of Contents
 
+---
+
 - [Overview](#overview)
 
   - [Purpose of the API](#purpose-of-the-api)
   - [Problem Statement](#problem-statement)
+
+---
 
 - [API Specifications](#api-specifications)
 
@@ -19,6 +23,8 @@
     - [JSON Request/Response Format](#json-requestresponse-format)
   - [HTTP Methods & Verbs](#http-methods--verbs)
 
+---
+
 - [Endpoints](#endpoints)
 
   - [Detailed Endpoints Reference](#detailed-endpoints-reference)
@@ -28,6 +34,8 @@
     - [Listing Endpoints](#listing-endpoints)
     - [Car Transaction Endpoints](#car-transaction-endpoints)
   - [Summary of Endpoints](#summary-of-endpoints)
+
+---
 
 - [Data Model](#data-model)
 
@@ -42,25 +50,40 @@
     - [CarTransaction Model](#cartransaction-model)
     - [MakeModelYear Model](#makemodelyear-model)
 
+---
+
 - [Error Handling & Status Codes](#error-handling--status-codes)
 
   - [Standard HTTP Status Codes](#standard-http-status-codes)
   - [Custom Error Messages For Developer Debugging](#custom-error-messages-for-developer-debugging)
+
+---
 
 - [Security](#security)
 
   - [JWT Token Security](#jwt-token-security)
   - [Best Practices for Securing API Keys](#best-practices-for-securing-api-keys)
 
+---
+
 - [Testing](#testing)
 
-  - [Using Insomnia for Manual Testing](#using-insomniapostman-for-manual-testing)
+  - [Testing Procedure](#testing-procedure)
+    - [Test Planning and Design](#test-planning-and-design)
+    - [Testing Tables](#testing-tables)
+    - [Implementing Tests in Insomnia](#implementing-tests-in-insomnia)
+    - [Running the Tests](#running-the-tests)
+    - [Verifying Test Results](#verifying-test-results)
+
+---
 
 - [Local Setup & Developer Utilities](#local-setup--developer-utilities)
 
   - [Local Setup and Running Flask ](#local-setup-and-running-flask)
   - [CLI controllers ](#cli-controllers)
   - [PostgreSQL Setup](#postgresql-setup)
+
+---
 
 - [Project Management](#project-management)
 
