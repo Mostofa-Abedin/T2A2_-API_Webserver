@@ -18,7 +18,7 @@ class Car(db.Model):
     
     # Relationships with other tables
     # Establish a one-to-many relationship with the 'Listing' model; a car can be listed multiple times
-    listings = db.relationship("Listing", back_populates="car")  
+    listings = db.relationship("Listing", back_populates="car", cascade="all, delete-orphan")  
     # Establish a one-to-many relationship with the 'CarTransaction' model; a car can have multiple transactions
     car_transactions = db.relationship("CarTransaction", back_populates="car")
     # Establish a many-to-one relationship with the 'MakeModelYear' model; a car references a specific make, model, and year
