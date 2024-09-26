@@ -61,8 +61,18 @@ def create_makemodelyear():
         return jsonify({'error': 'You do not have permission to perform this action.'}), 403
 
     try:
-        # Load and validate input data
-        data = MakeModelYearSchema().load(request.get_json())
+        # Load input data
+        data = request.get_json()
+
+        # Check if all required fields are provided
+        if not data.get('make') or not data.get('model') or not data.get('year'):
+            return jsonify({'error': 'Make, model, and year are required fields.'}), 400
+
+        # Check if make and model are strings and year is an integer
+        if not isinstance(data['make'], str) or not isinstance(data['model'], str):
+            return jsonify({'error': 'Make and model must be strings.'}), 400
+        if not isinstance(data['year'], int):
+            return jsonify({'error': 'Year must be an integer.'}), 400
 
         # Check if the combination already exists
         existing_entry = MakeModelYear.query.filter_by(
@@ -89,6 +99,7 @@ def create_makemodelyear():
     except Exception as e:
         # Handle any exceptions and return an error message
         return jsonify({'error': str(e)}), 500
+
 
 # Route to update a make, model, and year
 @makemodelyear_bp.route('/makemodelyear/<int:id>', methods=['PUT'])
