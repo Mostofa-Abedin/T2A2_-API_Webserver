@@ -4,6 +4,8 @@ from models.car import Car, CarSchema
 from models.user import User
 from models.makemodelyear import MakeModelYear
 from init import db
+from marshmallow import ValidationError
+
 
 # Create a Blueprint for car management
 cars_bp = Blueprint('cars', __name__)
