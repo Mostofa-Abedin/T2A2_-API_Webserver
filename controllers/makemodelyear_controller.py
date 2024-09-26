@@ -121,17 +121,27 @@ def update_makemodelyear(id):
         # Check if the entry exists
         if not makemodelyear:
             return jsonify({'error': 'MakeModelYear not found.'}), 404
-
+        
         # Load and validate input data (partial updates allowed)
         data = MakeModelYearSchema().load(request.get_json(), partial=True)
 
-        # Update fields if they are provided in the request
+        
+        # Update fields if they are provided in the request and provide error messages for invalid fields.
         if 'make' in data:
-            makemodelyear.make = data['make']
+            if not isinstance(data['make'], str):
+                return jsonify({'error': 'Make must be an String.'}), 400
+            else:
+                makemodelyear.make = data['make']
         if 'model' in data:
-            makemodelyear.model = data['model']
+            if not isinstance(data['model'], str):
+                return jsonify({'error': 'Model must be an String.'}), 400
+            else:
+                makemodelyear.model = data['model']
         if 'year' in data:
-            makemodelyear.year = data['year']
+            if not isinstance(data['year'], int):
+                return jsonify({'error': 'Year must be an integer.'}), 400
+            else:
+                makemodelyear.year = data['year']
 
         # Commit the changes to the database
         db.session.commit()
