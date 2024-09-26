@@ -1,50 +1,75 @@
+# Import SQLAlchemy and Marshmallow instances
+from init import db, ma
+
+# Import fields and Regexp for validation from Marshmallow
+from marshmallow import fields
+from marshmallow.validate import Regexp
+
+# Import the CarTransaction model for relationships
 from models.car_transaction import CarTransaction
 
-from init import db, ma  # Importing the SQLAlchemy database instance (db) and Marshmallow (ma) for serialization
-from marshmallow import fields, validate  # Import fields and validation utilities from Marshmallow
-from marshmallow.validate import Regexp  # Import Regexp for regular expression validation
-
-# Define the User model, representing the 'users' table in the database
+# Define the User model representing the 'users' table
 class User(db.Model):
-    __tablename__ = "users"  # Explicitly specify the table name as 'users'
-    
-    # Attributes (columns) of the table
-    user_id = db.Column(db.Integer, primary_key=True)  # Primary key, unique identifier for each user
-    name = db.Column(db.String(100), nullable=False)  # Name of the user, must not be null, max length 100 characters
-    email = db.Column(db.String(50), nullable=False, unique=True)  # Email, must not be null and must be unique
-    password = db.Column(db.String(200), nullable=False)  # Password, stored as a hashed string, must not be null
-    phone_number = db.Column(db.String(15))  # Phone number, can include symbols like '+' and has a max length of 15 characters
-    address = db.Column(db.String(255))  # Address of the user, max length 255 characters
-    is_admin = db.Column(db.Boolean, default=False)  # Boolean to indicate if the user is an admin, defaults to False
+    __tablename__ = "users"  # Specify the table name
 
-    # Relationships with other tables
-    listings = db.relationship("Listing", back_populates="user", cascade="all, delete-orphan")  # One-to-many relationship with 'Listing', referenced by 'user' in the Listing model
-    car_transactions = db.relationship("CarTransaction", back_populates="user")  # One-to-many relationship with 'CarTransaction', referenced by 'user' in the CarTransaction model
+    # Define the columns/attributes
+    user_id = db.Column(db.Integer, primary_key=True)  # Primary key
+    name = db.Column(db.String(100), nullable=False)  # User's name, required
+    email = db.Column(db.String(50), nullable=False, unique=True)  # User's email, unique and required
+    password = db.Column(db.String(200), nullable=False)  # User's hashed password, required
+    phone_number = db.Column(db.String(15))  # User's phone number
+    address = db.Column(db.String(255))  # User's address
+    is_admin = db.Column(db.Boolean, default=False)  # Flag to indicate admin users
 
-    # String representation of the User object, useful for debugging
+    # Relationship to the Listing model
+    listings = db.relationship(
+        "Listing",
+        back_populates="user",
+        cascade="all, delete-orphan"
+    )  # User's listings with cascade delete
+
+    # Relationship to the CarTransaction model
+    car_transactions = db.relationship(
+        "CarTransaction",
+        back_populates="user"
+    )  # User's car transactions
+
     def __repr__(self):
-        return f"<User {self.email}>"  # Returns a string representing the User instance by its email
+        # String representation of the User object
+        return f"<User {self.email}>"
 
-# Define the UserSchema using Marshmallow for serialization and deserialization
+# Define the UserSchema for serialization/deserialization
 class UserSchema(ma.Schema):
-    # Nested schemas for serializing relationships (listings and car_transactions)
-    listings = fields.List(fields.Nested('ListingSchema', exclude=["user", "car"]))
-    car_transactions = fields.List(fields.Nested('CarTransactionSchema', exclude=["user", "car"]))
+    # Nested field for user's listings
+    listings = fields.List(
+        fields.Nested('ListingSchema', exclude=["user", "car"])
+    )  # Exclude 'user' and 'car' to prevent recursion
 
-    # Email field with validation for a correct email format using a regular expression
-    email = fields.String(required=True, validate=Regexp(r"^\S+@\S+\.\S+$", error="Invalid Email Format."))
+    # Nested field for user's car transactions
+    car_transactions = fields.List(
+        fields.Nested('CarTransactionSchema', exclude=["user", "car"])
+    )  # Exclude 'user' and 'car' to prevent recursion
 
-    # Add password field as load_only to ensure it's only used during deserialization
-    password = fields.String(required=True, load_only=True)  # Password is required for registration but won't be exposed
+    # Email field with regex validation
+    email = fields.String(
+        required=True,
+        validate=Regexp(
+            r"^\S+@\S+\.\S+$",
+            error="Invalid email format."
+        )
+    )  # Validate email format
+
+    # Password field, load_only to avoid exposing it
+    password = fields.String(required=True, load_only=True)  # Required but not included in output
 
     class Meta:
         # Fields to include in the serialized output
-        fields = ("user_id", "name", "email","password", "phone_number", "address", "is_admin", "listings", "car_transactions")
-        
+        fields = (
+            "user_id", "name", "email", "password",
+            "phone_number", "address", "is_admin",
+            "listings", "car_transactions"
+        )
 
-# Schema instance for serializing a single user object
-user_schema = UserSchema()
-
-# Schema instance for serializing a list of user objects
-users_schema = UserSchema(many=True)
-
+# Schema instances for serializing User objects
+user_schema = UserSchema()  # For a single user
+users_schema = UserSchema(many=True)  # For multiple users

@@ -1,14 +1,19 @@
+# Import standard library modules
 import json
+
+# Import third-party modules
 import click
 from flask import Blueprint
 from flask.cli import with_appcontext
-from init import db, bcrypt  # Import bcrypt for password hashing
-from models.user import User  # Import models for database operations
+from sqlalchemy import text
+
+# Import local modules
+from init import db, bcrypt  # Database and bcrypt instances
+from models.user import User
 from models.car import Car
 from models.listing import Listing
-from models.car_transaction import CarTransaction  # Updated import
+from models.car_transaction import CarTransaction
 from models.makemodelyear import MakeModelYear
-from sqlalchemy import text
 
 # Create a blueprint for CLI commands
 db_commands = Blueprint('db_commands', __name__)
@@ -17,75 +22,81 @@ db_commands = Blueprint('db_commands', __name__)
 @db_commands.cli.command("create_tables")
 @with_appcontext
 def create_tables():
-    """Create all database tables defined by the SQLAlchemy models."""
+    # Create all database tables defined by the SQLAlchemy models
     try:
-        db.create_all()  # Creates tables for all models that have been defined
-        click.echo("All tables created successfully.")  # Provides feedback to the user
-    except Exception as e:
-        click.echo(f"An error occurred while creating tables: {e}")
+        db.create_all()
+        click.echo("All tables created successfully.")
+    except Exception:
+        click.echo("An error occurred while creating tables.")
 
 # Command to drop all tables from the database
 @db_commands.cli.command("drop_tables")
 @with_appcontext
 def drop_tables():
-    """Drop all database tables. This will permanently remove all data in the tables."""
-    # Confirmation prompt to prevent accidental data loss
-    if click.confirm('Are you sure you want to drop all tables? This action cannot be undone.', abort=True):
+    # Drop all database tables. This will permanently remove all data in the tables.
+    if click.confirm(
+        'Are you sure you want to drop all tables? This action cannot be undone.',
+        abort=True
+    ):
         try:
             # Drop all tables with cascade
-            db.session.execute(text('DROP TABLE IF EXISTS users, makemodelyear, cars, listings, car_transactions CASCADE'))
+            db.session.execute(text(
+                'DROP TABLE IF EXISTS users, makemodelyear, cars, listings, car_transactions CASCADE'
+            ))
             db.session.commit()
             click.echo("All tables dropped successfully.")
-        except Exception as e:
-            click.echo(f"An error occurred while dropping tables: {e}")
+        except Exception:
+            click.echo("An error occurred while dropping tables.")
 
 # Command to seed the database with initial data from a JSON file
 @db_commands.cli.command("seed_tables")
-@click.argument('file_path')  # Takes the path to the JSON file as a command-line argument
+@click.argument('file_path')
 @with_appcontext
 def seed_tables(file_path):
-    """Seed the database with initial data from a specified JSON file."""
+    # Seed the database with initial data from a specified JSON file
     try:
-        # Open the JSON file and load its content into a dictionary
+        # Open the JSON file and load its content
         with open(file_path, 'r') as file:
             data = json.load(file)
 
-        # Seed the Users table with data from the 'users' key in the JSON
-        for user_data in data['users']:
+        # Seed the Users table
+        for user_data in data.get('users', []):
             try:
-                user_data['password'] = bcrypt.generate_password_hash(user_data['password']).decode('utf-8')
+                # Hash the user's password
+                user_data['password'] = bcrypt.generate_password_hash(
+                    user_data['password']
+                ).decode('utf-8')
                 user = User(**user_data)
                 db.session.add(user)
-            except Exception as e:
-                print(f"Error adding user: {e}")  # Print any errors that occur
+            except Exception:
+                click.echo("An error occurred while adding a user.")
 
-        # Seed the MakeModelYear table with data from the 'makemodelyears' key in the JSON
-        for mm_data in data['makemodelyears']:
+        # Seed the MakeModelYear table
+        for mm_data in data.get('makemodelyears', []):
             makemodelyear = MakeModelYear(**mm_data)
             db.session.add(makemodelyear)
 
-        # Seed the Cars table with data from the 'cars' key in the JSON
-        for car_data in data['cars']:
+        # Seed the Cars table
+        for car_data in data.get('cars', []):
             car = Car(**car_data)
             db.session.add(car)
 
-        # Seed the Listings table with data from the 'listings' key in the JSON
-        for listing_data in data['listings']:
+        # Seed the Listings table
+        for listing_data in data.get('listings', []):
             listing = Listing(**listing_data)
             db.session.add(listing)
 
-        # Seed the CarTransactions table with data from the 'car_transactions' key in the JSON
-        for transaction_data in data['car_transactions']:  # Use the correct key here
+        # Seed the CarTransactions table
+        for transaction_data in data.get('car_transactions', []):
             transaction = CarTransaction(**transaction_data)
             db.session.add(transaction)
 
-        # Commit all the objects added to the session
+        # Commit all the changes to the database
         db.session.commit()
-        click.echo("Database seeded with data from the JSON file.")
-
+        click.echo("Database seeded successfully with data from the JSON file.")
     except FileNotFoundError:
         click.echo(f"File '{file_path}' not found.")
     except json.JSONDecodeError:
         click.echo("Invalid JSON file format.")
-    except Exception as e:
-        click.echo(f"An error occurred: {e}")
+    except Exception:
+        click.echo("An error occurred during database seeding.")
