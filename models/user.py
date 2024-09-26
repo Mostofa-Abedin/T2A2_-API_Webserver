@@ -18,7 +18,7 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)  # Boolean to indicate if the user is an admin, defaults to False
 
     # Relationships with other tables
-    listings = db.relationship("Listing", back_populates="user")  # One-to-many relationship with 'Listing', referenced by 'user' in the Listing model
+    listings = db.relationship("Listing", back_populates="user", cascade="all, delete-orphan")  # One-to-many relationship with 'Listing', referenced by 'user' in the Listing model
     car_transactions = db.relationship("CarTransaction", back_populates="user")  # One-to-many relationship with 'CarTransaction', referenced by 'user' in the CarTransaction model
 
     # String representation of the User object, useful for debugging

@@ -25,7 +25,7 @@ class Listing(db.Model):
     )  # Foreign key referencing the 'car_id' in the 'cars' table
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey("users.user_id"),
+        db.ForeignKey("users.user_id", ondelete="CASCADE"),
         nullable=False
     )  # Foreign key referencing the 'user_id' in the 'users' table
 
