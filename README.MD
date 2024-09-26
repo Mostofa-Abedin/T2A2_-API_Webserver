@@ -1909,7 +1909,7 @@ To begin testing, we started off by identifying a comprehensive list of cases th
 | **POST** `/api/login`       | Invalid Password         | Log in with incorrect password.                                | **400 Bad Request**, "Invalid email or password."     | No                  | N/A                   |
 | **POST** `/api/login`       | Non-existent Email       | Log in with an email that doesn't exist.                       | **400 Bad Request**, "Invalid email or password."     | No                  | N/A                   |
 | **PUT** `/api/users/:id`    | Valid Update by Self     | User updates their own information.                            | **200 OK**, updated user data is returned.            | No                  | N/A                   |
-| **PUT** `/api/users/:id`    | Valid Update by Admin    | Admin updates another user's information.                      | **200 OK**, updated user data is returned.            | No                  | N/A                   |
+| **PUT** `/api/users/:id`    | Valid Update by Admin    | Admin updates another user's information.                      | **200 OK**, updated user data is returned.            | **Yes**             | N/A                   |
 | **PUT** `/api/users/:id`    | Unauthorized Update      | User tries to update another user's info without admin rights. | **403 Forbidden**, "You do not have permission..."    | No                  | N/A                   |
 | **PUT** `/api/users/:id`    | Update Non-existent User | Attempt to update a user that doesn't exist.                   | **404 Not Found**, "User does not exist."             | No                  | N/A                   |
 | **PUT** `/api/users/:id`    | Invalid Data Update      | Provide invalid data when updating user (e.g., invalid email). | **400 Bad Request**, "Invalid Email Format."          | No                  | N/A                   |
@@ -2071,6 +2071,8 @@ Due to dependencies between requests, it's important to run tests in a specific 
 4. Update [Testing Tables](#testing-tables) with patches and the respective git commit hash for record keeping.
 
 # Project Management
+
+finish tests first
 
 ## Project Timeline
 
