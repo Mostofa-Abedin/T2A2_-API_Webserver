@@ -77,6 +77,10 @@
 
 - [Local Setup & Developer Utilities](#local-setup--developer-utilities)
 
+  - [Dependencies ](#dependencies)
+    - [Installing Dependencies ](#installing-dependencies)
+    - [Package Descriptions ](#package-descriptions)
+    - [Package Summary ](#package-summary)
   - [Local Setup and Running Flask ](#local-setup-and-running-flask)
   - [CLI controllers ](#cli-controllers)
   - [PostgreSQL Setup](#postgresql-setup)
@@ -85,18 +89,31 @@
 
 - [Project Management](#project-management)
 
-  - [Project Timeline](#project-timeline)
+  - [Jira Project Management Tools Used](#jiraproject-management-tools-used)
   - [Sprint Planning & Milestones](#sprint-planning--milestones)
     - [Epics and User Stories](#epics-and-user-stories)
-    - [Task Breakdown and Assignments](#task-breakdown-and-assignments)
-  - [Jira/Project Management Tools Used](#jiraproject-management-tools-used)
-    - [Jira Boards and Tracking](#jira-boards-and-tracking)
+      - [Sprint 1](#sprint-1)
+      - [Sprint 2](#sprint-2)
+    - [Ticket Creation Procedure](#ticket-creation-procedure)
+  - [Sprint Progression](#sprint-progression)
+    - [Sprint 1 Board](#sprint-1-board)
+    - [Sprint 2 Board](#sprint-2-board)
 
 ---
 
 # Overview
 
 This README serves as the technical documentation for the **Car Marketplace API**, a RESTful web service built to facilitate transactions for buying, selling, and managing cars in an online marketplace. The API provides endpoints for user management, car listings, transactions, and more.
+
+The source code for this project is available on GitHub:
+
+[GitHub Repository](https://github.com/Mostofa-Abedin/T2A2_-API_Webserver.git)
+
+Before you begin, ensure you have met the following requirements:
+
+- Python 3.9 or higher
+- PostgreSQL 12 or higher
+- Git
 
 ---
 
@@ -1229,6 +1246,9 @@ The ERD structue shown above has been implemented using the ORM (Object Relation
 - **Joins and Relationships:** SQLAlchemy handles relationships and joins with ease. It allowing us to access related data without complex SQL JOIN statements.
 - **Schema Validation:** SQLAlchemy enforces column constraints like NOT NULL and UNIQUE, ensuring data integrity.
 
+**Note**
+For detailed code implementations of each model, including their fields and relationships, please refer to the [Data Models (Entities)](#data-models-entities) section below, where each model is defined with its corresponding ORM code.
+
 ## Database System
 
 We use PostgreSQL as the underlying database relationship management system for the the Car MARKETPLACE API. This system was chosen for its robustness, ACID compliance, and ability to handle complex queries efficiently. The API interacts with PostgreSQL through the ORM SQLAlchemy, which abstracts much of the complexity.
@@ -1463,6 +1483,121 @@ class MakeModelYear(db.Model):
 ---
 
 # Local Setup & Developer Utilities
+
+The Car Marketplace API relies on several third-party packages and dependencies to function correctly.
+
+## Dependencies
+
+#### Installing Dependencies
+
+Prior to running the application, you will need to install all the required dependencies listed in the `requirements.txt` file. Activate your virtual environment and then run:
+
+```bash
+pip install -r requirements.txt
+```
+
+#### Package Descriptions
+
+**Flask==3.0.3**
+
+Flask is a Web Server Gateway Interface web application framework. It is designed to be lightweight and easy to get started with great potential scale up to complex applications. Flask provides the foundation for building the web server and handling HTTP requests in this application.
+
+**Flask-Bcrypt==1.0.1**
+
+Flask-Bcrypt is an extension to the Flask micro web framework that offers you a simple way to use Bcrypt for hashing in your applications. It helps in securely hashing user passwords so that sensitive data can be stored securely in the database.
+
+**Flask-JWT-Extended==4.6.0**
+
+Flask-JWT-Extended is an extension for adding JSON Web Tokens (JWT) to Flask applications. It is used for creating, calidating and managing JWTs.
+
+**flask-marshmallow==1.2.1**
+
+Flask-Marshmallow is an integration library that is used to bridge the gap between Flask and Marshmallow. It enables serialization and deserialization of data. It helps in converting complex data types, such as objects, to and from native Python data types, making it easier to work with JSON data in the API.
+
+**Flask-SQLAlchemy==3.1.1**
+
+Flask-SQLAlchemy is an extension for Flask that allows us to use the Object Relational Mapper (ORM) SQLAlchemy in Python. It is needed so that we can work with Python objects instead of writing raw SQL queries.
+
+**SQLAlchemy==2.0.34**
+
+SQLAlchemy is the Python SQL toolkit and ORM that gives application developers the full power and flexibility of SQL.
+
+**marshmallow==3.22.0**
+
+Marshmallow is an ORM/ODM/framework-agnostic library. It is used for converting objects to and from native Python data types.
+
+**marshmallow-sqlalchemy==1.1.0**
+
+Marshmallow-SQLAlchemy is a thin integration layer between Marshmallow and SQLAlchemy. This allows automatic generation of Marshmallow schemas based on SQLAlchemy models.
+
+**bcrypt==4.2.0**
+
+Bcrypt is a password hashing library. It is used to hash and check passwords using the bcrypt algorithm providing security.
+
+**psycopg2-binary==2.9.9**
+
+Psycopg2 is the most popular PostgreSQL database adapter for the Python programming language. The binary package contains compiled C libraries that enable the application to connect to the PostgreSQL database and interact with it efficiently.
+
+**python-dotenv==1.0.1**
+
+Python-Dotenv reads key-value pairs from a .env file and can set them as environment variables.
+
+**PyJWT==2.9.0**
+
+PyJWT is a Python library that is used to encode and decode JSON Web Tokens (JWT).
+
+**Jinja2==3.1.4**
+
+Jinja2 is a modern template engine for Python. Within Flask, its used to render HTML templates. Although the Car Marketplace API is an API only, Jinja2 is a dependency of Flask and provided here for completeness.
+
+**Werkzeug==3.0.4**
+
+Werkzeug is a comprehensive Web Server Gateway Interface (WSGI) web application library. It has utilities for handling request, resonse that are used Flask.
+
+**itsdangerous==2.2.0**
+
+ItsDangerous provides helpers that allow us to send trusted data into untrusted environments. In Flask, it is used for securely signing data, such as session cookies or tokens to avoid breach or manipulation of data.
+
+**click==8.1.7**
+
+Click is Python package that is used to create command-line interfaces. It is used by developers to add custom commands to the flask command-line.
+
+**MarkupSafe==2.1.5**
+
+MarkupSafe implements a string object that escapes characters so it is safe to use in HTML and XML. It is used by Jinja2 for escaping to make sure that rendered templates are safe from injection attacks.
+
+**blinker==1.8.2**
+
+Blinker provides fast and simple object-to-object and broadcast signaling. Flask uses Blinker for managing signals.
+
+**packaging==24.1**
+
+Packaging provides core utilities for Python packages. It is used internally by other packages for managing package versions.
+
+**greenlet==3.1.0**
+
+Greenlet is a lightweight coroutine library for Python. It is used to handle concurrent operations. It is used by SQLAlchemy for managing database connections asynchronously.
+
+**typing_extensions==4.12.2**
+
+Typing-Extension is used to ensure that experimental type hints for python are handled by maintaining compatibility with different versions of Python, ensuring that type hints work consistently.
+
+**pep8==1.7.1**
+
+This package is used to format Python code accoring to the standards and conventions of PEP 8.
+
+#### Package Summary
+
+These packages collectively provide the necessary tools for:
+
+- **Web Framework and Routing:** `Flask`, `Werkzeug`, `Jinja2`.
+- **Database Interaction and ORM:** `SQLAlchemy`, `Flask-SQLAlchemy`, `psycopg2-binary`.
+- **Serialization and Validation:** `marshmallow`, `flask-marshmallow`, `marshmallow-sqlalchemy`.
+- **Authentication and Security:** `Flask-JWT-Extended`, `PyJWT,` `bcrypt`, `Flask-Bcrypt`, `itsdangerous`.
+- **Environment Management:** `python-dotenv`.
+- **Command-Line Interface:** `click.`
+- **Utilities and Dependencies:** `blinker`, `MarkupSafe`, `packaging`, `greenlet`, `typing_extensions`.
+- **Code Style:** `pep8`.
 
 ## Local Setup and Running Flask
 
@@ -2005,7 +2140,7 @@ To begin testing, we started off by identifying a comprehensive list of cases th
 
 To streamline the testing process in, a JSON file was created that could be used to easily import requests into Insomnia.
 
-- The file can be found in the `Testing` folder under the name `insomnia_import.json`
+- The file can be found in the `Testing` folder within `docs` under the name `insomnia_import.json`
 - The test requests have been organized into logical groups that correspond to each endpoint category.
 - The JSON file Includes URLs, methods, headers, and body content where applicable.
 - Variables have been used in the JSON file such as `{{access_token}}` and `{{user_id}}`. These types of variables have to be replaced with actual values during testing. Alternatively you can also use the `environment variables` in Insomnia as outlined below.
@@ -2072,16 +2207,164 @@ Due to dependencies between requests, it's important to run tests in a specific 
 
 # Project Management
 
-finish tests first
-
-## Project Timeline
-
-## Sprint Planning & Milestones
-
-### Epics and User Stories
-
-### Task Breakdown and Assignments
+This section details the project management procedure and tools used to complete **The Car Marketplace API**.
 
 ## Jira/Project Management Tools Used
 
-### Jira Boards and Tracking
+The Agile based project management software **JIRA** was used to track progression. It is a popular project management tool that is widely used in software development due to its robust data tracking and agile project management capabilities.
+
+**Common Terms**
+
+**Epics** - Within JIRA, Epics are large bodies of works that can be broken down into stories and issues.
+
+**Stories** - Stories are the next level down from Epics. Stories encompass the big tasks.
+
+**Story Points** - Story points in Jira are a unit of measure used to estimate the relative effort or complexity required to complete a user story or task. Story points are required for tracking sprint progression.
+
+For this project, story points were assigned based on the Fibonacci sequence (1, 2, 3, 5, 8, 13, etc.).
+
+## Sprint Planning & Milestones
+
+For this project, in the initial planning phase, two sprints were decided upon. The broad goal was that sprint 1 would cover Model design and Sprint 2 would cover Controller design. Each sprint would take 1 week each and the project would be finalized on submission date of the 29th of September. However, the scope of sprint 1 was underestimated and the sprint was completed early. This allowed us to have an early start for sprint 2. The table below gives detailed breakdown of each sprint, their timelines, number of stories and story points.
+
+| Sprint   | Original Planned Start Date | Actual Start Date                      | Original Planned End Date | Actual End Date                             | Number of Stories | Story Points (per story)                                                        | Total Story Points |
+| -------- | --------------------------- | -------------------------------------- | ------------------------- | ------------------------------------------- | ----------------- | ------------------------------------------------------------------------------- | ------------------ |
+| Sprint 1 | September 16th, 2024        | September 16th, 2024                   | September 23rd, 2024      | September 18th, 2024 **(Early Completion)** | 10                | 3, 5, 5, 2, 3, 2, 2, 2, 3, 3                                                    | 30                 |
+| Sprint 2 | September 24th, 2024        | September 19th, 2024 **(Early Start)** | September 29th, 2024      | September 26th, 2024                        | 27                | 5, 5, 5, 5, 2, 2, 5, 2, 2, 2, 5, 5, 2, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 2, 5 | 111                |
+
+## Epics and User Stories
+
+This section provides a breakdown of the Tickets and Epics created during each sprint.
+
+For this project we had **14 Epics** which have been summarized in the table below.
+
+| Epic Name              | Description                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------- |
+| Project Setup          | Initial setup of the project, including repository creation and dependencies  |
+| Database Design        | Designing and implementing the database schema and relationships              |
+| Data Preparation       | Preparing and seeding the database with relevant data                         |
+| API Development        | Building and implementing the API endpoints for various features              |
+| Documentation          | Writing and updating project documentation, including README and API specs    |
+| User Authentication    | Implementing user authentication features, such as login and registration     |
+| User Management        | Managing user-related operations like updating or deleting users              |
+| Car Management         | Managing operations related to cars, such as creating, updating, and deleting |
+| Listing Management     | Implementing functionality for managing car listings                          |
+| Transaction Management | Handling operations related to car transactions                               |
+| Data Management        | Ensuring correct handling of various datasets, such as make/model/year data   |
+| Testing                | Writing and executing tests for various components of the project             |
+| Bug Fixing             | Identifying and resolving issues found during development and testing         |
+| Project Completion     | Finalizing the project, including cleanup and preparation for submission      |
+
+#### Sprint 1
+
+| Story Number | Story Name                                            | Story Points | Subtask Name                                                                                                                                                                                                                                                                                                                                                                                                     | Epic             | Priority |
+| ------------ | ----------------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- | -------- |
+| 1            | Initial Setup for Git Repo and Environment            | 5            | - Set up Git repository for version control<br>- Configure `.gitignore`<br>- Set up virtual environment<br>- Install dependencies (Flask, PostgreSQL, SQLAlchemy)<br>- Set up Flask application structure                                                                                                                                                                                                        | Project Setup    | High     |
+| 2            | Create Models and Schemas for Database Tables         | 5            | - Create User model schema<br>- Create Car model schema<br>- Create Listing model schema<br>- Create CarTransaction model schema<br>- Create MakeModelYear model schema<br>- Define relationships between models<br>- Implement data validation and constraints                                                                                                                                                  | Database Design  | High     |
+| 3            | Create CLI Controller for Database Management         | 5            | - Implement CLI command to create tables<br>- Implement CLI command to drop tables<br>- Implement CLI command to seed tables<br>- Handle exceptions and provide user feedback                                                                                                                                                                                                                                    | Project Setup    | High     |
+| 4            | Produce JSON File for Seeding Data                    | 3            | - Create JSON file for seeding User data<br>- Create JSON file for seeding Car data<br>- Create JSON file for seeding Listing data<br>- Create JSON file for seeding CarTransaction data<br>- Create JSON file for seeding MakeModelYear data<br>- Validate data integrity and consistency                                                                                                                       | Data Preparation | Medium   |
+| 5            | Create Skeleton Routes for Controllers                | 5            | - Create controller files for Auth, Car, Listing, CarTransaction, MakeModelYear<br>- Define skeleton routes for Auth (e.g., `/register`, `/login`)<br>- Define skeleton routes for Car (e.g., `/cars`)<br>- Define skeleton routes for Listing (e.g., `/listings`)<br>- Define skeleton routes for CarTransaction (e.g., `/transactions`)<br>- Define skeleton routes for MakeModelYear (e.g., `/makemodelyear`) | API Development  | High     |
+| 6            | Create README Documentation and Basic Project Details | 3            | - Create a comprehensive README file<br>- Add basic project overview and objectives<br>- Document installation and setup instructions<br>- Outline planned API endpoints and features                                                                                                                                                                                                                            | Documentation    | Low      |
+
+#### Sprint 2
+
+| Story Number | Story Name                                                   | Story Points | Subtask Name                                                                                                                                                                                                                                                                         | Epic                   | Priority |
+| ------------ | ------------------------------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- | -------- |
+| 1            | Implement Auth Controller - One Route at a Time              | 5            | - Implement `POST /api/register` route<br>- Implement `POST /api/login` route<br>- Validate input and hash passwords<br>- Generate JWT tokens upon login<br>- Implement error handling and responses                                                                                 | User Authentication    | High     |
+| 2            | Implement User Controller - PUT/DELETE /users/<id> Routes    | 5            | - Implement `PUT /api/users/<id>` route to update user information<br>- Implement `DELETE /api/users/<id>` route to delete user accounts<br>- Implement authorization checks<br>- Implement error handling and responses                                                             | User Management        | High     |
+| 3            | Implement Car Controller - One Route at a Time               | 5            | - Implement `GET /api/cars` route<br>- Implement `GET /api/cars/<id>` route<br>- Implement `POST /api/cars` route<br>- Implement `PUT /api/cars/<id>` route<br>- Implement `DELETE /api/cars/<id>` route<br>- Validate inputs and implement authorization checks                     | Car Management         | High     |
+| 4            | Implement Listing Controller - One Route at a Time           | 5            | - Implement `GET /api/listings` route<br>- Implement `GET /api/listings/<id>` route<br>- Implement `POST /api/listings` route<br>- Implement `PUT /api/listings/<id>` route<br>- Implement `DELETE /api/listings/<id>` route<br>- Validate inputs and implement authorization checks | Listing Management     | High     |
+| 5            | Implement Car Transactions Controller                        | 5            | - Implement `GET /api/car-transactions` route<br>- Implement `GET /api/car-transactions/<id>` route<br>- Implement `POST /api/car-transactions` route<br>- Validate inputs and implement business logic<br>- Implement error handling and responses                                  | Transaction Management | High     |
+| 6            | Implement MakeModelYear Controller - GET and POST Routes     | 5            | - Implement `GET /api/makemodelyear` route<br>- Implement `GET /api/makemodelyear/<id>` route<br>- Implement `POST /api/makemodelyear` route<br>- Validate inputs and implement authorization checks                                                                                 | Data Management        | High     |
+| 7            | Implement MakeModelYear Controller - PUT/DELETE /<id> Routes | 5            | - Implement `PUT /api/makemodelyear/<id>` route<br>- Implement `DELETE /api/makemodelyear/<id>` route<br>- Implement authorization checks<br>- Implement error handling and responses                                                                                                | Data Management        | High     |
+| 8            | Write README Introduction Section                            | 2            | - Write project overview and objectives<br>- Explain the purpose and scope of the API<br>- Include problem statement and use cases                                                                                                                                                   | Documentation          | Medium   |
+| 9            | Write README API Specifications Section                      | 2            | - Document base URL and customization options<br>- Explain authentication and authorization mechanisms<br>- Describe supported formats and HTTP methods                                                                                                                              | Documentation          | Medium   |
+| 10           | Write README Endpoints Section - One Endpoint at a Time      | 5            | - Document each API endpoint in detail<br>- Include allowed fields, restrictions, and examples<br>- Provide request and response samples                                                                                                                                             | Documentation          | High     |
+| 11           | Write README Database Section                                | 5            | - Add Entity Relationship Diagram (ERD)<br>- Explain how the database works<br>- Document database schema and models                                                                                                                                                                 | Documentation          | High     |
+| 12           | Document CLI Controllers in README                           | 2            | - Document CLI commands for database management<br>- Provide examples of how to use each command<br>- Explain error handling and expected outputs                                                                                                                                    | Documentation          | Medium   |
+| 13           | Document Security and Authorization in README                | 2            | - Document JWT authentication process<br>- Explain role-based access control<br>- Include best practices for securing API keys                                                                                                                                                       | Documentation          | Medium   |
+| 14           | Start Testing Process                                        | 5            | - Review all implemented routes<br>- Set up test cases in Insomnia<br>- Identify normal operations and edge cases                                                                                                                                                                    | Testing                | High     |
+| 15           | Create Tests for Endpoints in Insomnia                       | 5            | - Write test cases for each endpoint<br>- Organize tests into logical groups<br>- Use environment variables for flexibility                                                                                                                                                          | Testing                | High     |
+| 16           | Create JSON File for Importing Tests in Insomnia             | 2            | - Export test cases to a JSON file<br>- Ensure the file can be imported into Insomnia<br>- Include instructions for setting up environment variables                                                                                                                                 | Testing                | Medium   |
+| 17           | Document Testing Process and Tests in README                 | 2            | - Document the testing procedure<br>- Include testing tables and expected outcomes<br>- Explain how to run and verify tests                                                                                                                                                          | Documentation          | Medium   |
+| 18           | Test All Endpoints in Insomnia                               | 5            | - Run all test cases<br>- Verify responses and status codes<br>- Identify and log any issues found                                                                                                                                                                                   | Testing                | High     |
+| 19           | Patch Issues Found During Testing                            | 5            | - Fix bugs and issues identified during testing<br>- Update code and documentation accordingly<br>- Retest to ensure issues are resolved                                                                                                                                             | Bug Fixing             | High     |
+| 20           | Finalize Documentation and Code Clean-Up                     | 5            | - Complete all README sections<br>- Clean up codebase and remove redundancies<br>- Ensure code meets style guidelines<br>- Prepare project for submission                                                                                                                            | Project Completion     | High     |
+
+#### Ticket Creation Procedure
+
+Since this is an assignment about Application Programming interface (API), it was deemed worthwhile to learn how to use [JIRA's REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#about).
+
+- All the relevant JIRA files can be found within the folder `JIRA Files` folder within the`docs` folder.
+- A simple python script was written to create tickets in Jira via the Rest API. The script is called `create_jira_tickets.py`. To use the script, you must add:
+  - `URL to your own JIRA site`
+  - `Your own JIRA Username` and
+  - `Your own JIRA project API token`
+- The JSON files, `sprint1_tickets.json` and `sprint2_tickets.json` contain all the tickets.
+- `Sprint_1_Burnup.png` and `Sprint_1_Burnup.png` show the burn-up charts for Sprint 1 and Sprint 2 respectively.
+
+## Sprint Progression
+
+#### Sprint 1 Board
+
+**Backlog**
+
+![Sprint 1 Backlog](/docs/Sprint_Images/Sprint_1/Sprint_1_Backlog.png)
+
+**Start**
+
+![Sprint 1 Board Start](/docs/Sprint_Images/Sprint_1/Sprint_1_Board_Starting.png)
+
+**Day 1**
+
+![Sprint 1 Board Day 1](/docs/Sprint_Images/Sprint_1/Sprint_1_Board_End_of_Day_1.png)
+
+**Day 2**
+
+![Sprint 1 Board Day 2](/docs/Sprint_Images/Sprint_1/Sprint_1_Board_End_of_Day_2.png)
+
+**Day 3**
+
+![Sprint 1 Board Day 3 ](/docs/Sprint_Images/Sprint_1/Sprint_1_Board_End_of_Day_3.png)
+
+**Sprint 1 Burn-Up Chart**
+
+![Sprint 1 Burn-Up](/docs/Sprint_Images/Sprint_1/Sprint_1_Burnup.png)
+
+#### Sprint 2 Board
+
+**Backlog**
+
+![Sprint 2 Backlog](/docs/Sprint_Images/Sprint_2/Sprint_2_Backlog.png)
+
+**Start**
+
+![Sprint 2 Start ](/docs/Sprint_Images/Sprint_2/Sprint_2_Board_Starting.png)
+
+**Day 1**
+
+![Sprint 2 Board Day 1 ](/docs/Sprint_Images/Sprint_2/Sprint_2_Board_End_of_Day_1.png)
+
+**Day 2**
+
+![Sprint 2 Board Day 2 ](/docs/Sprint_Images/Sprint_2/Sprint_2_Board_End_of_Day_2.png)
+
+**Day 3**
+
+![Sprint 2 Board Day 3 ](/docs/Sprint_Images/Sprint_2/Sprint_2_Board_End_of_Day_3.png)
+
+**Day 4**
+
+![Sprint 2 Board Day 4 ](/docs/Sprint_Images/Sprint_2/Sprint_2_Board_End_of_Day_4.png)
+
+**Day 5**
+
+![Sprint 2 Board Day 5 ](/docs/Sprint_Images/Sprint_2/Sprint_2_Board_End_of_Day_5.png)
+
+**Day 6**
+
+![Sprint 2 Board Day 6 ](/docs/Sprint_Images/Sprint_2/Sprint_2_Board_End_of_Day_6.png)
+
+**Sprint 2 Burn-Up Chart**
+
+![Sprint 12 Burn-Up](/docs/Sprint_Images/Sprint_2/Sprint_2_Burnup.png)

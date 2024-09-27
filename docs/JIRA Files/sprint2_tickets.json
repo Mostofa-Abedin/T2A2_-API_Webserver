@@ -1,0 +1,325 @@
+{
+    "tickets": [
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Implement Auth Controller - One Route at a Time",
+          "description": "Develop the authentication controller by implementing one route at a time.\n\nSubtasks:\n- Implement `POST /api/register` route.\n- Validate input and hash passwords.\n- Save user data to the database.\n- Implement `POST /api/login` route.\n- Validate user credentials.\n- Generate JWT tokens upon login.\n- Implement error handling and responses.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["UserAuthentication"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Implement User Controller - PUT/DELETE /users/<id> Routes",
+          "description": "Implement user profile management functionalities.\n\nSubtasks:\n- Implement `PUT /api/users/<id>` route to update user information.\n- Validate input data.\n- Ensure users can only update their own profiles.\n- Implement `DELETE /api/users/<id>` route to delete user accounts.\n- Implement authorization checks.\n- Implement error handling and responses.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["UserManagement"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Implement Car Controller - One Route at a Time",
+          "description": "Develop the car controller by implementing one route at a time.\n\nSubtasks:\n- Implement `GET /api/cars` route.\n- Implement `GET /api/cars/<id>` route.\n- Implement `POST /api/cars` route.\n- Validate input data and implement authorization checks.\n- Implement `PUT /api/cars/<id>` route.\n- Implement `DELETE /api/cars/<id>` route.\n- Implement error handling and responses.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["CarManagement"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Implement Listing Controller - One Route at a Time",
+          "description": "Develop the listing controller by implementing one route at a time.\n\nSubtasks:\n- Implement `GET /api/listings` route.\n- Implement `GET /api/listings/<id>` route.\n- Implement `POST /api/listings` route.\n- Validate input data and implement authorization checks.\n- Implement `PUT /api/listings/<id>` route.\n- Implement `DELETE /api/listings/<id>` route.\n- Implement error handling and responses.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["ListingManagement"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Implement Car Transactions Controller",
+          "description": "Develop the car transactions controller.\n\nSubtasks:\n- Implement `GET /api/car-transactions` route.\n- Implement `GET /api/car-transactions/<id>` route.\n- Implement `POST /api/car-transactions` route.\n- Validate inputs and implement business logic.\n- Implement error handling and responses.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["TransactionManagement"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Implement MakeModelYear Controller - GET and POST Routes",
+          "description": "Implement the GET and POST routes for the MakeModelYear controller.\n\nSubtasks:\n- Implement `GET /api/makemodelyear` route.\n- Implement `GET /api/makemodelyear/<id>` route.\n- Implement `POST /api/makemodelyear` route.\n- Validate input data and implement authorization checks.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["DataManagement"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Implement MakeModelYear Controller - PUT/DELETE /<id> Routes",
+          "description": "Implement the PUT and DELETE routes for the MakeModelYear controller.\n\nSubtasks:\n- Implement `PUT /api/makemodelyear/<id>` route.\n- Implement `DELETE /api/makemodelyear/<id>` route.\n- Validate input data.\n- Implement authorization checks.\n- Implement error handling and responses.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["DataManagement"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Write README Introduction Section",
+          "description": "Draft the introduction section of the README file.\n\nSubtasks:\n- Write project overview and objectives.\n- Explain the purpose and scope of the API.\n- Include problem statement and use cases.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Medium"
+          },
+          "labels": ["Documentation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Write README API Specifications Section",
+          "description": "Document the API specifications in the README file.\n\nSubtasks:\n- Document base URL and customization options.\n- Explain authentication and authorization mechanisms.\n- Describe supported formats and HTTP methods.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Medium"
+          },
+          "labels": ["Documentation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Write README Endpoints Section - One Endpoint at a Time",
+          "description": "Document each API endpoint in detail in the README file.\n\nSubtasks:\n- Document each API endpoint in detail.\n- Include allowed fields, restrictions, and examples.\n- Provide request and response samples.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["Documentation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Write README Database Section",
+          "description": "Add the database section to the README file.\n\nSubtasks:\n- Add Entity Relationship Diagram (ERD).\n- Explain how the database works.\n- Document database schema and models.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["Documentation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Document CLI Controllers in README",
+          "description": "Document the CLI commands and their usage in the README file.\n\nSubtasks:\n- Document CLI commands for database management.\n- Provide examples of how to use each command.\n- Explain error handling and expected outputs.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Medium"
+          },
+          "labels": ["Documentation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Document Security and Authorization in README",
+          "description": "Document the security measures and authorization mechanisms in the README file.\n\nSubtasks:\n- Document JWT authentication process.\n- Explain role-based access control.\n- Include best practices for securing API keys.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Medium"
+          },
+          "labels": ["Documentation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Start Testing Process",
+          "description": "Begin the testing process for all implemented routes.\n\nSubtasks:\n- Review all implemented routes.\n- Set up test cases in Insomnia.\n- Identify normal operations and edge cases.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["Testing"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Create Tests for Endpoints in Insomnia",
+          "description": "Write test cases for each endpoint using Insomnia.\n\nSubtasks:\n- Write test cases for each endpoint.\n- Organize tests into logical groups.\n- Use environment variables for flexibility.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["Testing"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Create JSON File for Importing Tests in Insomnia",
+          "description": "Export test cases to a JSON file for easy import into Insomnia.\n\nSubtasks:\n- Export test cases to a JSON file.\n- Ensure the file can be imported into Insomnia.\n- Include instructions for setting up environment variables.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Medium"
+          },
+          "labels": ["Testing"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Document Testing Process and Tests in README",
+          "description": "Document the testing procedure and tests in the README file.\n\nSubtasks:\n- Document the testing procedure.\n- Include testing tables and expected outcomes.\n- Explain how to run and verify tests.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Medium"
+          },
+          "labels": ["Documentation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Test All Endpoints in Insomnia",
+          "description": "Run all test cases in Insomnia and verify responses.\n\nSubtasks:\n- Run all test cases.\n- Verify responses and status codes.\n- Identify and log any issues found.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["Testing"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Patch Issues Found During Testing",
+          "description": "Fix bugs and issues identified during testing.\n\nSubtasks:\n- Fix bugs and issues identified during testing.\n- Update code and documentation accordingly.\n- Retest to ensure issues are resolved.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["BugFixing"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Finalize Documentation and Code Clean-Up",
+          "description": "Complete all documentation and clean up codebase for submission.\n\nSubtasks:\n- Complete all README sections.\n- Clean up codebase and remove redundancies.\n- Ensure code meets style guidelines.\n- Prepare project for submission.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["ProjectCompletion"]
+        }
+      }
+    ]
+  }
+  

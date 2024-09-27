@@ -1,0 +1,101 @@
+{
+    "tickets": [
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Initial Setup for Git Repo and Environment",
+          "description": "Set up the Git repository and development environment for the project.\n\nSubtasks:\n- Set up Git repository for version control.\n- Configure `.gitignore` to exclude unnecessary files.\n- Set up Python virtual environment.\n- Install dependencies (Flask, PostgreSQL, SQLAlchemy).\n- Set up Flask application structure with modular components.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["ProjectSetup"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Create Models and Schemas for Database Tables",
+          "description": "Design and implement the database models and schemas for the application.\n\nSubtasks:\n- Create User model schema.\n- Create Car model schema.\n- Create Listing model schema.\n- Create CarTransaction model schema.\n- Create MakeModelYear model schema.\n- Define relationships between models.\n- Implement data validation and constraints.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["DatabaseDesign"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Create CLI Controller for Database Management",
+          "description": "Implement CLI commands to manage the database (create, drop, seed tables).\n\nSubtasks:\n- Implement CLI command to create tables.\n- Implement CLI command to drop tables.\n- Implement CLI command to seed tables.\n- Handle exceptions and provide user feedback.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["ProjectSetup"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Produce JSON File for Seeding Data",
+          "description": "Create JSON files for seeding data into the database for testing purposes.\n\nSubtasks:\n- Create JSON file for seeding User data.\n- Create JSON file for seeding Car data.\n- Create JSON file for seeding Listing data.\n- Create JSON file for seeding CarTransaction data.\n- Create JSON file for seeding MakeModelYear data.\n- Validate data integrity and consistency.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Medium"
+          },
+          "labels": ["DataPreparation"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Create Skeleton Routes for Controllers",
+          "description": "Set up the basic route structure for all controllers in the application.\n\nSubtasks:\n- Create controller files for Auth, Car, Listing, CarTransaction, MakeModelYear.\n- Define skeleton routes for Auth (e.g., `/register`, `/login`).\n- Define skeleton routes for Car (e.g., `/cars`).\n- Define skeleton routes for Listing (e.g., `/listings`).\n- Define skeleton routes for CarTransaction (e.g., `/transactions`).\n- Define skeleton routes for MakeModelYear (e.g., `/makemodelyear`).",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "High"
+          },
+          "labels": ["APIDevelopment"]
+        }
+      },
+      {
+        "fields": {
+          "project": {
+            "key": "T2A2"
+          },
+          "summary": "Create README Documentation and Basic Project Details",
+          "description": "Draft the initial README file with basic project details and setup instructions.\n\nSubtasks:\n- Create a comprehensive README file.\n- Add basic project overview and objectives.\n- Document installation and setup instructions.\n- Outline planned API endpoints and features.",
+          "issuetype": {
+            "name": "Story"
+          },
+          "priority": {
+            "name": "Low"
+          },
+          "labels": ["Documentation"]
+        }
+      }
+    ]
+  }
+  
